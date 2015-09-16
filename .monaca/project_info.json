@@ -1,0 +1,26 @@
+{
+    "framework_version": "2.9",
+    "plugins": [
+        "mobi.monaca.plugins.MonacaBackend",
+        "mobi.monaca.plugins.ChildBrowser",
+        "mobi.monaca.plugins.datepicker",
+        "mobi.monaca.plugins.bluetooth",
+        "mobi.monaca.plugins.Share",
+        "mobi.monaca.plugins.BarcodeScanner",
+        "mobi.monaca.plugins.WebIntent",
+        "mobi.monaca.plugins.HttpServer",
+        "mobi.monaca.plugins.WebSocketServer"
+    ],
+    "title-ja": "",
+    "title-en": "Handbook",
+    "description-ja": "",
+    "description-en": "Handbook",
+    "category": "User Template",
+    "platform": [
+        "android",
+        "ios",
+        "winrt",
+        "chrome"
+    ],
+    "name": "generated-1442402331-5296c4cc7e21936933df2cee"
+}

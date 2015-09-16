@@ -1,0 +1,8 @@
+{
+    "top" : {
+        "container" : "toolbar",
+        "style" : {
+            "visibility" : true
+        }
+    }
+}

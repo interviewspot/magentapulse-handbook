@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <script src="components/loader.js"></script>
+  <link rel="stylesheet" href="components/loader.css">
+   <link rel="stylesheet" href="css/jquery-ui.css">
+  <script src="js/jquery-ui.js"></script>
+  <meta content='width=320px,initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    $(function() {
+        $( "#tabs" ).tabs();
+        $( "#accordion" ).accordion({
+            collapsible: true,
+            heightStyle: "content"
+        });
+        $( "#accordion_child" ).accordion({
+            collapsible: true,
+            heightStyle: "content"
+        });
+        
+    });
+ 
+  </script>
+</head>
+<body>
+    <div id="tabs">
+      <ul class="list_tabs">
+        <li><a href="#tabs-handbook">Employee Handbook</a></li>
+        <li><a href="#tabs-contacts">Contacts</a></li>
+      </ul>
+      <div id="tabs-handbook">
+            <div class="ctr_search">
+    		    <input type="text" id="pp_course_2" onblur="if (this.value == '') {this.value = 'Search';}" onfocus="if (this.value == 'Search') {this.value = '';}" value="Search" name="rs" class="txt_livesearch ac_input_2" autocomplete="off"><span class="bt_search" id="bt_pp_search_2"></span>
+            </div>
+            <div data-role="content">
+                <div>
+                    <p><b>BUILDWORKS PTE LTD Version 1.9, 16 June 2015</b> </p> 
+                    <p>We have specially prepared this Handbook to explain and 
+                    help you better understand Bullwork’s Human Resource policies, 
+                    compensation and benefits programs, as well as our corporate rules 
+                    and regulations.<p> 
+                </div>
+                <div id="accordion">
+                    <h5>1.Forward</h5>
+                        <div> 
+                            <p>Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.</p>
+                        </div>
+                    <h5>2.Terms and Conditions of Employment</h5>
+                        <div>
+                            <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>
+                        </div>
+                    <h5>3.Code of Conduct</h5> 
+                    
+                        <div id="accordion_child">
+                            <h6>3.1 - Attendance & Punctuality </h6>
+                                <div>  
+                                    <p>Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.</p>
+                                </div>
+                            <h6>3.2 - Personal Appearance  </h6>
+                                <div>
+                                    <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>
+                                </div>
+                            <h6>3.3 - Personal Property</h6>
+                            <h6>3.4 - Confidentiality</h6>
+                        </div>
+                    <h5>Salary Administration</h5>
+                        <div>
+                            <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+                        </div>
+                </div>
+            </div>
+          </div>
+      </div>
+      <div id="tabs-contacts">
+            
+      </div>
+    </div>
+</body>
+</html>
