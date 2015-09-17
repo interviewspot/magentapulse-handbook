@@ -1,50 +1,32 @@
+/* set padding for iOS7 status bar */
+.ua-ios-7 .ui-page, .ua-ios-8 .ui-page
+{
+    padding-top: 63px !important;
+}
+.ua-ios-7 .ui-header, .ua-ios-8 .ui-header
+{
+    top: 20px;
+}
 /* This is a CSS file */
 
 body{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
+    background: #fff;
 }
 
 .header{
     text-align: center;
-    padding-top: 2px; 
-    background: #CFAE79;
-    padding-bottom:2px;
+    margin-top: 30px; 
+    margin-bottom:20px;
 }
-.ui-icon { display: none !important; }
 
-.ui-accordion .ui-accordion-content{
-    padding: 10px !important;
-}
-.ui-accordion .ui-accordion-icons{
-    padding: 10px !important;
-}
-.ui-widget-content{
-    border: 0px;
-}
 h6{
     font-weight: bold;
 }
-#accordion_child .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default
-{
-    border: 1px solid #d3d3d3 !important;
-    background: #BFBFBF !important;
-    font-weight: bold !important;
-    font-size: 14px !important;
-}
-.ui-tabs .ui-tabs-nav {
-     background: #CFAE79 !important;
-}
-.ui-tabs .ui-tabs-nav li{
-    background: #CFAE79 !important;
-    border-right: 1px !important;
-    /*border: 0px !important;*/
-    color: #fff;
-}
-
 input{
-	border: 1px solid #BFBFBF;
-	width: 95%;
+    border: 1px solid #BFBFBF;
+	width: 100%;
     height:40px; 
     margin-bottom: 10px;
     text-align: center;
@@ -54,17 +36,14 @@ input{
     border: 1px solid #8D2D7B;
 	background-color: #8D2D7B;
 	color: #fff;
-    width: 96%;
+    width: 100%;
     font-size: 18px;
     height:40px; 
     font-weight: bold;
     margin-top: 40px !important; 
     text-align: center;
 }
-.ui-tabs .ui-tabs-panel
-{
-    padding:5px !important;
-}
+
 .content{
    margin: 50px 20px 0 20px;
 }
@@ -74,41 +53,26 @@ text-align: center;
 #tabs{
    margin-top:10px; 
 }
-.search { height: 25px;
-    padding: 1px 6px 0;float:right;width:92.5%}
-.btnSearch {
-    position: relative;
+
+.ui-content {
+    border-width: 0;
+    overflow: visible;
+    overflow-x: hidden;
     padding: 5px;
-    cursor: pointer;
-    float: right;
 }
-.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited .ui-state-hover{
-    color: #fff;
-    font-weight: bold;
-    text-decoration: underline;
+.contacts{
+    margin-top: 20px;
+}
+.ui-input-search input.ui-input-text {
+    height: 10px;
+}
+.ui-bar-b{
+    background: #D9D9D9;
+    border:0px;
 }
 
-.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
-  color: #fff;
-  font-weight: bold;
-}
-.ctr_search {
-    width: 100%;
-    float: left;
-    background: #FFF;
-    position: relative;
-    padding: 0 2% !important;
-     height: 90%;
-     margin-top:10px;
-}
-.bt_search {
-    background: url('../images/bg-search.png') no-repeat 0 center;
-    cursor: pointer;
-    float: right;
-    height: 90%;
-    position: absolute;
-    right: 25px;
-    width: 16%;
-    max-width: 30px;
-    top: -3px;
+.ui-btn-active { 
+    background: #CFAE79;
+    text-shadow: none;
+    border:0px;
 }

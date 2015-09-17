@@ -3,31 +3,13 @@
  * Please do not edit by hand.
  */
 
-/*** <GENERATED> ***//*** <Start:monaca-core-utils> ***/
-/*** <End:monaca-core-utils> ***/
-/*** <Start:monaca-cordova-loader> ***/
-/*** <End:monaca-cordova-loader> ***/
-/*** <Start:monaca-viewport-js> ***/
-/*** <End:monaca-viewport-js> ***/
+/*** <GENERATED> ***/
 
 
-/*** <Start:monaca-onsenui> ***/
-/*** <Start:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsenui.css"> ***/
-@import url("monaca-onsenui/css/onsenui.css");
-/*** <End:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsenui.css"> ***/
-/*** <Start:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-blue-basic-theme.css"> ***/
-@import url("monaca-onsenui/css/onsen-css-components-blue-basic-theme.css");
-/*** <End:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-blue-basic-theme.css"> ***/
-/*** <Start:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-blue-theme.css"> ***/
-@import url("monaca-onsenui/css/onsen-css-components-blue-theme.css");
-/*** <End:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-blue-theme.css"> ***/
-/*** <Start:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-dark-theme.css"> ***/
-@import url("monaca-onsenui/css/onsen-css-components-dark-theme.css");
-/*** <End:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-dark-theme.css"> ***/
-/*** <Start:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-purple-theme.css"> ***/
-@import url("monaca-onsenui/css/onsen-css-components-purple-theme.css");
-/*** <End:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-purple-theme.css"> ***/
-/*** <Start:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-sunshine-theme.css"> ***/
-@import url("monaca-onsenui/css/onsen-css-components-sunshine-theme.css");
-/*** <End:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-sunshine-theme.css"> ***/
-/*** <End:monaca-onsenui> ***/
+
+
+/*** <Start:monaca-jquery-mobile> ***/
+/*** <Start:monaca-jquery-mobile LoadCss:"components/monaca-jquery-mobile/css/jquery.mobile.css"> ***/
+@import url("monaca-jquery-mobile/css/jquery.mobile.css");
+/*** <End:monaca-jquery-mobile LoadCss:"components/monaca-jquery-mobile/css/jquery.mobile.css"> ***/
+/*** <End:monaca-jquery-mobile> ***/
