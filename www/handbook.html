@@ -9,14 +9,22 @@
   
   <script>
     $(function() {
-        /*$( ".accordion" ).accordion({
-            collapsible: true,
-            heightStyle: "content"
-        });
-        $( ".accordion_child" ).accordion({
-            collapsible: true,
-            heightStyle: "content" 
-        });*/
+        /* //call api
+        $.ajax({
+          url: "http://jobeet.local/app_dev.php/job/new",
+          cache: false
+        })
+          .done(function( data ) {
+              alert(data);
+            
+          });
+          */
+        var html = '';
+            html += ' <li>Adele </br>M : 3213213211 </br>O : 0978843222 </br>E : hai@yahoo.com</li>';
+            html += ' <li>BBdele </br>M : 3213213211</br>O : 0978843222 </br>E : hai@yahoo.com</li>';
+            html += ' <li>CDaaa </br>M : 3213213211 </br>O : 0978843222 </br>E : hai@yahoo.com </li>';
+            html += ' <li>HHH </br>M : 3213213211 </br>O : 0978843222</br>E : hai@yahoo.com</li>';
+       $( "#myFilterContacts" ).append(html);
         
     });
  
@@ -90,13 +98,7 @@
 
   <div data-role="main" class="ui-content">
    <div class="contacts">
-        <ul style="margin-top:20px" data-role="listview" data-filter="true" data-input="#myFilterContacts" data-autodividers="true" data-inset="true">
-          <li>Adele</li>
-          <li>Agnes</li>
-          <li>Albert</li>
-          <li>Billy</li>
-          <li>Bob</li>
-          <li>Calvin</li>
+        <ul id="myFilterContacts" style="margin-top:20px" data-role="listview" data-filter="true" data-input="#myFilterContacts" data-autodividers="true" data-inset="true">
         
         </ul>
     </div>
