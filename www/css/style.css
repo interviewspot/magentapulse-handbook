@@ -34,7 +34,7 @@ input{
     text-align: center;
 }
 
-#submit_login{
+#btn_login{
     border: 1px solid #8D2D7B;
 	background-color: #8D2D7B;
 	color: #fff;
@@ -87,4 +87,8 @@ text-align: center;
 }
 .ui-grid-a > .ui-block-a, .ui-grid-a > .ui-block-b {
     border-right: 1px solid #fff;
+}
+.error{
+    color:red;
+    display:block;
 }

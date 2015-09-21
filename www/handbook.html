@@ -1,37 +1,77 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta charset="utf-8">  
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
 <link rel="stylesheet" href="css/style.css">
 <script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/jquery.mobile-1.4.5.min.js"></script> 
-  
-  <script>
-    $(function() {
-        /* //call api
-        $.ajax({
-          url: "http://jobeet.local/app_dev.php/job/new",
-          cache: false
-        })
-          .done(function( data ) {
-              alert(data);
-            
-          });
-          */
-        var html = '';
-            html += ' <li>Adele </br>M : 3213213211 </br>O : 0978843222 </br>E : hai@yahoo.com</li>';
-            html += ' <li>BBdele </br>M : 3213213211</br>O : 0978843222 </br>E : hai@yahoo.com</li>';
-            html += ' <li>CDaaa </br>M : 3213213211 </br>O : 0978843222 </br>E : hai@yahoo.com </li>';
-            html += ' <li>HHH </br>M : 3213213211 </br>O : 0978843222</br>E : hai@yahoo.com</li>';
-       $( "#myFilterContacts" ).append(html);
-        
-    });
- 
-  </script>
-</head>
+<script type="text/javascript">
+    //Get Handbook title,description
+    var formData = "email=tranchau2@gmail.com";
+    //Get Handbook section   
+    $.ajax({
+        url: 'https://api.vn/app_dev.php/handbook/getSection/1',
+        headers: { 'x-username': 'test@example.com', 'x-password': 'p@ssword' },
+        type: 'GET',    
+        data: formData, 
+        dataType: "json",   
+        success: function(data) { 
+           
+            var html  = "";
+            for(var i = 0; i<data.length; i++)  
+            {
+                if(data[i].children && data[i].children =='')
+                {  
+                    html += "<div data-role='collapsible'>";
+                    html += "<h3>" + data[i].title + "</h3>";
+                    html += "<p>" + data[i].description + "</p>";
+                    html += "</div>";
+                }
+                
+                if(data[i].children && data[i].children !='')
+                { 
+                   
+                    var children_html = '';
+                    html += "<div data-role='collapsible'>";
+                    html += "<h3>" + data[i].title + "</h3>";
+                    
+                    for(var j = 0; j<data[i].children.length; j++)  
+                    {
+                        children_html += "<div data-role='collapsible'>";
+                        children_html += "<h3>" + data[i].children[j].title + "</h3>";
+                        children_html += "<p>" + data[i].children[j].description + "</p>";
+                        children_html += "</div>";
+                    }
+                   
+                    html += "<p>" + children_html + "</p>"; 
+                    html += "</div>";
+                }
+            }
+            $('#handbook_section').append(html);
+            $( "#handbook_section" ).collapsibleset( "refresh" );
+        }  
+    }); 
+    $.ajax({
+        url: 'https://api.vn/app_dev.php/handbook/getTitleHandbook/1',
+        headers: { 'x-username': 'test@example.com', 'x-password': 'p@ssword' },
+        type: 'GET',
+        data: formData, 
+        dataType: "json", 
+        success: function(data) {
+            var html  = "";
+            html += "<b>" + data.title + "</b></br></br>";
+            html += data.description;
+            $('#handbook_title').append(html);
+        }
+    }); 
+     
+    
+</script> 
+</head> 
 <body> 
  
 <div data-role="page" id="list_handbooks">
@@ -53,29 +93,10 @@
               <input id="myFilterHandbook" data-type="search">
             </form>
            
-                    <p><b>BUILDWORKS PTE LTD Version 1.9, 16 June 2015</b> </p> 
-                    <p>We have specially prepared this Handbook to explain and 
-                    help you better understand Bullwork’s Human Resource policies, 
-                    compensation and benefits programs, as well as our corporate rules 
-                    and regulations.<p> 
-                <div data-role="collapsibleset" data-input="#myFilterHandbook"  data-filter="true" data-autodividers="true" data-inset="true">
-                  <div data-role="collapsible">
-                    <h3>1.Forward</h3>
-                    <p>I'm the expanded content.</p>
-                  </div>
-                  <div data-role="collapsible">
-                    <h3>2.Terms and Conditions of Employment</h3>
-                    <p>I'm the expanded content.</p>
-                  </div>
-                  <div data-role="collapsible">
-                    <h3>3.Code of Conduct</h3>
-                    <p>I'm the expanded content.</p>
-                  </div>
-                  <div data-role="collapsible">
-                    <h3>Salary Administration</h3>
-                    <p>I'm the expanded content.</p>
-                  </div>
-                </div>
+            <p id="handbook_title"><p> 
+            <div id="handbook_section" data-role="collapsibleset" data-input="#myFilterHandbook"  data-filter="true" data-autodividers="true" data-inset="true">
+             
+            </div>
       
   </div>
  
@@ -87,7 +108,7 @@
           <img src="images/header.png" height="56" width="213">
         </div>
         
-        <div data-role="navbar"> 
+        <div data-role="navbar">  
           <ul>
             <li><a class="style-a" href="#list_handbooks">Employee Handbook</a></li>
             <li><a href="#list_contacts"  class="ui-btn-active ui-state-persist">Contacts</a></li>
