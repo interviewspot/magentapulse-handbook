@@ -9,67 +9,73 @@
 <link rel="stylesheet" href="css/style.css">
 <script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/jquery.mobile-1.4.5.min.js"></script> 
+<script src="js/jquery.cookie.js"></script>
+
 <script type="text/javascript">
-    //Get Handbook title,description
-    var formData = "email=tranchau2@gmail.com";
-    //Get Handbook section   
-    $.ajax({
-        url: 'https://api.vn/app_dev.php/handbook/getSection/1',
-        headers: { 'x-username': 'test@example.com', 'x-password': 'p@ssword' },
-        type: 'GET',    
-        data: formData, 
-        dataType: "json",   
-        success: function(data) { 
-           
-            var html  = "";
-            for(var i = 0; i<data.length; i++)  
-            {
-                if(data[i].children && data[i].children =='')
-                {  
-                    html += "<div data-role='collapsible'>";
-                    html += "<h3>" + data[i].title + "</h3>";
-                    html += "<p>" + data[i].description + "</p>";
-                    html += "</div>";
-                }
-                
-                if(data[i].children && data[i].children !='')
-                { 
-                   
-                    var children_html = '';
-                    html += "<div data-role='collapsible'>";
-                    html += "<h3>" + data[i].title + "</h3>";
-                    
-                    for(var j = 0; j<data[i].children.length; j++)  
-                    {
-                        children_html += "<div data-role='collapsible'>";
-                        children_html += "<h3>" + data[i].children[j].title + "</h3>";
-                        children_html += "<p>" + data[i].children[j].description + "</p>";
-                        children_html += "</div>";
-                    }
-                   
-                    html += "<p>" + children_html + "</p>"; 
-                    html += "</div>";
-                }
-            }
-            $('#handbook_section').append(html);
-            $( "#handbook_section" ).collapsibleset( "refresh" );
-        }  
-    }); 
-    $.ajax({
-        url: 'https://api.vn/app_dev.php/handbook/getTitleHandbook/1',
-        headers: { 'x-username': 'test@example.com', 'x-password': 'p@ssword' },
-        type: 'GET',
-        data: formData, 
-        dataType: "json", 
-        success: function(data) {
-            var html  = "";
-            html += "<b>" + data.title + "</b></br></br>";
-            html += data.description;
-            $('#handbook_title').append(html);
-        }
-    }); 
+    $(document).ready(function(){ 
+        
+        var company_code = $.cookie('company_code'); 
+        var employee_code = $.cookie('employee_code');
+        var formData = "email=tranchau2@gmail.com";
+        //Get Handbook title
+        $.ajax({
+            url: 'https://api.vn/app_dev.php/handbook/getTitleHandbook/'+company_code,
+            headers: { 'x-username': company_code, 'x-password': employee_code },
+            type: 'GET',
+            data: formData, 
+            dataType: "json", 
+            success: function(data) {
+                var html  = "";
+                html += "<b>" + data.title + "</b></br></br>";
+                html += data.description;
+                $('#handbook_title').append(html);
+            } 
+        }); 
      
-    
+        //Get Handbook section   
+        $.ajax({
+            url: 'https://api.vn/app_dev.php/handbook/getSection/'+company_code,
+            headers: { 'x-username': company_code, 'x-password': employee_code },
+            type: 'GET',    
+            data: formData, 
+            dataType: "json",   
+            success: function(data) { 
+               
+                var html  = "";
+                for(var i = 0; i<data.length; i++)  
+                {
+                    if(data[i].children && data[i].children =='')
+                    {  
+                        html += "<div data-role='collapsible'>";
+                        html += "<h3>" + data[i].title + "</h3>";
+                        html += "<p>" + data[i].description + "</p>";
+                        html += "</div>";
+                    }
+                    
+                    if(data[i].children && data[i].children !='')
+                    { 
+                       
+                        var children_html = '';
+                        html += "<div data-role='collapsible'>";
+                        html += "<h3>" + data[i].title + "</h3>";
+                        
+                        for(var j = 0; j<data[i].children.length; j++)  
+                        {
+                            children_html += "<div data-role='collapsible'>";
+                            children_html += "<h3>" + data[i].children[j].title + "</h3>";
+                            children_html += "<p>" + data[i].children[j].description + "</p>";
+                            children_html += "</div>";
+                        }
+                       
+                        html += "<p>" + children_html + "</p>"; 
+                        html += "</div>";
+                    }
+                }
+                $('#handbook_section').append(html);
+                $( "#handbook_section" ).collapsibleset( "refresh" );
+            }  
+        }); 
+    });  
 </script> 
 </head> 
 <body> 
@@ -86,20 +92,16 @@
       </ul>
     </div>
   </div>
-
   <div data-role="main" class="ui-content">
-
-           <form class="ui-filterable">
-              <input id="myFilterHandbook" data-type="search">
-            </form>
-           
-            <p id="handbook_title"><p> 
-            <div id="handbook_section" data-role="collapsibleset" data-input="#myFilterHandbook"  data-filter="true" data-autodividers="true" data-inset="true">
-             
-            </div>
-      
+   <form class="ui-filterable">
+      <input id="myFilterHandbook" data-type="search">
+    </form>
+   
+    <p id="handbook_title"><p> 
+    <div id="handbook_section" data-role="collapsibleset" data-input="#myFilterHandbook"  data-filter="true" data-autodividers="true" data-inset="true">
+     
+    </div>  
   </div>
- 
 </div> 
 
 <div data-role="page" id="list_contacts">
@@ -121,10 +123,8 @@
         <ul id="myFilterContacts" data-role="listview" data-filter="true" data-autodividers="true" data-inset="true">
         
         </ul>
-        
     </div>
   </div>
-
 </div> 
 </body>
 </html>
