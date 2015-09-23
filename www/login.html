@@ -18,7 +18,7 @@
             var company_code= $('#company_code').val();
             var employee_code= $('#employee_code').val();
             $.ajax({
-                url: 'https://api.vn/app_dev.php/handbook/getTitleHandbook/1',
+                url: 'https://api.vn/app_dev.php/handbook/getTitleHandbook/'+company_code,
                 headers: { 'x-username': company_code, 'x-password': employee_code },
                 type: 'GET',
                 data: formData,   
@@ -45,7 +45,6 @@
         <div class="logo">
            <img src="images/logo.png" height="63" width="236"> 
         </div> 
-        
         <p style="text-align: center;"> 
             Welcome to Cloud Book By Magenta Pulse. 
             To access your company’s employee handbook, please enter your company and employee verification code below.

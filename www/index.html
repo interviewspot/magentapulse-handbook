@@ -12,11 +12,9 @@
     $(document).ready(function(){  
         if($.cookie('company_code') != undefined && $.cookie('employee_code') != undefined)
         {
-            //$.removeCookie('company_code'); 
-            //$.removeCookie('employee_code');
             window.location.href='handbook.html';
         }  
-        else 
+        else   
         {
             window.location.href='login.html'; 
         }
