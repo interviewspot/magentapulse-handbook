@@ -8,8 +8,6 @@ angular.module('starter.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-
-
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -28,22 +26,17 @@ angular.module('starter.controllers', [])
 .controller('LoginCtrl', function($scope, $stateParams, $location, LoginService, $http) {
   $scope.loginData = {};
   $scope.doLogin = function() {
-    // $httpProvider.defaults.headers.common = {
-    //   'x-username': $scope.loginData.username,
-    //   'x-password': $scope.loginData.password
-    // }
     var login = LoginService.login($scope.loginData.username, $scope.loginData.password);
     login.get({}, function (data, getResponseHeaders){
-      console.log(data);
-      if (data) $location.path('/app/tabs');
+      // console.log(data);
+      if (data) $location.path('/app/contacts');
     });
     
   };
 })
 .controller('ContactCtrl', function($scope, $stateParams, UserService) {
-  console.log('ok');
   UserService.query({}, function (data, getResponseHeaders){
-   console.log(data);
+   // console.log(data);
    $scope.contacts = data._embedded.items;
   });
 })
