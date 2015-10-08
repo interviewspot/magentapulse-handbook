@@ -1,0 +1,33 @@
+<ion-view hide-nav-bar="true">
+  <ion-content>
+    <div class="logo">
+        <a href="#/">
+            <img width="72px" height="70px" alt="" src="img/logo.png">
+        </a>
+    </div>
+    <form ng-submit="doLogin()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input type="text" ng-model="loginData.username">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Password</span>
+          <input type="password" ng-model="loginData.password">
+        </label>
+        <li class="item item-toggle">
+           I have read and agree to the T&Cs
+           <label class="toggle toggle-stable">
+             <input type="checkbox">
+             <div class="track">
+               <div class="handle"></div>
+             </div>
+           </label>
+        </li>
+        <label class="item">
+          <button class="button button-block button-stable" type="submit">Log in</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>
