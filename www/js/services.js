@@ -1,13 +1,13 @@
 angular.module('starter.services', [])
-.factory('UserService', function ($q, $http, $localstorage) {
+.factory('ContactService', function ($q, $http, $localstorage) {
     var services = {};
 
     services.get = function (username, password) { 
-        console.log(username, password);
         var d = $q.defer();
         $http({
             method: 'GET',
-            url: config.path.baseURL + config.path.users,
+            // url: config.path.baseURL + config.path.users,
+            url: 'https://api.sg-benefits.com/organisations/2/positions',
             headers: {
                 'x-username': username,
                 'x-password': password
@@ -22,7 +22,75 @@ angular.module('starter.services', [])
         });
         return d.promise;
     }
-    
+    services.fetch = function(username, password, url) {
+        var d = $q.defer();
+        $http({
+            method: 'GET',
+            url: url,
+            headers: {
+                'x-username': username,
+                'x-password': password
+            }
+        })
+        .then(function success(res){
+            d.resolve(res);
+            return;  
+        }, function error(error) {
+            d.reject(error);
+            return;
+        });
+        return d.promise;
+    }
+
+    return services;
+})
+.factory('HandbookService', function ($q, $http, $localstorage) {
+    var services = {};
+
+    services.get = function (username, password) { 
+        var d = $q.defer();
+        $http({
+            method: 'GET',
+            // url: config.path.baseURL + config.path.users,
+            url: 'https://api.sg-benefits.com/organisations/2/handbooks/1',
+            headers: {
+                'x-username': username,
+                'x-password': password
+            }
+        })
+        .then(function success(res){
+            d.resolve(res);
+            return;  
+        }, function error(error) {
+            d.reject(error);
+            return;
+        });
+        return d.promise;
+    }
+
+    return services;
+})
+.factory('SectionService', function ($q, $http, $localstorage) {
+    var services = {};
+    services.get = function (username, password) { 
+        var d = $q.defer();
+        $http({
+            method: 'GET',
+            url: 'https://api.sg-benefits.com/organisations/2/handbooks/1/sections',
+            headers: {
+                'x-username': username,
+                'x-password': password
+            }
+        })
+        .then(function success(res){
+            d.resolve(res);
+            return;  
+        }, function error(error) {
+            d.reject(error);
+            return;
+        });
+        return d.promise;
+    }
 
     return services;
 })

@@ -25,6 +25,7 @@ angular.module('starter', [
   'ngResource',
   'starter.controllers', 
   'starter.services',
+  'angular.filter'
 ])
 
 .run(function($ionicPlatform) {
@@ -76,6 +77,15 @@ angular.module('starter', [
       'menuContent': {
         templateUrl: 'templates/logout.html',
         controller: 'LogoutCtrl'
+      }
+    }
+  })
+  .state('app.handbook', {
+    url: '/handbook',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/handbook.html',
+        controller: 'HandbookCtrl'
       }
     }
   })

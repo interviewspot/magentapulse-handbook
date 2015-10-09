@@ -3,3 +3,7 @@
 	text-align: center;
 	margin: 20px 0;
 }
+.contact-list h2.title {
+	font-size: 28px;
+	text-transform: uppercase;
+}

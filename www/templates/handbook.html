@@ -1,0 +1,30 @@
+<ion-view view-title="Handbook">
+	<ion-content>
+		<div class="logo">
+	        <a href="#/">
+	          <img width="278px" height="81px" alt="" src="img/logo3.png">
+	        </a>
+	    </div>
+		<div class="row">
+			<div class="col">{{handbook.title}} Version {{handbook.version}},  {{handbook.year}}, {{handbook.language}} Version</div>
+		</div>
+		<div class="row">
+			<div class="col" ng-bind-html="handbook.description"></div>
+		</div>
+        <div class="list">
+        	<div ng-repeat="(key, section) in sections">
+        		<div class="item item-divider item-icon-right" ng-click="toggleGroup(section)"
+                    ng-class="{active: isGroupShown(section)}">
+					{{key + 1}}. {{section.title}}
+					<!-- <i ng-if="section.children.length > 0" class="icon" ng-class="isGroupShown(section) ? 'ion-chevron-up' : 'ion-chevron-down'"></i> -->
+				</div>
+				<div ng-show="isGroupShown(section)" class="item" ng-if="section.children.length > 0 && child.id > 0" ng-repeat="(k, child) in section.children">
+                    <strong>{{key + 1}}.{{k + 1}} - {{child.title}}</strong>
+                    <span ng-bind-html="child.description"></span>
+                </div>
+        	</div>
+
+		</div>
+	</ion-content>
+	<div ng-include="'templates/menu_tabs.html'"></div>
+</ion-view>

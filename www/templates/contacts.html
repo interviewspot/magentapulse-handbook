@@ -1,33 +1,38 @@
 <ion-view view-title="Contacts">
-  <ion-content>
-    <div class="list" style="margin-bottom:55px;">
-	    <a ng-repeat="contact in contacts | orderBy:'name'" class="item item-avatar" href="#/app/contacts/{{contact.id}}">
-	      <img src="img/logo.png">
-	      <h2>{{contact.name}}</h2>
-	      <p>Something about contact</p>
-	    </a>
-	</div>
-  </ion-content>
-  	<div class="tabs tabs-stable tabs-icon-top">
-		<a class="tab-item">
-			<i class="icon icon-homepage"></i>
-			OFFERS
-		</a>
-		<a class="tab-item">
-			<i class="icon ion-ios-location-outline"></i>
-			NEARBY
-		</a>
-		<a class="tab-item">
-			<i class="icon ion-android-star-outline"></i>
-			FAVOURITES
-		</a>
-		<a class="tab-item">
-			<i class="icon ion-social-usd-outline"></i>
-			SAVINGS
-		</a>
-		<a class="tab-item">
-			<i class="icon ion-ios-person-outline"></i>
-			ACCOUNTS
-		</a>
-	</div>
+	<ion-content>
+		<div class="logo">
+	        <a href="#/">
+	          <img width="278px" height="81px" alt="" src="img/logo3.png">
+	        </a>
+	    </div>
+		<div class="list list-inset">
+		  <label class="item item-input">
+		    <i class="icon ion-search placeholder-icon"></i>
+		    <input type="text" placeholder="Search">
+		  </label>
+		</div>
+		<div class="list list-inset contact-list"> 
+			<div ng-repeat="(i, item) in contacts | orderBy: 'alphabet' | groupBy : 'alphabet'">
+	            <div class="item item-divider">
+	            	<h2 class="title">{{i}}</h2>
+				</div>
+	            <div class="item" ng-repeat="contact in item">
+	                <h3>{{contact.user.first_name}}  {{contact.user.last_name}}</h3>
+	                <p class="ctc-add">Singapore, {{contact.position.title}}</p>
+	                <p>
+	                    <b>M:</b> +65 9108 6935
+	                </p>
+	                <p>
+	                    <b>0:</b> +65 6720 3663
+	                </p>
+	                <p>
+	                    <b>E:</b> {{contact.user.email}}
+	                </p>
+	            </div>
+        	</div>
+        </div>
+        <!-- END: ITEM -->
+    </div>
+	</ion-content>
+	<div ng-include="'templates/menu_tabs.html'"></div>
 </ion-view>
