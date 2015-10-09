@@ -70,7 +70,15 @@ angular.module('starter', [
       }
     }
   })
-
+  .state('app.logout', {
+    url: '/logout',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/logout.html',
+        controller: 'LogoutCtrl'
+      }
+    }
+  })
   .state('app.contacts', {
     url: '/contacts',
     views: {
@@ -93,8 +101,8 @@ angular.module('starter', [
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');
   $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://api.sg-benefits.com/**']);
-  $httpProvider.defaults.headers.common = {
-    'x-username': 'kenneth.yap@ap.magenta-consulting.com',
-    'x-password': 'p@ssword'
-  }
+  // $httpProvider.defaults.headers.common = {
+  //   'x-username': 'kenneth.yap@ap.magenta-consulting.com',
+  //   'x-password': 'p@ssword'
+  // }
 });

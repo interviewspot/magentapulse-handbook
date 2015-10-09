@@ -1,9 +1,9 @@
 <ion-view view-title="Contacts">
   <ion-content>
-    <div class="list">
-	    <a ng-repeat="contact in contacts" class="item item-avatar" href="#/app/contacts/{{contact.id}}">
+    <div class="list" style="margin-bottom:55px;">
+	    <a ng-repeat="contact in contacts | orderBy:'name'" class="item item-avatar" href="#/app/contacts/{{contact.id}}">
 	      <img src="img/logo.png">
-	      <h2>{{contact.first_name}} {{contact.last_name}}</h2>
+	      <h2>{{contact.name}}</h2>
 	      <p>Something about contact</p>
 	    </a>
 	</div>
