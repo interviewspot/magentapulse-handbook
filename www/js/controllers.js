@@ -23,13 +23,15 @@ angular.module('starter.controllers', [])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
-.controller('LoginCtrl', function($scope, $stateParams, $location, LoginService, $http) {
+.controller('LoginCtrl', function($scope, $state, $stateParams, $location, LoginService, $http) {
   $scope.loginData = {};
   $scope.doLogin = function() {
     var login = LoginService.login($scope.loginData.username, $scope.loginData.password);
     login.get({}, function (data, getResponseHeaders){
-      // console.log(data);
-      if (data) $location.path('/app/contacts');
+      console.log(data);
+      if (data) 
+        $state.go('app.contacts');
+        // $location.path('/app/contacts');
     });
     
   };
