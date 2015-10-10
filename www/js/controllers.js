@@ -43,10 +43,10 @@ angular.module('starter.controllers', [])
 					password: $scope.loginData.password
 				});
 				$ionicLoading.hide();
-				$location.path('/app/contacts');
+				$location.path('/app/handbook');
 			}
 		}, function (err){
-			if (err && err.status == 401 ) {
+			if (err) {
 				$ionicLoading.hide();
 				alert(err.data.message);
 			}
@@ -121,8 +121,7 @@ angular.module('starter.controllers', [])
     }
   };
   $scope.isGroupShown = function(group) {
-  	return true;
-    // return $scope.shownGroup === group;
+  	return $scope.shownGroup === group;
   };
 })
 .controller('ContactCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading) {

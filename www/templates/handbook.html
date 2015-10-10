@@ -5,18 +5,24 @@
 	          <img width="278px" height="81px" alt="" src="img/logo3.png">
 	        </a>
 	    </div>
+	    <div class="list list-inset">
+		  <label class="item item-input">
+		    <i class="icon ion-search placeholder-icon"></i>
+		    <input type="text" placeholder="Search" ng-model="searchText">
+		  </label>
+		</div>
 		<div class="row">
 			<div class="col">{{handbook.title}} Version {{handbook.version}},  {{handbook.year}}, {{handbook.language}} Version</div>
 		</div>
 		<div class="row">
 			<div class="col" ng-bind-html="handbook.description"></div>
 		</div>
-        <div class="list">
-        	<div ng-repeat="(key, section) in sections">
-        		<div class="item item-divider item-icon-right" ng-click="toggleGroup(section)"
+        <div class="list menu-tab-page">
+        	<div ng-repeat="(key, section) in sections | filter:searchText">
+        		<div class="item item-divider item-icon-left" ng-click="toggleGroup(section)"
                     ng-class="{active: isGroupShown(section)}">
 					{{key + 1}}. {{section.title}}
-					<!-- <i ng-if="section.children.length > 0" class="icon" ng-class="isGroupShown(section) ? 'ion-chevron-up' : 'ion-chevron-down'"></i> -->
+					<i ng-if="section.children.length > 0" class="icon" ng-class="isGroupShown(section) ? 'ion-ios-minus-outline' : 'ion-ios-plus-outline'"></i>
 				</div>
 				<div ng-show="isGroupShown(section)" class="item" ng-if="section.children.length > 0 && child.id > 0" ng-repeat="(k, child) in section.children">
                     <strong>{{key + 1}}.{{k + 1}} - {{child.title}}</strong>
