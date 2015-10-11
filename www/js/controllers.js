@@ -32,6 +32,11 @@ angular.module('starter.controllers', [])
 })
 .controller('LoginCtrl', function($scope, $stateParams, $location, LoginService, $ionicLoading, $localstorage) {
 	$scope.loginData = {};
+	$scope.user = $localstorage.getObject('user');
+	//console.log ($scope.user);
+	if ($scope.user) {
+		$location.path('/app/handbook');
+	}
 	$scope.doLogin = function() {
 		// var login = LoginService.login($scope.loginData.username, $scope.loginData.password);
 		$ionicLoading.show();
@@ -44,11 +49,14 @@ angular.module('starter.controllers', [])
 				});
 				$ionicLoading.hide();
 				$location.path('/app/handbook');
+			} else {
+				$ionicLoading.hide();
+				alert('ERROR ' + err.data.message);
 			}
 		}, function (err){
 			if (err) {
 				$ionicLoading.hide();
-				alert(err.data.message);
+				alert('ERROR ' + err.data.message);
 			}
 		})
 		
@@ -62,6 +70,13 @@ angular.module('starter.controllers', [])
 	});
 })
 .controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading) {
+	$scope.cur_path = $location.path();
+	$scope.user = $localstorage.getObject('user');
+	if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
+		$location.path('/app/login');
+		return;
+	}
+
 	var sectionCompare = function (a,b) {
 		if (a.version < b.version)
       return -1;
@@ -69,6 +84,7 @@ angular.module('starter.controllers', [])
       return 1;
     return 0;
 	}
+
 	var orderSections = function(items) {
 		var newList = [];
 		angular.forEach(items, function(item, i) {
@@ -94,10 +110,8 @@ angular.module('starter.controllers', [])
 		return newList;
 	}
             
-	$scope.user = $localstorage.getObject('user');
-	if (!$scope.user) {
-		$location.path('/app/login');
-	} else {
+
+	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$ionicLoading.show();
 		HandbookService.get($scope.user.username, $scope.user.password).then(function (return_data){
 			$scope.handbook = return_data.data;
@@ -105,14 +119,17 @@ angular.module('starter.controllers', [])
 				$ionicLoading.hide();
 
 				$scope.sections = orderSections(return_data.data._embedded.items);
-				console.log($scope.sections);
+				// console.log($scope.sections);
 			}, function (err){
 			  alert('Connect API fail!');
+			  $ionicLoading.hide();
 			});
 		}, function (err){
-		  alert('Connect API fail!');
+		 	alert('Connect API fail!');
+		 	$ionicLoading.hide();
 		});
 	}
+
 	$scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
       $scope.shownGroup = null;
@@ -125,7 +142,9 @@ angular.module('starter.controllers', [])
   };
 })
 .controller('ContactCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading) {
-		$scope.user = $localstorage.getObject('user');
+		$scope.cur_path = $location.path();
+		$scope.user     = $localstorage.getObject('user');
+
 		if (!$scope.user) {
 			$location.path('/app/login');
 		} else {
@@ -147,13 +166,14 @@ angular.module('starter.controllers', [])
 						}, function (err){
 							if (i==contact_res.data._embedded.items.length-1) {
 								$ionicLoading.hide();
-								alert('Connect API fail!');
+								alert( err.status + ' : Connect API fail!');
 							}
 						});
 					});
 				}
 			}, function (err){
-			  alert('Connect API fail!');
+				$ionicLoading.hide();
+			  	alert(err.status + ' : Connect API fail!');
 			});
 		}
 })

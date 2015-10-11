@@ -1,5 +1,5 @@
 // Ionic Starter App
-config = {
+var config = {
   path : {
       'baseURL'               : 'https://api.sg-benefits.com',
       'clients'               : '/organisations',
@@ -111,8 +111,10 @@ angular.module('starter', [
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');
   $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://api.sg-benefits.com/**']);
-  // $httpProvider.defaults.headers.common = {
-  //   'x-username': 'kenneth.yap@ap.magenta-consulting.com',
-  //   'x-password': 'p@ssword'
-  // }
+  $httpProvider.defaults.headers.common = {
+    "Content-Type": "application/json",
+    "Accept": "application/hal+json, application/json, */*; q=0.01"
+    // 'x-username': 'kenneth.yap@ap.magenta-consulting.com',
+    // 'x-password': 'p@ssword'
+  }
 });
