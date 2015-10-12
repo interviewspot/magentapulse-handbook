@@ -1,10 +1,10 @@
 <ion-view view-title="Contacts">
-	<ion-content>
+	<div class="visual-header"></div>
+	<div class="content-page">
 		<div class="logo">
-	        <a href="#/">
-	          <img width="278px" height="81px" alt="" src="img/logo3.png">
-	        </a>
+	        <a><img alt="logo" src="img/logo3.png"></a>
 	    </div>
+	    <div ng-include="'templates/menu_tabs.html'"></div>
 		<div class="list list-inset">
 		  <label class="item item-input">
 		    <i class="icon ion-search placeholder-icon"></i>
@@ -33,6 +33,5 @@
         </div>
         <!-- END: ITEM -->
     </div>
-	</ion-content>
-	<div ng-include="'templates/menu_tabs.html'"></div>
+	</div><!-- END : PAGE -->
 </ion-view>

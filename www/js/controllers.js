@@ -1,11 +1,16 @@
+/**
+ * STARTER APP
+ */
 angular.module('starter.controllers', [])
+
+/**
+ * AppCtrl All site.
+ */
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $localstorage) {
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
 	// To listen for when this page is active (for example, to refresh data),
 	// listen for the $ionicView.enter event:
-	//$scope.$on('$ionicView.enter', function(e) {
-	//});
 	$scope.isSigned = false;
 	$scope.$on('$ionicView.enter', function(e) {
 		$scope.user = $localstorage.getObject('user');
@@ -16,52 +21,75 @@ angular.module('starter.controllers', [])
 		}
 	});
 })
-
-.controller('PlaylistsCtrl', function($scope) {
-	$scope.playlists = [
-		{ title: 'Reggae', id: 1 },
-		{ title: 'Chill', id: 2 },
-		{ title: 'Dubstep', id: 3 },
-		{ title: 'Indie', id: 4 },
-		{ title: 'Rap', id: 5 },
-		{ title: 'Cowbell', id: 6 }
-	];
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-})
+/**
+ * LoginCtrl
+ */
 .controller('LoginCtrl', function($scope, $stateParams, $location, LoginService, $ionicLoading, $localstorage) {
 	$scope.loginData = {};
 	$scope.user = $localstorage.getObject('user');
-	//console.log ($scope.user);
+	$scope.noCompayCode = false;
+	$scope.noUserCode   = false;
+
 	if ($scope.user) {
 		$location.path('/app/handbook');
 	}
 	$scope.doLogin = function() {
-		// var login = LoginService.login($scope.loginData.username, $scope.loginData.password);
-		$ionicLoading.show();
-		LoginService.get($scope.loginData.username, $scope.loginData.password).then(function (res){
-			if (res && res.status == 200 && res.data.email == $scope.loginData.username) {
+		// var login = LoginService.login($scope.loginData.company_code, $scope.loginData.password);
+		// VALIDATE FRM
+		var isValid = true;
+		if (!$scope.loginData.company_code || $scope.loginData.company_code.length <= 3) {
+			$scope.noCompayCode = true;
+			isValid = false;
+		} else {
+			$scope.noCompayCode = false;
+			isValid = true;
+		}
 
+		if (!$scope.loginData.user_code || $scope.loginData.user_code.length <= 3) {
+			$scope.noUserCode = true;
+			isValid = false;
+		} else {
+			$scope.noCompayCode = false;
+			isValid = true;
+		}
+
+		if (!isValid) {	return isValid; }
+
+		$scope.noCompayCode = false;
+		$scope.noUserCode   = false;
+
+		$ionicLoading.show();
+		LoginService.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim()).then(function (res){
+			$ionicLoading.hide();
+			if (res && res.status == 200) {
+
+				// STORE in LOCAL
 				$localstorage.setObject('user', {
-					username: $scope.loginData.username,
-					password: $scope.loginData.password
+					username: $scope.loginData.company_code.trim(),
+					password: $scope.loginData.user_code.trim()
 				});
-				$ionicLoading.hide();
-				$location.path('/app/handbook');
+
+				// GO TO HANDBOOK PAGE
+				//$location.path('/app/handbook');
+				location.href = '#/app/handbook';
+			} else if (res && res.status == 401) {
+				alert('Wrong Company code or Employee code!');
 			} else {
-				$ionicLoading.hide();
-				alert('ERROR ' + err.data.message);
+				alert('ERROR ' + res.status);
 			}
 		}, function (err){
-			if (err) {
-				$ionicLoading.hide();
+			$ionicLoading.hide();
+			if (err.data) {
 				alert('ERROR ' + err.data.message);
+			} else {
+				alert('ERROR : Not connect API, try later!');
 			}
-		})
-		
+		});
 	};
 })
+/**
+ * LogoutCtrl
+ */
 .controller('LogoutCtrl', function($scope, $stateParams, $localstorage, $location) {
 	$scope.$on('$ionicView.enter', function(e) {
 		$scope.user = null;
@@ -69,6 +97,9 @@ angular.module('starter.controllers', [])
 		$location.path('/app/login');
 	});
 })
+/**
+ * HandbookCtrl : HANDBOOK PAGE
+ */
 .controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading) {
 	$scope.cur_path = $location.path();
 	$scope.user = $localstorage.getObject('user');
@@ -79,10 +110,10 @@ angular.module('starter.controllers', [])
 
 	var sectionCompare = function (a,b) {
 		if (a.version < b.version)
-      return -1;
-    if (a.version > b.version)
-      return 1;
-    return 0;
+      		return -1;
+    	if (a.version > b.version)
+      		return 1;
+    	return 0;
 	}
 
 	var orderSections = function(items) {
@@ -131,16 +162,21 @@ angular.module('starter.controllers', [])
 	}
 
 	$scope.toggleGroup = function(group) {
-    if ($scope.isGroupShown(group)) {
-      $scope.shownGroup = null;
-    } else {
-      $scope.shownGroup = group;
-    }
-  };
-  $scope.isGroupShown = function(group) {
-  	return $scope.shownGroup === group;
-  };
+	    if ($scope.isGroupShown(group)) {
+	    $scope.shownGroup = null;
+	    } else {
+	      $scope.shownGroup = group;
+	    }
+	};
+
+  	$scope.isGroupShown = function(group) {
+  		return $scope.shownGroup === group;
+  	};
 })
+
+/**
+ * ContactCtrl : CONTACT PAGE
+ */
 .controller('ContactCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading) {
 		$scope.cur_path = $location.path();
 		$scope.user     = $localstorage.getObject('user');
@@ -177,6 +213,3 @@ angular.module('starter.controllers', [])
 			});
 		}
 })
-.controller('ContactDetailCtrl', function($scope, $stateParams, UserService) {
-	console.log($stateParams.contactId);
-});

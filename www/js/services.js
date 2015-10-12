@@ -9,6 +9,7 @@ angular.module('starter.services', [])
             // url: config.path.baseURL + config.path.users,
             url: 'https://api.sg-benefits.com/organisations/2/positions',
             headers: {
+                "x-mode"    : "org_code",
                 'x-username': username,
                 'x-password': password
             }
@@ -28,6 +29,7 @@ angular.module('starter.services', [])
             method: 'GET',
             url: url,
             headers: {
+                "x-mode"    : "org_code",
                 'x-username': username,
                 'x-password': password
             }
@@ -54,6 +56,7 @@ angular.module('starter.services', [])
             // url: config.path.baseURL + config.path.users,
             url: 'https://api.sg-benefits.com/organisations/2/handbooks/1',
             headers: {
+                "x-mode"    : "org_code",
                 'x-username': username,
                 'x-password': password
             }
@@ -78,6 +81,7 @@ angular.module('starter.services', [])
             method: 'GET',
             url: 'https://api.sg-benefits.com/organisations/2/handbooks/1/sections',
             headers: {
+                "x-mode"    : "org_code",
                 'x-username': username,
                 'x-password': password
             }
@@ -100,10 +104,11 @@ angular.module('starter.services', [])
         var d = $q.defer();
         $http({
             method: 'GET',
-            url: config.path.baseURL + config.path.users + '/' + username,
+            url: config.path.baseURL + '/organisations/' + '2',
             headers: {
-                'x-username': username,
-                'x-password': password
+                "x-username": username,
+                "x-mode"    : "org_code",
+                "x-password": password
             }
         })
         .then(function success(res){

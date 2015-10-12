@@ -1,4 +1,13 @@
 /* Empty. Add your own CSS if you like */
+/* RESET CSS */
+.item, .item h1, .item h2, .item h3, .item h4, .item h5, .item h6, .item p, .item-content, .item-content h1, .item-content h2, .item-content h3, .item-content h4, .item-content h5, .item-content h6, .item-content p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: inherit;
+}
+.t-c { text-align: center; }
+.t-r { text-align: center; }
+/* ------------------------------ */
 .logo {
 	text-align: center;
 	margin: 20px 0;
@@ -7,9 +16,65 @@
 	font-size: 28px;
 	text-transform: uppercase;
 }
-.menu-tab-page {
-	margin-bottom: 80px!important;
+.welcome-box { font-size: 11px; }
+/* HANDBOOK PAGE */
+.visual-header {
+    height: 44px;
 }
-.scroll-content {
-    padding-bottom: 60px;
+.logo {
+    margin-bottom: 20px;
+}
+.logo a {
+    display: block;
+    height: 50px;
+}
+.logo a img {
+    height: 90%;
+    width: auto;
+}
+.content-page {
+    overflow-y: auto;
+    height: 100%;
+    padding-bottom: 44px;
+}
+.sec-title {
+    white-space: nowrap !important;
+    font-size: 16px !important;
+}
+.section-ct {
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+    margin-bottom: 10px;
+}
+.sub-section {
+    margin-bottom: 20px;
+}
+.in-page {
+    margin: 10px;
+}
+.p-tabs {
+    border: 1px solid #7a276a;
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+}
+.p-tabs > a, .p-tabs > a:focus {
+    display: table-cell;
+    height: 40px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
+    color: #7a276a;
+}
+.p-tabs > a.active {
+    background-color: #7a276a;
+    color: #fff;
+}
+
+/* LOGIN PAGE */
+.frm .invalid {
+    background-color: #fff0f0;
+}
+.frm .login-btn {
+    margin-top: 40px;
 }
