@@ -146,17 +146,36 @@ angular.module('starter.controllers', [])
 		$ionicLoading.show();
 		HandbookService.get($scope.user.username, $scope.user.password).then(function (return_data){
 			$scope.handbook = return_data.data;
-			SectionService.get($scope.user.username, $scope.user.password).then(function (return_data){
-				$ionicLoading.hide();
 
-				$scope.sections = orderSections(return_data.data._embedded.items);
-				// console.log($scope.sections);
-			}, function (err){
-			  alert('Connect API fail!');
-			  $ionicLoading.hide();
-			});
+			$local_handbook = $localstorage.getObject('hdsections');
+			// console.log($local_handbook.version + ' = ' + $scope.handbook.version);
+
+			if (($local_handbook && $local_handbook.version == $scope.handbook.version)
+				|| (typeof $local_handbook == "object" && $local_handbook.version && $local_handbook.version == $scope.handbook.version)) {
+
+				$ionicLoading.hide();
+				$scope.sections = $local_handbook.data;
+			} else {
+
+				// GET SECTIONS
+				SectionService.get($scope.user.username, $scope.user.password).then(function (return_data){
+					$ionicLoading.hide();
+					$scope.sections = orderSections(return_data.data._embedded.items);
+
+					// STORE in LOCAL
+					$localstorage.setObject('hdsections', {
+						version : $scope.handbook.version,
+						data    : $scope.sections
+					});
+
+				}, function (err){
+				  alert('Connect API Sections fail!');
+				  $ionicLoading.hide();
+				});
+			}
+
 		}, function (err){
-		 	alert('Connect API fail!');
+		 	alert('Connect API Handbook fail!');
 		 	$ionicLoading.hide();
 		});
 	}

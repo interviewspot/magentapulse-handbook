@@ -40,7 +40,7 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 }
 .sec-title {
     white-space: nowrap !important;
-    font-size: 16px !important;
+    font-size: 14px !important;
 }
 .section-ct {
     padding-bottom: 10px;
@@ -79,6 +79,13 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     color: #fff;
 }
 
+.sub-section table {
+    border: 1px solid #ddd;
+}
+.sub-section table td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
 /* LOGIN PAGE */
 .frm .invalid {
     background-color: #fff0f0;

@@ -29,7 +29,7 @@
                         {{key + 1}}. {{section.title}}
 					    <i class="icon"
                         ng-class="isGroupShown(section) ? 'ion-ios-minus-outline' : 'ion-ios-plus-outline'"
-                        ng-if="section.description.length > 0"
+                        ng-if="(section.description.length > 0 || (section.children.length > 0))"
                         ></i>
                     </h4>
 				</div>
@@ -44,7 +44,7 @@
                         ng-if="section.children.length > 0 && child.id > 0"
                         ng-repeat="(k, child) in section.children"
                         >
-                        <h4>{{key + 1}}.{{k + 1}} - {{child.title}}<h4>
+                        <h4>{{key + 1}}.{{k + 1}} - {{child.title}}</h4>
                         <div ng-bind-html="child.description"></div>
                     </div><!-- SUB SECTIONS -->
                 </div>
