@@ -37,6 +37,7 @@
                     ng-show="isGroupShown(section)" >
                     <div class="section-ct"
                         ng-show="section.description"
+                        ng-class="(section.children.length > 0 && child.id > 0) ? '' : 'no-child'"
                         ng-bind-html="section.description"
                         ></div>
                     <div class="sub-section"

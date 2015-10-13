@@ -7,6 +7,7 @@
 }
 .t-c { text-align: center; }
 .t-r { text-align: center; }
+a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 /* ------------------------------ */
 .logo {
 	text-align: center;
@@ -46,6 +47,13 @@
     border-bottom: 1px dashed #ddd;
     margin-bottom: 10px;
 }
+.section-ct.no-child {
+    border-bottom: none;
+}
+.sub-section > h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
 .sub-section {
     margin-bottom: 20px;
 }
@@ -78,3 +86,6 @@
 .frm .login-btn {
     margin-top: 40px;
 }
+/* CONTACT PAGE */
+.ctc-info { padding-top: 10px; }
+.ctc-info p { margin-bottom: 10px; }

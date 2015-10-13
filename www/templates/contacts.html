@@ -19,15 +19,20 @@
 	            <div class="item" ng-repeat="contact in item">
 	                <h3>{{contact.user.first_name}}  {{contact.user.last_name}}</h3>
 	                <p class="ctc-add">Singapore, {{contact.position.title}}</p>
-	                <p>
-	                    <b>M:</b> +65 9108 6935
-	                </p>
-	                <p>
-	                    <b>0:</b> +65 6720 3663
-	                </p>
-	                <p>
-	                    <b>E:</b> {{contact.user.email}}
-	                </p>
+	                <div class="ctc-info">
+		                <p>
+		                    <b>M:</b>
+		                    <a href="tel:+6591086935">+65 9108 6935</a>
+		                </p>
+		                <p>
+		                    <b>0:</b>
+		                    <a href="tel:+6591086935">+65 9108 6935</a>
+		                </p>
+		                <p>
+		                    <b>E:</b>
+		                    <a href="mailto:{{contact.user.email}}">{{contact.user.email}}</a>
+		                </p>
+		            </div>
 	            </div>
         	</div>
         </div>
