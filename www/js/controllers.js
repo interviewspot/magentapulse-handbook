@@ -140,8 +140,7 @@ angular.module('starter.controllers', [])
 		newList.sort(sectionCompare);
 		return newList;
 	}
-            
-	//console.log($scope.user);
+
 	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$ionicLoading.show();
 		HandbookService.get($scope.user.username, $scope.user.password).then(function (return_data){
