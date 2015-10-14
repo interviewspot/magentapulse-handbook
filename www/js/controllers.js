@@ -30,7 +30,7 @@ angular.module('starter.controllers', [])
 	$scope.noCompayCode = false;
 	$scope.noUserCode   = false;
 
-	if ($scope.user) {
+	if ($scope.user &&  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$location.path('/app/handbook');
 	}
 	$scope.doLogin = function() {
@@ -70,8 +70,8 @@ angular.module('starter.controllers', [])
 				});
 
 				// GO TO HANDBOOK PAGE
-				//$location.path('/app/handbook');
-				location.href = '#/app/handbook';
+				$location.path('/app/handbook');
+				// location.href = '#/app/handbook';
 			} else if (res && res.status == 401) {
 				alert('Wrong Company code or Employee code!');
 			} else {
@@ -141,7 +141,7 @@ angular.module('starter.controllers', [])
 		return newList;
 	}
             
-
+	console.log($scope.user);
 	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$ionicLoading.show();
 		HandbookService.get($scope.user.username, $scope.user.password).then(function (return_data){
@@ -191,44 +191,45 @@ angular.module('starter.controllers', [])
   	$scope.isGroupShown = function(group) {
   		return $scope.shownGroup === group;
   	};
+  	
 })
 
 /**
  * ContactCtrl : CONTACT PAGE
  */
 .controller('ContactCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading) {
-		$scope.cur_path = $location.path();
-		$scope.user     = $localstorage.getObject('user');
-
-		if (!$scope.user) {
-			$location.path('/app/login');
-		} else {
-			$ionicLoading.show();
-			ContactService.get($scope.user.username, $scope.user.password).then(function (contact_res){
-				var data = contact_res.data
-				if (data._embedded.items.length > 0) {
-					$scope.contacts = [];
-					angular.forEach(data._embedded.items, function(item, i) {
-						ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
-							$scope.contacts.push({
-									'position': item,
-									'user' : res.data,
-									'alphabet' : res.data.email.charAt(0).toLowerCase()
-							});
-							if (i==data._embedded.items.length-1) {
-								$ionicLoading.hide();
-							}
-						}, function (err){
-							if (i==contact_res.data._embedded.items.length-1) {
-								$ionicLoading.hide();
-								alert( err.status + ' : Connect API fail!');
-							}
+	$scope.cur_path = $location.path();
+	$scope.user     = $localstorage.getObject('user');
+	console.log($scope.user);
+	if (!$scope.user) {
+		$location.path('/app/login');
+	} else {
+		$ionicLoading.show();
+		ContactService.get($scope.user.username, $scope.user.password).then(function (contact_res){
+			var data = contact_res.data
+			if (data._embedded.items.length > 0) {
+				$scope.contacts = [];
+				angular.forEach(data._embedded.items, function(item, i) {
+					ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
+						$scope.contacts.push({
+								'position': item,
+								'user' : res.data,
+								'alphabet' : res.data.email.charAt(0).toLowerCase()
 						});
+						if (i==data._embedded.items.length-1) {
+							$ionicLoading.hide();
+						}
+					}, function (err){
+						if (i==contact_res.data._embedded.items.length-1) {
+							$ionicLoading.hide();
+							alert( err.status + ' : Connect API fail!');
+						}
 					});
-				}
-			}, function (err){
-				$ionicLoading.hide();
-			  	alert(err.status + ' : Connect API fail!');
-			});
-		}
+				});
+			}
+		}, function (err){
+			$ionicLoading.hide();
+		  	alert(err.status + ' : Connect API fail!');
+		});
+	}
 })
