@@ -44,8 +44,8 @@
                         ng-if="section.children.length > 0 && child.id > 0"
                         ng-repeat="(k, child) in section.children"
                         >
-                        <h4>{{key + 1}}.{{k + 1}} - {{child.title}}</h4>
-                        <div ng-bind-html="child.description"></div>
+                        <h4 ng-click="toggleSubGroup(child)">{{key + 1}}.{{k + 1}} - {{child.title}}</h4>
+                        <div class="sub-section-ct" ng-bind-html="child.description" ng-show="isSubGroupShown(child)"></div>
                     </div><!-- SUB SECTIONS -->
                 </div>
         	</div>

@@ -51,8 +51,10 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     border-bottom: none;
 }
 .sub-section > h4 {
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 5px;
+    line-height: 36px;
+    border-bottom: 1px solid #ddd;
 }
 .sub-section {
     margin-bottom: 20px;
@@ -85,6 +87,10 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .sub-section table td {
     border: 1px solid #ddd;
     padding: 5px;
+}
+.sub-section-ct {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 20px;
 }
 /* LOGIN PAGE */
 .frm .invalid {
