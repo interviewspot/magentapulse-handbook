@@ -25,6 +25,7 @@ angular.module('starter.controllers', [])
  * LoginCtrl
  */
 .controller('LoginCtrl', function($scope, $stateParams, $location, LoginService, $ionicLoading, $localstorage) {
+	console.log('load login');
 	$scope.loginData = {};
 	$scope.user = $localstorage.getObject('user');
 	$scope.noCompayCode = false;
@@ -96,6 +97,17 @@ angular.module('starter.controllers', [])
 		$localstorage.setObject('user', null);
 		$location.path('/app/login');
 	});
+})
+
+.controller('NotificationCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading) {
+	$scope.cur_path = $location.path();
+	$scope.user     = $localstorage.getObject('user');
+	console.log($scope.user);
+	if (!$scope.user) {
+		$location.path('/app/login');
+	} else {
+		console.log('test');
+	}
 })
 /**
  * HandbookCtrl : HANDBOOK PAGE
@@ -243,4 +255,4 @@ angular.module('starter.controllers', [])
 		  	alert(err.status + ' : Connect API fail!');
 		});
 	}
-})
+});

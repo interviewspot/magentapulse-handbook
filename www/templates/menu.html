@@ -29,6 +29,10 @@
            <i class="icon ion-android-contacts"></i>
            Contacts
         </ion-item>
+        <ion-item href="#/app/notification" ng-if="isSigned">
+           <i class="icon ion-android-notifications-none"></i>
+           Notifcations
+        </ion-item>
         <ion-item menu-close href="#/app/logout" ng-if="isSigned">
            <i class="icon ion-log-out"></i>
            Logout
