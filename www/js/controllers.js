@@ -72,6 +72,7 @@ angular.module('starter.controllers', [])
 
 				// GO TO HANDBOOK PAGE
 				$location.path('/app/handbook');
+				location.reload();
 				// location.href = '#/app/handbook';
 			} else if (res && res.status == 401) {
 				alert('Wrong Company code or Employee code!');
@@ -114,7 +115,8 @@ angular.module('starter.controllers', [])
  */
 .controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
-	$scope.user = $localstorage.getObject('user');
+	$scope.user     = $localstorage.getObject('user');
+
 	if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
 		$location.path('/app/login');
 		return;

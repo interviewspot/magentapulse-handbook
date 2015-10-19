@@ -119,7 +119,7 @@ angular.module('starter', [
   
   ;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/login');
+  $urlRouterProvider.otherwise('/app/handbook');
   $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://api.sg-benefits.com/**']);
   $httpProvider.defaults.headers.common = {
     "Content-Type": "application/json",
