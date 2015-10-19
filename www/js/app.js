@@ -80,6 +80,15 @@ angular.module('starter', [
       }
     }
   })
+  .state('app.notification', {
+    url: '/notification',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/notification.html',
+        controller: 'NotificationCtrl'
+      }
+    }
+  })
   .state('app.handbook', {
     url: '/handbook',
     views: {
@@ -107,6 +116,7 @@ angular.module('starter', [
       }
     }
   })
+  
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');
