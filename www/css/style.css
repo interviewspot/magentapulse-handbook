@@ -12,6 +12,9 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .logo {
 	text-align: center;
 	margin: 20px 0;
+    height: 50px;
+    background: url(../img/lgo.png) no-repeat center center;
+    background-size: 40% auto;
 }
 .contact-list h2.title {
 	font-size: 28px;
@@ -28,6 +31,7 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .logo a {
     display: block;
     height: 50px;
+    background-color: #fff;
 }
 .logo a img {
     height: 90%;
@@ -63,22 +67,25 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     margin: 10px;
 }
 .p-tabs {
-    border: 1px solid #7a276a;
+    border: 1px solid #ccc;
+    background-color: #ccc;
     display: table;
     width: 100%;
     box-sizing: border-box;
 }
 .p-tabs > a, .p-tabs > a:focus {
     display: table-cell;
+    width: 50%;
     height: 40px;
     text-decoration: none;
     text-align: center;
     line-height: 40px;
-    color: #7a276a;
+    color: #676357;
 }
 .p-tabs > a.active {
-    background-color: #7a276a;
-    color: #fff;
+    font-weight: bold;
+    color: #676357;
+    border-bottom: 2px solid #676357;
 }
 
 .sub-section table {

@@ -7,7 +7,7 @@ angular.module('starter.services', [])
         $http({
             method: 'GET',
             // url: config.path.baseURL + config.path.users,
-            url: 'https://api.sg-benefits.com/organisations/2/positions',
+            url:  config.path.baseURL + '/organisations/2/positions',
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
@@ -89,6 +89,56 @@ angular.module('starter.services', [])
         .then(function success(res){
             d.resolve(res);
             return;  
+        }, function error(error) {
+            d.reject(error);
+            return;
+        });
+        return d.promise;
+    }
+
+    return services;
+})
+.factory('OrgService', function ($q, $http, $localstorage) {
+    var services = {};
+    services.get = function (username, password, url) {
+        var d = $q.defer();
+        $http({
+            method: 'GET',
+            url: url,
+            headers: {
+                "x-mode"    : "org_code",
+                'x-username': username,
+                'x-password': password
+            }
+        })
+        .then(function success(res){
+            d.resolve(res);
+            return;
+        }, function error(error) {
+            d.reject(error);
+            return;
+        });
+        return d.promise;
+    }
+
+    return services;
+})
+.factory('ImgService', function ($q, $http, $localstorage) {
+    var services = {};
+    services.get = function (username, password, url) {
+        var d = $q.defer();
+        $http({
+            method: 'GET',
+            url: url,
+            headers: {
+                "x-mode"    : "org_code",
+                'x-username': username,
+                'x-password': password
+            }
+        })
+        .then(function success(res){
+            d.resolve(res);
+            return;
         }, function error(error) {
             d.reject(error);
             return;

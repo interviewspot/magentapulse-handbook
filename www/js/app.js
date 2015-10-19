@@ -13,7 +13,7 @@ var config = {
       'contacts'              : '/organisations/:org_id/positions',
       'contact'               : '/organisations/:org_id/positions/:position_id',
       'users'                 : '/users',
-      'user'                 : '/users/:email',
+      'user'                  : '/users/:email',
   }
 };
 // angular.module is a global place for creating, registering and retrieving Angular modules

@@ -100,7 +100,7 @@ angular.module('starter.controllers', [])
 /**
  * HandbookCtrl : HANDBOOK PAGE
  */
-.controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading) {
+.controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user = $localstorage.getObject('user');
 	if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
@@ -143,11 +143,37 @@ angular.module('starter.controllers', [])
 
 	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$ionicLoading.show();
+
+		// GET ORG
+		OrgService.get($scope.user.username, $scope.user.password, config.path.baseURL + '/organisations/2' ).then(function (res) {
+			if (typeof res.data == 'object' && res.status == 200) {
+				$scope.org = res.data;
+
+				// GET IMG
+				if (typeof res.data._links.logo == 'object' && res.data._links.logo.href) {
+					ImgService.get($scope.user.username, $scope.user.password, res.data._links.logo.href + '/url' ).then(function (res) {
+						//console.log(res);
+						if (typeof res.data == 'object' && res.status == 200) {
+							$scope.org['logo'] = res.data.url;
+						}
+					}, function (err){
+					 	alert('Connect API IMG fail!');
+					 	//$ionicLoading.hide();
+					});
+				}
+			}
+		}, function (err){
+		 	alert('Connect API Organisations fail!');
+		 	//$ionicLoading.hide();
+		});
+
 		HandbookService.get($scope.user.username, $scope.user.password).then(function (return_data){
 			$scope.handbook = return_data.data;
 
 			$local_handbook = $localstorage.getObject('hdsections');
 			// console.log($local_handbook.version + ' = ' + $scope.handbook.version);
+
+			$scope.ch_color = '#' + 'e0d2ae';
 
 			if (($local_handbook && $local_handbook.version == $scope.handbook.version)
 				|| (typeof $local_handbook == "object" && $local_handbook.version && $local_handbook.version == $scope.handbook.version)) {
@@ -208,16 +234,48 @@ angular.module('starter.controllers', [])
 /**
  * ContactCtrl : CONTACT PAGE
  */
-.controller('ContactCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading) {
+.controller('ContactCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
-	console.log($scope.user);
+
+
+
+
 	if (!$scope.user) {
 		$location.path('/app/login');
 	} else {
 		$ionicLoading.show();
+
+		// GET ORG
+		OrgService.get($scope.user.username, $scope.user.password, config.path.baseURL + '/organisations/2' ).then(function (res) {
+
+			if (typeof res.data == 'object' && res.status == 200) {
+				$scope.org = res.data;
+
+				// GET IMG
+				if (typeof res.data._links.logo == 'object' && res.data._links.logo.href) {
+					ImgService.get($scope.user.username, $scope.user.password, res.data._links.logo.href + '/url' ).then(function (res) {
+						//console.log(res);
+						if (typeof res.data == 'object' && res.status == 200) {
+							$scope.org['logo'] = res.data.url;
+							// STORE in LOCAL
+							// $localstorage.setObject('org', $scope.org);
+						}
+					}, function (err){
+					 	alert('Connect API IMG fail!');
+					 	//$ionicLoading.hide();
+					});
+				}
+			}
+		}, function (err){
+		 	alert('Connect API Organisations fail!');
+		 	//$ionicLoading.hide();
+		});
+
 		ContactService.get($scope.user.username, $scope.user.password).then(function (contact_res){
 			var data = contact_res.data
+			$scope.ch_color = '#' + 'e0d2ae';
+
 			if (data._embedded.items.length > 0) {
 				$scope.contacts = [];
 				angular.forEach(data._embedded.items, function(item, i) {
