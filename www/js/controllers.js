@@ -62,12 +62,12 @@ angular.module('starter.controllers', [])
 		$ionicLoading.show();
 		LoginService.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim()).then(function (res){
 			$ionicLoading.hide();
-			if (res && res.status == 200) {
-
+			if (typeof res == 'object' && res.status == 200 && res.data._embedded.items.length == 1) {
 				// STORE in LOCAL
 				$localstorage.setObject('user', {
-					username: $scope.loginData.company_code.trim(),
-					password: $scope.loginData.user_code.trim()
+					username : $scope.loginData.company_code.trim(),
+					password : $scope.loginData.user_code.trim(),
+					company  : res.data._embedded.items[0]
 				});
 
 				// GO TO HANDBOOK PAGE
@@ -77,7 +77,7 @@ angular.module('starter.controllers', [])
 			} else if (res && res.status == 401) {
 				alert('Wrong Company code or Employee code!');
 			} else {
-				alert('ERROR ' + res.status);
+				alert('Wrong Company code or Employee code!');
 			}
 		}, function (err){
 			$ionicLoading.hide();
@@ -103,7 +103,7 @@ angular.module('starter.controllers', [])
 .controller('NotificationCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
-	console.log($scope.user);
+
 	if (!$scope.user) {
 		$location.path('/app/login');
 	} else {
@@ -157,35 +157,23 @@ angular.module('starter.controllers', [])
 
 	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$ionicLoading.show();
+		$scope.org = $scope.user.company;
 
-		// GET ORG
-		OrgService.get($scope.user.username, $scope.user.password, config.path.baseURL + '/organisations/2' ).then(function (res) {
-			if (typeof res.data == 'object' && res.status == 200) {
-				$scope.org = res.data;
-
-				// GET IMG
-				if (typeof res.data._links.logo == 'object' && res.data._links.logo.href) {
-					ImgService.get($scope.user.username, $scope.user.password, res.data._links.logo.href + '/url' ).then(function (res) {
-						//console.log(res);
-						if (typeof res.data == 'object' && res.status == 200) {
-							$scope.org['logo'] = res.data.url;
-						}
-					}, function (err){
-					 	alert('Connect API IMG fail!');
-					 	//$ionicLoading.hide();
-					});
+		// GET IMG
+		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
+			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
+				if (typeof res == 'object' && res.status == 200) {
+					$scope.org['logo'] = res.data.url;
 				}
-			}
-		}, function (err){
-		 	alert('Connect API Organisations fail!');
-		 	//$ionicLoading.hide();
-		});
+			}, function (err){
+			 	alert('Connect API IMG fail!');
+			});
+		}
 
-		HandbookService.get($scope.user.username, $scope.user.password).then(function (return_data){
+		// GET HANDBOOK
+		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbook.href ).then(function (return_data){
 			$scope.handbook = return_data.data;
-
 			$local_handbook = $localstorage.getObject('hdsections');
-			// console.log($local_handbook.version + ' = ' + $scope.handbook.version);
 
 			$scope.ch_color = '#' + 'e0d2ae';
 
@@ -196,8 +184,8 @@ angular.module('starter.controllers', [])
 				$scope.sections = $local_handbook.data;
 			} else {
 
-				// GET SECTIONS
-				SectionService.get($scope.user.username, $scope.user.password).then(function (return_data){
+				// GET SECTIONS of A HANDBOOK
+				SectionService.get($scope.user.username, $scope.user.password, $scope.handbook._links.sections.href).then(function (return_data){
 					$ionicLoading.hide();
 					$scope.sections = orderSections(return_data.data._embedded.items);
 
@@ -251,42 +239,25 @@ angular.module('starter.controllers', [])
 .controller('ContactCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
-
-
-
+	$scope.org 		= $scope.user.company;
 
 	if (!$scope.user) {
 		$location.path('/app/login');
 	} else {
 		$ionicLoading.show();
 
-		// GET ORG
-		OrgService.get($scope.user.username, $scope.user.password, config.path.baseURL + '/organisations/2' ).then(function (res) {
-
-			if (typeof res.data == 'object' && res.status == 200) {
-				$scope.org = res.data;
-
-				// GET IMG
-				if (typeof res.data._links.logo == 'object' && res.data._links.logo.href) {
-					ImgService.get($scope.user.username, $scope.user.password, res.data._links.logo.href + '/url' ).then(function (res) {
-						//console.log(res);
-						if (typeof res.data == 'object' && res.status == 200) {
-							$scope.org['logo'] = res.data.url;
-							// STORE in LOCAL
-							// $localstorage.setObject('org', $scope.org);
-						}
-					}, function (err){
-					 	alert('Connect API IMG fail!');
-					 	//$ionicLoading.hide();
-					});
+		// GET IMG
+		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
+			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
+				if (typeof res == 'object' && res.status == 200) {
+					$scope.org['logo'] = res.data.url;
 				}
-			}
-		}, function (err){
-		 	alert('Connect API Organisations fail!');
-		 	//$ionicLoading.hide();
-		});
+			}, function (err){
+			 	alert('Connect API IMG fail!');
+			});
+		}
 
-		ContactService.get($scope.user.username, $scope.user.password).then(function (contact_res){
+		ContactService.get($scope.user.username, $scope.user.password, $scope.org._links.positions.href).then(function (contact_res){
 			var data = contact_res.data
 			$scope.ch_color = '#' + 'e0d2ae';
 
@@ -295,9 +266,9 @@ angular.module('starter.controllers', [])
 				angular.forEach(data._embedded.items, function(item, i) {
 					ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
 						$scope.contacts.push({
-								'position': item,
-								'user' : res.data,
-								'alphabet' : res.data.email.charAt(0).toLowerCase()
+							'position': item,
+							'user'    : res.data,
+							'alphabet': res.data.first_name.charAt(0).toLowerCase()
 						});
 						if (i==data._embedded.items.length-1) {
 							$ionicLoading.hide();

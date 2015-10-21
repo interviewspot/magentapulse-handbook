@@ -2,12 +2,12 @@ angular.module('starter.services', [])
 .factory('ContactService', function ($q, $http, $localstorage) {
     var services = {};
 
-    services.get = function (username, password) { 
+    services.get = function (username, password, url) {
         var d = $q.defer();
         $http({
             method: 'GET',
             // url: config.path.baseURL + config.path.users,
-            url:  config.path.baseURL + '/organisations/2/positions',
+            url:  url,
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
@@ -49,12 +49,12 @@ angular.module('starter.services', [])
 .factory('HandbookService', function ($q, $http, $localstorage) {
     var services = {};
 
-    services.get = function (username, password) { 
+    services.get = function (username, password, url) {
         var d = $q.defer();
         $http({
             method: 'GET',
             // url: config.path.baseURL + config.path.users,
-            url: 'https://api.sg-benefits.com/organisations/2/handbooks/1',
+            url: url,
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
@@ -75,11 +75,11 @@ angular.module('starter.services', [])
 })
 .factory('SectionService', function ($q, $http, $localstorage) {
     var services = {};
-    services.get = function (username, password) { 
+    services.get = function (username, password, url) {
         var d = $q.defer();
         $http({
             method: 'GET',
-            url: 'https://api.sg-benefits.com/organisations/2/handbooks/1/sections',
+            url: url,
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
@@ -154,11 +154,11 @@ angular.module('starter.services', [])
         var d = $q.defer();
         $http({
             method: 'GET',
-            url: config.path.baseURL + '/organisations/' + '2',
+            url: config.path.baseURL + '/organisations?search=organisation.code:' + username.trim(),
             headers: {
-                "x-username": username,
+                "x-username": username.trim(),
                 "x-mode"    : "org_code",
-                "x-password": password
+                "x-password": password.trim()
             }
         })
         .then(function success(res){

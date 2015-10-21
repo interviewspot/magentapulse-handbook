@@ -2,17 +2,27 @@
 	<div class="visual-header"></div>
 	<div class="content-page">
 		<div class="logo">
-	        <a><img alt="logo" src="img/logo3.png"></a>
+	        <a ng-if="org.logo"><img alt="{{org.name}}" ng-src="{{org.logo}}"></a>
 	    </div>
-	    
 		<div class="list list-inset">
-		  <label class="item item-input">
-		    <i class="icon ion-search placeholder-icon"></i>
-		    <input type="text" placeholder="Search" ng-model="searchText">
-		  </label>
-		</div>
-		<div class="list list-inset contact-list menu-tab-page"> 
-			Notification
+			<div class="msg-item">
+				<span class="meta-time">21.10.15 at 1:20 am</span>
+				<div class="msg-ct">
+					Our powerful all-in-one software platform is designed to allow creative and marketing teams to manage their workflows and streamline their processes.
+				</div>
+			</div>
+			<div class="msg-item">
+				<span class="meta-time">21.10.15 at 1:20 am</span>
+				<div class="msg-ct">
+					Our powerful all-in-one software platform is designed to allow creative and marketing teams to manage their workflows and streamline their processes.
+				</div>
+			</div>
+			<div class="msg-item">
+				<span class="meta-time">21.10.15 at 1:20 am</span>
+				<div class="msg-ct">
+					Our powerful all-in-one software platform is designed to allow creative and marketing teams to manage their workflows and streamline their processes.
+				</div>
+			</div>
         </div>
         <!-- END: ITEM -->
     </div><!-- END : PAGE -->
