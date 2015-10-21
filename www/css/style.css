@@ -9,6 +9,16 @@
 .t-r { text-align: center; }
 a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 /* ------------------------------ */
+.bar.bar-energized {
+    border-color: #e0d2ae;
+    background-color: #e0d2ae;
+    background-image: none;
+    color: #444;
+}
+.bar.bar-energized .title, .bar-energized .button.button-clear{
+    color: #333;
+}
+
 .logo {
 	text-align: center;
 	margin: 20px 0;
@@ -67,8 +77,8 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     margin: 10px;
 }
 .p-tabs {
-    border: 1px solid #ccc;
-    background-color: #ccc;
+    border: 1px solid #e0d2ae;
+    background-color: #e0d2ae;
     display: table;
     width: 100%;
     box-sizing: border-box;
@@ -80,12 +90,12 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     text-decoration: none;
     text-align: center;
     line-height: 40px;
-    color: #676357;
+    color: #666;
 }
 .p-tabs > a.active {
     font-weight: bold;
-    color: #676357;
-    border-bottom: 2px solid #676357;
+    color: #666;
+    border-bottom: 2px solid #666;
 }
 
 .sub-section table {
