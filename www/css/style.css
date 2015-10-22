@@ -8,6 +8,9 @@
 .t-c { text-align: center; }
 .t-r { text-align: center; }
 a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
+.item-complex .item-content, .item-radio .item-content {
+    padding: 16px 16px 16px 16px;
+}
 /* ------------------------------ */
 .bar.bar-energized {
     border-color: #e0d2ae;
@@ -31,6 +34,20 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 	text-transform: uppercase;
 }
 .welcome-box { font-size: 11px; }
+.mmmenu .numb {
+    float: right;
+    background-color: #e0d2ae;
+    font-size: 10px;
+    padding: 0px 5px;
+    border-radius: 10px;
+    color: #333;
+}
+.mmmenu a:hover .numb {
+    color: #333;
+}
+.mmmenu.active {
+    background-color: #f4f4f4;
+}
 /* HANDBOOK PAGE */
 .visual-header {
     height: 44px;
@@ -119,3 +136,17 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 /* CONTACT PAGE */
 .ctc-info { padding-top: 10px; }
 .ctc-info p { margin-bottom: 10px; }
+
+/* NOTIFICATION */
+.msg-item {
+    padding: 10px;
+    /*margin-bottom: 10px;*/
+    border-top: 1px solid #ddd;
+}
+.msg-item .meta-time {
+    font-size: 11px;
+    color: #999;
+}
+.msg-item.new {
+    background-color: #f4f4f4;
+}

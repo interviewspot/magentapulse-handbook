@@ -100,16 +100,7 @@ angular.module('starter.controllers', [])
 	});
 })
 
-.controller('NotificationCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading) {
-	$scope.cur_path = $location.path();
-	$scope.user     = $localstorage.getObject('user');
 
-	if (!$scope.user) {
-		$location.path('/app/login');
-	} else {
-		console.log('test');
-	}
-})
 /**
  * HandbookCtrl : HANDBOOK PAGE
  */
@@ -236,7 +227,8 @@ angular.module('starter.controllers', [])
 /**
  * ContactCtrl : CONTACT PAGE
  */
-.controller('ContactCtrl', function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, OrgService, ImgService) {
+.controller('ContactCtrl',
+	function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.org 		= $scope.user.company;
@@ -286,4 +278,33 @@ angular.module('starter.controllers', [])
 		  	alert(err.status + ' : Connect API fail!');
 		});
 	}
-});
+})
+
+
+/**
+ * NotificationCtrl : Notification PAGE
+ */
+.controller('NotificationCtrl',
+	function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, OrgService, ImgService) {
+	$scope.cur_path = $location.path();
+	$scope.user     = $localstorage.getObject('user');
+	$scope.org 		= $scope.user.company;
+
+	if (!$scope.user) {
+		$location.path('/app/login');
+	} else {
+		$ionicLoading.show();
+		$ionicLoading.hide();
+		// GET IMG
+		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
+			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
+				if (typeof res == 'object' && res.status == 200) {
+					$scope.org['logo'] = res.data.url;
+				}
+			}, function (err){
+			 	alert('Connect API IMG fail!');
+			});
+		}
+	}
+})
+;

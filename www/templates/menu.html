@@ -16,23 +16,26 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close href="#/app/login" ng-if="!isSigned">
+        <ion-item class="mmmenu" menu-close href="#/app/login" ng-if="!isSigned">
            <i class="icon ion-log-in"></i>
            Login
         </ion-item>
-        <ion-item menu-close href="#/app/handbook" ng-if="isSigned">
+        <ion-item class="mmmenu"
+          menu-close href="#/app/handbook"
+          ng-if="isSigned">
            <i class="icon ion-ios-bookmarks"></i>
            Employee Handbook
         </ion-item>
-        <ion-item menu-close href="#/app/contacts" ng-if="isSigned">
+        <ion-item class="mmmenu" menu-close href="#/app/contacts" ng-if="isSigned">
            <i class="icon ion-android-contacts"></i>
            Contacts
         </ion-item>
-        <ion-item menu-close href="#/app/notification" ng-if="isSigned">
-           <i class="icon ion-android-notifications-none"></i>
-           Notifcations
+        <ion-item class="mmmenu" menu-close href="#/app/notification" ng-if="isSigned">
+          <i class="icon ion-android-notifications-none"></i>
+          Notifcations
+          <span class="numb">14</span>
         </ion-item>
-        <ion-item menu-close href="#/app/logout" ng-if="isSigned">
+        <ion-item class="mmmenu" menu-close href="#/app/logout" ng-if="isSigned">
            <i class="icon ion-log-out"></i>
            Logout
         </ion-item>
