@@ -166,7 +166,7 @@ angular.module('starter.controllers', [])
 			$scope.handbook = return_data.data;
 			$local_handbook = $localstorage.getObject('hdsections');
 
-			$scope.ch_color = '#' + 'e0d2ae';
+			$scope.ch_color = '#' + 'cfae79';
 
 			if (($local_handbook && $local_handbook.version == $scope.handbook.version)
 				|| (typeof $local_handbook == "object" && $local_handbook.version && $local_handbook.version == $scope.handbook.version)) {
@@ -251,7 +251,7 @@ angular.module('starter.controllers', [])
 
 		ContactService.get($scope.user.username, $scope.user.password, $scope.org._links.positions.href).then(function (contact_res){
 			var data = contact_res.data
-			$scope.ch_color = '#' + 'e0d2ae';
+			$scope.ch_color = '#' + 'cfae79';
 
 			if (data._embedded.items.length > 0) {
 				$scope.contacts = [];
