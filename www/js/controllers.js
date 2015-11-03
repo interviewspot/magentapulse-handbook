@@ -71,7 +71,7 @@ angular.module('starter.controllers', [])
 				});
 
 				// GO TO HANDBOOK PAGE
-				$location.path('/app/handbook');
+				$location.path('/app/handbooks');
 				location.reload();
 				// location.href = '#/app/handbook';
 			} else if (res && res.status == 401) {
@@ -100,6 +100,54 @@ angular.module('starter.controllers', [])
 	});
 })
 
+/**
+ * HandbooksCtrl : HANDBOOKs PAGE
+ */
+.controller('HandbooksCtrl',
+	function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
+	$scope.cur_path = $location.path();
+	$scope.user     = $localstorage.getObject('user');
+
+	// menu active
+    $scope.isActive = function(path) {
+        if ($location.path().search(path) >= 0) return true;
+        return false;
+    };
+
+	// CHECK USER LOGIN
+	if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
+		$location.path('/app/login');
+		return;
+	}
+
+	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
+		$ionicLoading.show();
+		$scope.org = $scope.user.company;
+
+		// GET IMG
+		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
+			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
+				if (typeof res == 'object' && res.status == 200) {
+					$scope.org['logo'] = res.data.url;
+				}
+			}, function (err){
+			 	alert('Connect API IMG fail!');
+			});
+		}
+
+		// GET HANDBOOKs
+		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbooks.href ).then(function (return_data){
+			$ionicLoading.hide();
+			if (typeof return_data.data != 'object' || !return_data.data._embedded ) {return;}
+			$scope.handbooks = return_data.data;
+
+		}, function (err){
+		 	alert('Connect API Handbooks fail!');
+		 	$ionicLoading.hide();
+		});
+	}
+
+})
 
 /**
  * HandbookCtrl : HANDBOOK PAGE
@@ -107,6 +155,13 @@ angular.module('starter.controllers', [])
 .controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
+	$scope.handbook_id = $stateParams.handbook_id
+
+	// menu active
+    $scope.isActive = function(path) {
+        if ($location.path().search(path) >= 0) return true;
+        return false;
+    };
 
 	if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
 		$location.path('/app/login');
@@ -162,7 +217,7 @@ angular.module('starter.controllers', [])
 		}
 
 		// GET HANDBOOK
-		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbook.href ).then(function (return_data){
+		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbooks.href + "/" +  $scope.handbook_id).then(function (return_data){
 			$scope.handbook = return_data.data;
 			$local_handbook = $localstorage.getObject('hdsections');
 
@@ -174,9 +229,9 @@ angular.module('starter.controllers', [])
 				$ionicLoading.hide();
 				$scope.sections = $local_handbook.data;
 			} else {
-
+				console.log($scope.handbook);
 				// GET SECTIONS of A HANDBOOK
-				SectionService.get($scope.user.username, $scope.user.password, $scope.handbook._links.sections.href).then(function (return_data){
+				SectionService.get($scope.user.username, $scope.user.password, $scope.handbook._links['sections.post'].href).then(function (return_data){
 					$ionicLoading.hide();
 					$scope.sections = orderSections(return_data.data._embedded.items);
 
@@ -232,6 +287,12 @@ angular.module('starter.controllers', [])
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.org 		= $scope.user.company;
+
+	// menu active
+    $scope.isActive = function(path) {
+        if ($location.path().search(path) >= 0) return true;
+        return false;
+    };
 
 	if (!$scope.user) {
 		$location.path('/app/login');
@@ -294,7 +355,8 @@ angular.module('starter.controllers', [])
 		$location.path('/app/login');
 	} else {
 		$ionicLoading.show();
-		$ionicLoading.hide();
+
+
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
 			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
@@ -305,6 +367,8 @@ angular.module('starter.controllers', [])
 			 	alert('Connect API IMG fail!');
 			});
 		}
+
+		$ionicLoading.hide();
 	}
 })
 ;

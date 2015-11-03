@@ -11,6 +11,14 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .item-complex .item-content, .item-radio .item-content {
     padding: 16px 16px 16px 16px;
 }
+.clearfix:after {
+    content: '';
+    clear: both;
+    height: 0;
+    width: auto;
+    display: block;
+}
+.f-r { float: right; }
 /* ------------------------------ */
 .bar.bar-energized {
     border-color: #cfae79;
@@ -125,6 +133,14 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .sub-section-ct {
     border-bottom: 2px solid #eee;
     padding-bottom: 20px;
+}
+
+.item .small-txt {
+    font-size: 11px;
+}
+.hb-title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 /* LOGIN PAGE */
 .frm .invalid {
