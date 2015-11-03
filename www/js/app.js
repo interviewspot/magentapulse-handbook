@@ -89,8 +89,17 @@ angular.module('starter', [
       }
     }
   })
+  .state('app.handbooks', {
+    url: '/handbooks',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/handbooks.html',
+        controller: 'HandbooksCtrl'
+      }
+    }
+  })
   .state('app.handbook', {
-    url: '/handbook',
+    url: '/handbook/:handbook_id',
     views: {
       'menuContent': {
         templateUrl: 'templates/handbook.html',
