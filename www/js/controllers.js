@@ -228,7 +228,7 @@ angular.module('starter.controllers', [])
  * ContactCtrl : CONTACT PAGE
  */
 .controller('ContactCtrl',
-	function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, OrgService, ImgService) {
+	function($scope, $rootScope, $location, $stateParams, ContactService, HandbookService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.org 		= $scope.user.company;
@@ -249,34 +249,64 @@ angular.module('starter.controllers', [])
 			});
 		}
 
-		ContactService.get($scope.user.username, $scope.user.password, $scope.org._links.positions.href).then(function (contact_res){
-			var data = contact_res.data
+		// GET HANDBOOK
+		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbook.href ).then(function (return_data){
+			$scope.handbook = return_data.data;
+			$local_handbook = $localstorage.getObject('hdsections');
+
 			$scope.ch_color = '#' + 'cfae79';
 
-			if (data._embedded.items.length > 0) {
-				$scope.contacts = [];
-				angular.forEach(data._embedded.items, function(item, i) {
-					ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
-						$scope.contacts.push({
-							'position': item,
-							'user'    : res.data,
-							'alphabet': res.data.first_name.charAt(0).toLowerCase()
+			if (($local_handbook && $local_handbook.version == $scope.handbook.version)
+				|| (typeof $local_handbook == "object" && $local_handbook.version && $local_handbook.version == $scope.handbook.version)) {
+
+				$ionicLoading.hide();
+				$scope.contacts = $localstorage.getObject('contacts').data;
+			} else {
+
+				ContactService.get($scope.user.username, $scope.user.password, $scope.org._links.positions.href).then(function (contact_res){
+					var data = contact_res.data
+
+					if (data._embedded.items.length > 0) {
+						$scope.contacts = [];
+						angular.forEach(data._embedded.items, function(item, i) {
+							ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
+								$scope.contacts.push({
+									'position': item,
+									'user'    : res.data,
+									'alphabet': res.data.first_name.charAt(0).toLowerCase()
+								});
+
+								// STORE in LOCAL
+								$localstorage.setObject('contacts', {
+									"data" : $scope.contacts
+								});
+
+								if (i==data._embedded.items.length-1) {
+									$ionicLoading.hide();
+								}
+
+							}, function (err){
+								if (i==contact_res.data._embedded.items.length-1) {
+									$ionicLoading.hide();
+									alert( err.status + ' : Connect API fail!');
+								}
+							});
 						});
-						if (i==data._embedded.items.length-1) {
-							$ionicLoading.hide();
-						}
-					}, function (err){
-						if (i==contact_res.data._embedded.items.length-1) {
-							$ionicLoading.hide();
-							alert( err.status + ' : Connect API fail!');
-						}
-					});
+					} // END IF CONTACTS
+
+				}, function (err){
+					$ionicLoading.hide();
+				  	alert(err.status + ' : Connect API fail!');
 				});
+
 			}
+
 		}, function (err){
-			$ionicLoading.hide();
-		  	alert(err.status + ' : Connect API fail!');
+		 	alert('Connect API Handbook fail!');
+		 	$ionicLoading.hide();
 		});
+
+
 	}
 })
 
