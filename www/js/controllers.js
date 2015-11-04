@@ -141,6 +141,18 @@ angular.module('starter.controllers', [])
 			if (typeof return_data.data != 'object' || !return_data.data._embedded ) {return;}
 			$scope.handbooks = return_data.data;
 
+			// GET LANG
+			angular.forEach($scope.handbooks._embedded.items, function(item, i) {
+			 	HandbookService.get($scope.user.username, $scope.user.password, item._links.translations.href ).then(function (res){
+			 		if (typeof res == 'object' && res.status == 200) {
+			 			$scope.handbooks._embedded.items[i]['lang'] = res.data;
+			 		}
+			 	}, function (err){
+				 	alert('Connect API Handbooks language fail!');
+				 	$ionicLoading.hide();
+				});
+			});
+
 		}, function (err){
 		 	alert('Connect API Handbooks fail!');
 		 	$ionicLoading.hide();
@@ -219,9 +231,17 @@ angular.module('starter.controllers', [])
 		// GET HANDBOOK
 		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbooks.href + "/" +  $scope.handbook_id).then(function (return_data){
 			$scope.handbook = return_data.data;
-			$local_handbook = $localstorage.getObject('hdsections');
-
+			$local_handbook = $localstorage.getObject('hdsections_' + $scope.handbook_id);
 			$scope.ch_color = '#' + 'cfae79';
+
+			HandbookService.get($scope.user.username, $scope.user.password, $scope.handbook._links.translations.href ).then(function (res){
+		 		if (typeof res == 'object' && res.status == 200) {
+		 			$scope.handbook['lang'] = res.data;
+		 		}
+		 	}, function (err){
+			 	alert('Connect API Handbooks language fail!');
+			 	$ionicLoading.hide();
+			});
 
 			if (($local_handbook && $local_handbook.version == $scope.handbook.version)
 				|| (typeof $local_handbook == "object" && $local_handbook.version && $local_handbook.version == $scope.handbook.version)) {
@@ -229,14 +249,35 @@ angular.module('starter.controllers', [])
 				$ionicLoading.hide();
 				$scope.sections = $local_handbook.data;
 			} else {
-				console.log($scope.handbook);
+
 				// GET SECTIONS of A HANDBOOK
 				SectionService.get($scope.user.username, $scope.user.password, $scope.handbook._links['sections.post'].href).then(function (return_data){
 					$ionicLoading.hide();
+
+					angular.forEach(return_data.data._embedded.items, function(item, i) {
+						(function(itemInstance) {
+							HandbookService.get($scope.user.username, $scope.user.password, itemInstance._links.translations.href ).then(function (res){
+						 		if (typeof res == 'object' && res.status == 200) {
+
+						 			return_data.data._embedded.items[i]['lang'] = res.data;
+						 			// STORE in LOCAL
+						 			$scope.sections = orderSections(return_data.data._embedded.items);
+									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
+										version : $scope.handbook.version,
+										data    : $scope.sections
+									});
+						 		}
+						 	}, function (err){
+							 	alert('Connect API Sections language fail!');
+							 	$ionicLoading.hide();
+							});
+						})(item);
+					});
+
 					$scope.sections = orderSections(return_data.data._embedded.items);
 
 					// STORE in LOCAL
-					$localstorage.setObject('hdsections', {
+					$localstorage.setObject('hdsections_' + $scope.handbook_id, {
 						version : $scope.handbook.version,
 						data    : $scope.sections
 					});
@@ -311,61 +352,96 @@ angular.module('starter.controllers', [])
 		}
 
 		// GET HANDBOOK
-		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbook.href ).then(function (return_data){
-			$scope.handbook = return_data.data;
-			$local_handbook = $localstorage.getObject('hdsections');
+		// HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbooks.href ).then(function (return_data){
+		// 	$scope.handbook = return_data.data;
+		// 	$local_handbook = $localstorage.getObject('hdsections');
 
 			$scope.ch_color = '#' + 'cfae79';
 
-			if (($local_handbook && $local_handbook.version == $scope.handbook.version)
-				|| (typeof $local_handbook == "object" && $local_handbook.version && $local_handbook.version == $scope.handbook.version)) {
+			ContactService.get($scope.user.username, $scope.user.password, $scope.org._links.positions.href).then(function (contact_res){
+				var data = contact_res.data
 
-				$ionicLoading.hide();
-				$scope.contacts = $localstorage.getObject('contacts').data;
-			} else {
-
-				ContactService.get($scope.user.username, $scope.user.password, $scope.org._links.positions.href).then(function (contact_res){
-					var data = contact_res.data
-
-					if (data._embedded.items.length > 0) {
-						$scope.contacts = [];
-						angular.forEach(data._embedded.items, function(item, i) {
-							ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
-								$scope.contacts.push({
-									'position': item,
-									'user'    : res.data,
-									'alphabet': res.data.first_name.charAt(0).toLowerCase()
-								});
-
-								// STORE in LOCAL
-								$localstorage.setObject('contacts', {
-									"data" : $scope.contacts
-								});
-
-								if (i==data._embedded.items.length-1) {
-									$ionicLoading.hide();
-								}
-
-							}, function (err){
-								if (i==contact_res.data._embedded.items.length-1) {
-									$ionicLoading.hide();
-									alert( err.status + ' : Connect API fail!');
-								}
+				if (data._embedded.items.length > 0) {
+					$scope.contacts = [];
+					angular.forEach(data._embedded.items, function(item, i) {
+						ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
+							$scope.contacts.push({
+								'position': item,
+								'user'    : res.data,
+								'alphabet': res.data.first_name.charAt(0).toLowerCase()
 							});
+
+							// STORE in LOCAL
+							$localstorage.setObject('contacts', {
+								"data" : $scope.contacts
+							});
+
+							if (i==data._embedded.items.length-1) {
+								$ionicLoading.hide();
+							}
+
+						}, function (err){
+							if (i==contact_res.data._embedded.items.length-1) {
+								$ionicLoading.hide();
+								alert( err.status + ' : Connect API fail!');
+							}
 						});
-					} // END IF CONTACTS
+					});
+				} // END IF CONTACTS
+			}, function (err){
+				$ionicLoading.hide();
+			  	alert(err.status + ' : Connect API fail!');
+			});
 
-				}, function (err){
-					$ionicLoading.hide();
-				  	alert(err.status + ' : Connect API fail!');
-				});
+		// 	if (($local_handbook && $local_handbook.version == $scope.handbook.version)
+		// 		|| (typeof $local_handbook == "object" && $local_handbook.version && $local_handbook.version == $scope.handbook.version)) {
 
-			}
+		// 		$ionicLoading.hide();
+		// 		$scope.contacts = $localstorage.getObject('contacts').data;
+		// 	} else {
 
-		}, function (err){
-		 	alert('Connect API Handbook fail!');
-		 	$ionicLoading.hide();
-		});
+		// 		ContactService.get($scope.user.username, $scope.user.password, $scope.org._links.positions.href).then(function (contact_res){
+		// 			var data = contact_res.data
+
+		// 			if (data._embedded.items.length > 0) {
+		// 				$scope.contacts = [];
+		// 				angular.forEach(data._embedded.items, function(item, i) {
+		// 					ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
+		// 						$scope.contacts.push({
+		// 							'position': item,
+		// 							'user'    : res.data,
+		// 							'alphabet': res.data.first_name.charAt(0).toLowerCase()
+		// 						});
+
+		// 						// STORE in LOCAL
+		// 						$localstorage.setObject('contacts', {
+		// 							"data" : $scope.contacts
+		// 						});
+
+		// 						if (i==data._embedded.items.length-1) {
+		// 							$ionicLoading.hide();
+		// 						}
+
+		// 					}, function (err){
+		// 						if (i==contact_res.data._embedded.items.length-1) {
+		// 							$ionicLoading.hide();
+		// 							alert( err.status + ' : Connect API fail!');
+		// 						}
+		// 					});
+		// 				});
+		// 			} // END IF CONTACTS
+
+		// 		}, function (err){
+		// 			$ionicLoading.hide();
+		// 		  	alert(err.status + ' : Connect API fail!');
+		// 		});
+
+		// 	}
+
+		// }, function (err){
+		//  	alert('Connect API Handbook fail!');
+		//  	$ionicLoading.hide();
+		// });
 
 
 	}

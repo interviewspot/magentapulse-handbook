@@ -18,7 +18,7 @@
             <div ng-repeat="(key, handbook) in handbooks._embedded.items | filter:searchText">
                 <a href="#/app/handbook/{{handbook.id}}" class="item">
                     <h4 class="hb-title">
-                        {{key + 1}} . {{handbook.title}}
+                        {{key + 1}} . {{handbook.lang['en-us'].title}}
                     </h4>
                     <p class="small-txt clearfix">
                         <span>Version: {{handbook.version}}</span>
