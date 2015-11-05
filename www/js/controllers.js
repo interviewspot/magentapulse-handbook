@@ -24,7 +24,7 @@ angular.module('starter.controllers', [])
 /**
  * LoginCtrl
  */
-.controller('LoginCtrl', function($scope, $stateParams, $location, LoginService, $ionicLoading, $localstorage) {
+.controller('LoginCtrl', function($scope, $stateParams, $location, LoginService, $ionicLoading, $localstorage, OrgService) {
 	console.log('load login');
 	$scope.loginData = {};
 	$scope.user = $localstorage.getObject('user');
@@ -63,17 +63,32 @@ angular.module('starter.controllers', [])
 		LoginService.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim()).then(function (res){
 			$ionicLoading.hide();
 			if (typeof res == 'object' && res.status == 200 && res.data._embedded.items.length == 1) {
-				// STORE in LOCAL
-				$localstorage.setObject('user', {
-					username : $scope.loginData.company_code.trim(),
-					password : $scope.loginData.user_code.trim(),
-					company  : res.data._embedded.items[0]
+
+
+				company_data = res.data._embedded.items[0]
+				user_url = config.path.baseURL + config.path.users + '?search=user.code:' + $scope.loginData.user_code.trim();
+				OrgService.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim(), user_url).then(function (res) {
+					console.log(res);
+					if (typeof res == 'object' && res.data._embedded.items.length == 1) {
+
+						// STORE in LOCAL
+						$localstorage.setObject('user', {
+							username : $scope.loginData.company_code.trim(),
+							password : $scope.loginData.user_code.trim(),
+							company  : company_data,
+							user     : res.data._embedded.items[0]
+						});
+
+						// GO TO HANDBOOK PAGE
+						$location.path('/app/handbooks');
+						location.reload();
+					}
+
+				}, function (err) {
+					$ionicLoading.hide();
+					alert('ERROR : Not connect API User, try later!');
 				});
 
-				// GO TO HANDBOOK PAGE
-				$location.path('/app/handbooks');
-				location.reload();
-				// location.href = '#/app/handbook';
 			} else if (res && res.status == 401) {
 				alert('Wrong Company code or Employee code!');
 			} else {
@@ -462,7 +477,6 @@ angular.module('starter.controllers', [])
 	} else {
 		$ionicLoading.show();
 
-
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
 			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
@@ -474,7 +488,16 @@ angular.module('starter.controllers', [])
 			});
 		}
 
-		$ionicLoading.hide();
+		// GET Notifis
+		OrgService.get($scope.user.username, $scope.user.password, $scope.user.user._links.messages.href).then(function (res) {
+			$ionicLoading.hide();
+			if (typeof res == 'object' && res.status == 200) {
+				$ionicLoading.hide();
+			}
+		}, function (err){
+			$ionicLoading.hide();
+		 	alert('Connect API Notifications fail!');
+		});
 	}
 })
 ;

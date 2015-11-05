@@ -5,25 +5,13 @@
 	        <a ng-if="org.logo"><img alt="{{org.name}}" ng-src="{{org.logo}}"></a>
 	    </div>
 		<div class="list list-inset">
-			<div class="msg-item new">
-				<span class="meta-time">21.10.15 at 1:20 am</span>
-				<div class="msg-ct">
-					Our powerful all-in-one software platform is designed to allow creative and marketing teams to manage their workflows and streamline their processes.
-				</div>
-			</div>
-			<div class="msg-item">
-				<span class="meta-time">21.10.15 at 1:20 am</span>
-				<div class="msg-ct">
-					Our powerful all-in-one software platform is designed to allow creative and marketing teams to manage their workflows and streamline their processes.
-				</div>
-			</div>
-			<div class="msg-item">
-				<span class="meta-time">21.10.15 at 1:20 am</span>
-				<div class="msg-ct">
-					Our powerful all-in-one software platform is designed to allow creative and marketing teams to manage their workflows and streamline their processes.
-				</div>
+			<div class="msg-item" ng-repeat="(i, item) in notifis._embedded.items">
+				<h4 class="msg-ttl">{{item.subject}}</h4>
+				<span class="meta-time">At {{item.created_at | date: 'h:mm a, M.d.yy'}}</span>
+				<div class="msg-ct">{{item.body}}</div>
 			</div>
         </div>
+        <div class="t-c" ng-if="!notifis._embedded.items.length">No notification</div>
         <!-- END: ITEM -->
     </div><!-- END : PAGE -->
 </ion-view>
