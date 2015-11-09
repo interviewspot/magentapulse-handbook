@@ -25,7 +25,8 @@ angular.module('starter', [
   'ngResource',
   'starter.controllers', 
   'starter.services',
-  'angular.filter'
+  'angular.filter',
+  'ionic.service.push'
 ])
 
 .run(function($ionicPlatform) {
@@ -137,3 +138,8 @@ angular.module('starter', [
     // 'x-password': 'p@ssword'
   }
 });
+
+
+// Project ID: sg-benefit-15
+// Project number: 945421547120
+// AIzaSyANKBAqWyL3SNJPRuYzgjUTkQcxTdCs0Gs

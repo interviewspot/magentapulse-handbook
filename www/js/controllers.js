@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
 /**
  * AppCtrl All site.
  */
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $localstorage) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $localstorage, $ionicPush) {
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
 	// To listen for when this page is active (for example, to refresh data),
@@ -24,7 +24,7 @@ angular.module('starter.controllers', [])
 /**
  * LoginCtrl
  */
-.controller('LoginCtrl', function($scope, $stateParams, $location, LoginService, $ionicLoading, $localstorage, OrgService) {
+.controller('LoginCtrl', function($scope, $stateParams, $location, $ionicPush, LoginService, $ionicLoading, $localstorage, OrgService) {
 	console.log('load login');
 	$scope.loginData = {};
 	$scope.user = $localstorage.getObject('user');
@@ -119,7 +119,7 @@ angular.module('starter.controllers', [])
  * HandbooksCtrl : HANDBOOKs PAGE
  */
 .controller('HandbooksCtrl',
-	function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
+	function($scope, $rootScope, $location, $stateParams, $ionicPush, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 
@@ -179,7 +179,7 @@ angular.module('starter.controllers', [])
 /**
  * HandbookCtrl : HANDBOOK PAGE
  */
-.controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
+.controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, $ionicPush, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.handbook_id = $stateParams.handbook_id
@@ -339,7 +339,7 @@ angular.module('starter.controllers', [])
  * ContactCtrl : CONTACT PAGE
  */
 .controller('ContactCtrl',
-	function($scope, $rootScope, $location, $stateParams, ContactService, HandbookService, $localstorage, $ionicLoading, OrgService, ImgService) {
+	function($scope, $rootScope, $location, $stateParams, ContactService, $ionicPush, HandbookService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.org 		= $scope.user.company;
@@ -467,7 +467,7 @@ angular.module('starter.controllers', [])
  * NotificationCtrl : Notification PAGE
  */
 .controller('NotificationCtrl',
-	function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, OrgService, ImgService) {
+	function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, $ionicPush, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.org 		= $scope.user.company;
