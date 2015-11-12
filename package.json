@@ -26,6 +26,11 @@
     {
       "platform": "android",
       "locator": "wp8"
+    },
+    {
+      "platform": "wp8",
+      "version": "",
+      "locator": "wp8"
     }
   ]
 }

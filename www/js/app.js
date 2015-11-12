@@ -26,6 +26,8 @@ angular.module('starter', [
   'starter.controllers', 
   'starter.services',
   'angular.filter',
+  'ngCordova',
+  'ionic.service.core',
   'ionic.service.push'
 ])
 
@@ -137,8 +139,14 @@ angular.module('starter', [
     // 'x-username': 'kenneth.yap@ap.magenta-consulting.com',
     // 'x-password': 'p@ssword'
   }
-});
-
+})
+.config(['$ionicAppProvider', function($ionicAppProvider) {
+  $ionicAppProvider.identify({
+    app_id: '25390a9e',
+    api_key: '6cfd33b3dd4c68fa1cdb08a4664640742fed4764601e65f8',
+    dev_push: true
+  });
+}]);
 
 // Project ID: sg-benefit-15
 // Project number: 945421547120

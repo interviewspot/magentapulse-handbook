@@ -32,7 +32,7 @@ angular.module('starter.controllers', [])
 	$scope.noUserCode   = false;
 
 	if ($scope.user &&  (typeof $scope.user == 'object' && $scope.user.username)) {
-		$location.path('/app/handbook');
+		$location.path('/app/handbooks');
 	}
 	$scope.doLogin = function() {
 		// var login = LoginService.login($scope.loginData.company_code, $scope.loginData.password);
@@ -64,11 +64,12 @@ angular.module('starter.controllers', [])
 			$ionicLoading.hide();
 			if (typeof res == 'object' && res.status == 200 && res.data._embedded.items.length == 1) {
 
-
 				company_data = res.data._embedded.items[0]
 				user_url = config.path.baseURL + config.path.users + '?search=user.code:' + $scope.loginData.user_code.trim();
-				OrgService.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim(), user_url).then(function (res) {
-					console.log(res);
+				OrgService.get($scope.loginData.company_code.trim()
+							 , $scope.loginData.user_code.trim()
+							 , user_url).then(function (res) {
+
 					if (typeof res == 'object' && res.data._embedded.items.length == 1) {
 
 						// STORE in LOCAL
@@ -141,7 +142,10 @@ angular.module('starter.controllers', [])
 
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
+			ImgService.get($scope.user.username
+						 , $scope.user.password
+						 , $scope.user.session_key
+						 , $scope.org._links.logo.href + '/url' ).then(function (res) {
 				if (typeof res == 'object' && res.status == 200) {
 					$scope.org['logo'] = res.data.url;
 				}
@@ -151,14 +155,21 @@ angular.module('starter.controllers', [])
 		}
 
 		// GET HANDBOOKs
-		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbooks.href ).then(function (return_data){
+		var ony_active = "?search=handbook.active:1";
+		HandbookService.get($scope.user.username
+						  , $scope.user.password
+						  , $scope.user.session_key
+						  , $scope.org._links.handbooks.href + ony_active).then(function (return_data){
 			$ionicLoading.hide();
 			if (typeof return_data.data != 'object' || !return_data.data._embedded ) {return;}
 			$scope.handbooks = return_data.data;
 
 			// GET LANG
 			angular.forEach($scope.handbooks._embedded.items, function(item, i) {
-			 	HandbookService.get($scope.user.username, $scope.user.password, item._links.translations.href ).then(function (res){
+			 	HandbookService.get($scope.user.username
+			 					  , $scope.user.password
+			 					  , $scope.user.session_key
+			 					  , item._links.translations.href ).then(function (res){
 			 		if (typeof res == 'object' && res.status == 200) {
 			 			$scope.handbooks._embedded.items[i]['lang'] = res.data;
 			 		}
@@ -234,7 +245,10 @@ angular.module('starter.controllers', [])
 
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
+			ImgService.get($scope.user.username
+				, $scope.user.password
+				, $scope.user.session_key
+				, $scope.org._links.logo.href + '/url' ).then(function (res) {
 				if (typeof res == 'object' && res.status == 200) {
 					$scope.org['logo'] = res.data.url;
 				}
@@ -244,12 +258,18 @@ angular.module('starter.controllers', [])
 		}
 
 		// GET HANDBOOK
-		HandbookService.get($scope.user.username, $scope.user.password, $scope.org._links.handbooks.href + "/" +  $scope.handbook_id).then(function (return_data){
+		HandbookService.get($scope.user.username
+							, $scope.user.password
+							, $scope.user.session_key
+							, $scope.org._links.handbooks.href + "/" +  $scope.handbook_id).then(function (return_data){
 			$scope.handbook = return_data.data;
 			$local_handbook = $localstorage.getObject('hdsections_' + $scope.handbook_id);
 			$scope.ch_color = '#' + 'cfae79';
 
-			HandbookService.get($scope.user.username, $scope.user.password, $scope.handbook._links.translations.href ).then(function (res){
+			HandbookService.get($scope.user.username
+							  , $scope.user.password
+							  , $scope.user.session_key
+							  , $scope.handbook._links.translations.href ).then(function (res){
 		 		if (typeof res == 'object' && res.status == 200) {
 		 			$scope.handbook['lang'] = res.data;
 		 		}
@@ -266,12 +286,18 @@ angular.module('starter.controllers', [])
 			} else {
 
 				// GET SECTIONS of A HANDBOOK
-				SectionService.get($scope.user.username, $scope.user.password, $scope.handbook._links['sections.post'].href).then(function (return_data){
+				SectionService.get($scope.user.username
+								 , $scope.user.password
+								 , $scope.user.session_key
+								 , $scope.handbook._links['sections.post'].href).then(function (return_data){
 					$ionicLoading.hide();
 
 					angular.forEach(return_data.data._embedded.items, function(item, i) {
 						(function(itemInstance) {
-							HandbookService.get($scope.user.username, $scope.user.password, itemInstance._links.translations.href ).then(function (res){
+							HandbookService.get($scope.user.username
+											  , $scope.user.password
+											  , $scope.user.session_key
+											  , itemInstance._links.translations.href ).then(function (res){
 						 		if (typeof res == 'object' && res.status == 200) {
 
 						 			return_data.data._embedded.items[i]['lang'] = res.data;
@@ -357,7 +383,10 @@ angular.module('starter.controllers', [])
 
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
+			ImgService.get($scope.user.username
+				, $scope.user.password
+				, $scope.user.session_key
+				, $scope.org._links.logo.href + '/url' ).then(function (res) {
 				if (typeof res == 'object' && res.status == 200) {
 					$scope.org['logo'] = res.data.url;
 				}
@@ -373,13 +402,19 @@ angular.module('starter.controllers', [])
 
 			$scope.ch_color = '#' + 'cfae79';
 
-			ContactService.get($scope.user.username, $scope.user.password, $scope.org._links.positions.href).then(function (contact_res){
+			ContactService.get($scope.user.username
+							 , $scope.user.password
+							 , $scope.user.session_key
+							 , $scope.org._links.positions.href).then(function (contact_res){
 				var data = contact_res.data
 
 				if (data._embedded.items.length > 0) {
 					$scope.contacts = [];
 					angular.forEach(data._embedded.items, function(item, i) {
-						ContactService.fetch($scope.user.username, $scope.user.password, item._links.employee.href).then(function (res){
+						ContactService.fetch($scope.user.username
+										   , $scope.user.password
+										   , $scope.user.session_key
+										   , item._links.employee.href).then(function (res){
 							$scope.contacts.push({
 								'position': item,
 								'user'    : res.data,
@@ -479,7 +514,10 @@ angular.module('starter.controllers', [])
 
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-			ImgService.get($scope.user.username, $scope.user.password, $scope.org._links.logo.href + '/url' ).then(function (res) {
+			ImgService.get($scope.user.username
+						 , $scope.user.password
+						 , $scope.user.session_key
+						 , $scope.org._links.logo.href + '/url' ).then(function (res) {
 				if (typeof res == 'object' && res.status == 200) {
 					$scope.org['logo'] = res.data.url;
 				}

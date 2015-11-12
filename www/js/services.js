@@ -2,7 +2,7 @@ angular.module('starter.services', [])
 .factory('ContactService', function ($q, $http, $localstorage) {
     var services = {};
 
-    services.get = function (username, password, url) {
+    services.get = function (username, password, session, url) {
         var d = $q.defer();
         $http({
             method: 'GET',
@@ -11,7 +11,8 @@ angular.module('starter.services', [])
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
-                'x-password': password
+                'x-password': password,
+                'x-session' : session
             }
         })
         .then(function success(res){
@@ -23,7 +24,7 @@ angular.module('starter.services', [])
         });
         return d.promise;
     }
-    services.fetch = function(username, password, url) {
+    services.fetch = function(username, password, session, url) {
         var d = $q.defer();
         $http({
             method: 'GET',
@@ -31,7 +32,8 @@ angular.module('starter.services', [])
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
-                'x-password': password
+                'x-password': password,
+                'x-session' : session
             }
         })
         .then(function success(res){
@@ -49,7 +51,7 @@ angular.module('starter.services', [])
 .factory('HandbookService', function ($q, $http, $localstorage) {
     var services = {};
 
-    services.get = function (username, password, url) {
+    services.get = function (username, password, session, url) {
         var d = $q.defer();
         $http({
             method: 'GET',
@@ -58,7 +60,8 @@ angular.module('starter.services', [])
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
-                'x-password': password
+                'x-password': password,
+                'x-session' : session
             }
         })
         .then(function success(res){
@@ -75,7 +78,7 @@ angular.module('starter.services', [])
 })
 .factory('SectionService', function ($q, $http, $localstorage) {
     var services = {};
-    services.get = function (username, password, url) {
+    services.get = function (username, password, session, url) {
         var d = $q.defer();
         $http({
             method: 'GET',
@@ -83,7 +86,8 @@ angular.module('starter.services', [])
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
-                'x-password': password
+                'x-password': password,
+                'x-session' : session
             }
         })
         .then(function success(res){
@@ -125,7 +129,7 @@ angular.module('starter.services', [])
 })
 .factory('ImgService', function ($q, $http, $localstorage) {
     var services = {};
-    services.get = function (username, password, url) {
+    services.get = function (username, password, session, url) {
         var d = $q.defer();
         $http({
             method: 'GET',
@@ -133,7 +137,8 @@ angular.module('starter.services', [])
             headers: {
                 "x-mode"    : "org_code",
                 'x-username': username,
-                'x-password': password
+                'x-password': password,
+                'x-session' : session
             }
         })
         .then(function success(res){
