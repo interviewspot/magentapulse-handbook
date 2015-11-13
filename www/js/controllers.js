@@ -506,6 +506,7 @@ angular.module('starter.controllers', [])
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.org 		= $scope.user.company;
+	$scope.notifis  = [];
 
 	if (!$scope.user) {
 		$location.path('/app/login');
@@ -531,6 +532,7 @@ angular.module('starter.controllers', [])
 			$ionicLoading.hide();
 			if (typeof res == 'object' && res.status == 200) {
 				$ionicLoading.hide();
+				$scope.notifis = res.data
 			}
 		}, function (err){
 			$ionicLoading.hide();
