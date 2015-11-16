@@ -528,7 +528,10 @@ angular.module('starter.controllers', [])
 		}
 
 		// GET Notifis
-		OrgService.get($scope.user.username, $scope.user.password, $scope.user.user._links.messages.href).then(function (res) {
+		var_filter = "?sort=message.createdAt:desc"
+		OrgService.get($scope.user.username
+					 , $scope.user.password
+					 , $scope.user.user._links.messages.href + var_filter).then(function (res) {
 			$ionicLoading.hide();
 			if (typeof res == 'object' && res.status == 200) {
 				$ionicLoading.hide();
@@ -538,6 +541,39 @@ angular.module('starter.controllers', [])
 			$ionicLoading.hide();
 		 	alert('Connect API Notifications fail!');
 		});
+
+		// READ IT
+		$scope.readIt = function (notifi) {
+
+			if (notifi.read == true) {return;}
+			notifi.read = true;
+			console.log(notifi);
+			return;
+			var link        = notifi._links.self.href;
+			// delete notifi._links;
+			// delete notifi.id;
+			// delete notifi.notification;
+			// delete notifi.created_at;
+			var send_data = {
+				message : {
+					"read" : true,
+					"sender": $scope.org.id,
+    				"recipient": $scope.org.id
+				}
+			};
+			console.log(send_data);
+
+			OrgService.update($scope.user.username
+					 , $scope.user.password
+					 , link
+					 , send_data ).then(function (res) {
+				if (typeof res == 'object' && res.status == 204) {
+					console.log('Ok');
+				}
+			}, function (err){
+				console.log('Error');
+			});
+		}
 	}
 })
 ;
