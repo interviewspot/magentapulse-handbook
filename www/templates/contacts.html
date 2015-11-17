@@ -21,11 +21,11 @@
 	                <h3>{{contact.user.first_name}}  {{contact.user.last_name}}</h3>
 	                <p class="ctc-add l-tags">Singapore,
                         <span class="tag"
-                            ng-repeat="tag in contact.tags._embedded.items | filter:{employee_function:true} | filter:{active:true}">
+                            ng-repeat="tag in contact.tags._embedded.items | filter:{employee_class:true} | filter:{active:true}">
                             {{tag.name}}
                         </span>
                         <span class="tag"
-                            ng-repeat="tag in contact.tags._embedded.items | filter:{employee_class:true} | filter:{active:true}">
+                            ng-repeat="tag in contact.tags._embedded.items | filter:{employee_function:true} | filter:{active:true}">
                             {{tag.name}}
                         </span>
                     </p>
