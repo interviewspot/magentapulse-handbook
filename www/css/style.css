@@ -166,3 +166,11 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .msg-item.new {
     background-color: #f4f4f4;
 }
+hr.line {
+    margin: 10px 0;
+    background: #ddd;
+    height: 1px;
+    border: none;
+}
+.l-tags .tag:after { content: ','; }
+.l-tags .tag:last-child:after { content: '.'; }

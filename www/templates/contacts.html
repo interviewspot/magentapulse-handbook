@@ -34,6 +34,21 @@
 		                    <b>E:</b>
 		                    <a ng-href="mailto:{{contact.user.email}}">{{contact.user.email}}</a>
 		                </p>
+		                <hr class="line" />
+		                <p class="l-tags">
+		                    <b>Class:</b>
+		                    <span class="tag"
+		                        ng-repeat="tag in contact.tags._embedded.items | filter:{employee_class:true} | filter:{active:true}">
+		                        {{tag.name}}
+		                    </span>
+		                </p>
+		                <p class="l-tags">
+		                    <b>Function:</b>
+		                    <span class="tag"
+		                        ng-repeat="tag in contact.tags._embedded.items | filter:{employee_function:true} | filter:{active:true}">
+		                        {{tag.name}}
+		                    </span>
+		                </p>
 		            </div>
 	            </div>
         	</div>
