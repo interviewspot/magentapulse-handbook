@@ -143,11 +143,11 @@ angular.module('starter', [
 .config(['$ionicAppProvider', function($ionicAppProvider) {
   $ionicAppProvider.identify({
     app_id: '25390a9e',
-    api_key: '6cfd33b3dd4c68fa1cdb08a4664640742fed4764601e65f8',
+    api_key: 'AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c',
     dev_push: true
   });
 }]);
 
 // Project ID: sg-benefit-15
-// Project number: 945421547120
-// AIzaSyANKBAqWyL3SNJPRuYzgjUTkQcxTdCs0Gs
+// project number 918288733027
+// api key AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c
