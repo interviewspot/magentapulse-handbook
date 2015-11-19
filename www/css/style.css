@@ -190,4 +190,3 @@ hr.line {
     border: none;
 }
 .l-tags .tag:after { content: ','; }
-.l-tags .tag:last-child:after { content: '.'; }

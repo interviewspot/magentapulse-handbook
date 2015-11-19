@@ -432,7 +432,7 @@ angular.module('starter.controllers', [])
 		ContactService.get($scope.user.username
 						 , $scope.user.password
 						 , $scope.user.session_key
-						 , $scope.org._links.positions.href).then(function (contact_res){
+						 , $scope.org._links.positions.href + "?search=position.handbookContact:1").then(function (contact_res){
 			var data = contact_res.data
 
 			if (data._embedded.items.length > 0) {
