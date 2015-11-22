@@ -20,6 +20,19 @@ angular.module('starter.controllers', [])
 			$scope.isSigned = false;
 		}
 	});
+
+	$ionicPush.init({
+	  "debug": true,
+	  "onNotification": function(notification) {
+	    var payload = notification.payload;
+	    console.log(notification, payload);
+	  },
+	  "onRegister": function(data) {
+	    console.log(data.token);
+	  }
+	});
+
+	$ionicPush.register();
 })
 /**
  * LoginCtrl
@@ -314,7 +327,7 @@ angular.module('starter.controllers', [])
 				SectionService.get($scope.user.username
 								 , $scope.user.password
 								 , $scope.user.session_key
-								 , $scope.handbook._links['sections.post'].href).then(function (return_data){
+								 , $scope.handbook._links.sections.href + "?limit=1000").then(function (return_data){
 					$ionicLoading.hide();
 
 					angular.forEach(return_data.data._embedded.items, function(item, i) {
