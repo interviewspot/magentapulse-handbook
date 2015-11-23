@@ -20,19 +20,6 @@ angular.module('starter.controllers', [])
 			$scope.isSigned = false;
 		}
 	});
-
-	$ionicPush.init({
-	  "debug": true,
-	  "onNotification": function(notification) {
-	    var payload = notification.payload;
-	    console.log(notification, payload);
-	  },
-	  "onRegister": function(data) {
-	    console.log(data.token);
-	  }
-	});
-
-	$ionicPush.register();
 })
 /**
  * LoginCtrl
@@ -577,6 +564,10 @@ angular.module('starter.controllers', [])
 				console.log('Error');
 			});
 		}
+
+
+
+
 	}
 })
 ;

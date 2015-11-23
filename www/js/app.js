@@ -21,13 +21,12 @@ var config = {
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', [
-  'ionic', 
+  'ionic','ionic.service.core',
   'ngResource',
   'starter.controllers', 
   'starter.services',
   'angular.filter',
   'ngCordova',
-  'ionic.service.core',
   'ionic.service.push'
 ])
 
@@ -44,7 +43,18 @@ angular.module('starter', [
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+      var push = new Ionic.Push({
+        "debug": true
+      });
+      push.register(function(token) {
+        console.log("Device token: " + token.token);
+      });
+
+
+
   });
+
 })
 
 .config(function($stateProvider, $urlRouterProvider, $sceDelegateProvider, $httpProvider) {
@@ -142,12 +152,15 @@ angular.module('starter', [
 })
 .config(['$ionicAppProvider', function($ionicAppProvider) {
   $ionicAppProvider.identify({
-    app_id: '25390a9e',
+    app_id: '4c177bdb',
     api_key: 'AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c',
     dev_push: true
   });
 }]);
 
+
 // Project ID: sg-benefit-15
-// project number 918288733027
+// project number GCM: 918288733027
 // api key AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c
+// token-device : DEV-66ea042d-bb88-420b-a495-8d23e3efc826
+// curl -u AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c: -H "Content-Type: application/json" -H "X-Ionic-Application-Id: 4c177bdb" https://push.ionic.io/api/v1/push -d '{"tokens":["DEV-66ea042d-bb88-420b-a495-8d23e3efc826"],"notification":{"alert":"I come from planet Ion."}}'
