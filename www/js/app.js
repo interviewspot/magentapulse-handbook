@@ -44,15 +44,36 @@ angular.module('starter', [
       StatusBar.styleDefault();
     }
 
-      var push = new Ionic.Push({
-        "debug": true
-      });
-      push.register(function(token) {
-        console.log("Device token: " + token.token);
-      });
 
+    // NOTIFICATION
+    var io = Ionic.io();
+    var push = new Ionic.Push({
+      "onNotification": function(notification) {
+        alert('Received push notification!');
+      },
+      "pluginConfig": {
+        "android": {
+          "iconColor": "#0000FF"
+        }
+      }
+    });
+    var user = Ionic.User.current();
 
+    if (!user.id) {
+      user.id = Ionic.User.anonymousId();
+    }
 
+    // Just add some dummy data..
+    user.set('name', 'sgbenefit');
+    user.set('bio', 'bio_1');
+    user.save();
+
+    var callback = function(data) {
+      push.addTokenToUser(user);
+      user.save();
+      console.log(data);
+    };
+    push.register(callback);
   });
 
 })
@@ -152,14 +173,14 @@ angular.module('starter', [
 })
 .config(['$ionicAppProvider', function($ionicAppProvider) {
   $ionicAppProvider.identify({
-    app_id: '4c177bdb',
-    api_key: 'AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c',
-    dev_push: true
+      app_id: '4c177bdb',
+      api_key: 'AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c',
+      dev_push: true
   });
 }]);
 
 
-// Project ID: sg-benefit-15
+// Project ID: 4c177bdb
 // project number GCM: 918288733027
 // api key AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c
 // token-device : DEV-66ea042d-bb88-420b-a495-8d23e3efc826
