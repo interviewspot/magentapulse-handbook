@@ -1,0 +1,12 @@
+{
+  "name": "benefit-mobile-2",
+  "app_id": "4c177bdb",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}
