@@ -2,24 +2,45 @@
   <ion-content>
     <div class="logo">
         <a href="#/">
-          <img width="278px" height="81px" alt="" src="img/logo3.png">
+          <img alt="" src="img/logo.png">
         </a>
-    </div>
-    <div class="welcome-box t-c in-page">
-      Welcome to Cloud Book By Magenta Pulse. To access your company’s employee handbook, please enter your company and employee verification code below.
     </div>
     <form ng-submit="doLogin()">
       <div class="list list-inset frm">
-        <label class="item item-input"
-          ng-class="{invalid: noCompayCode}">
-          <input type="text" ng-model="loginData.company_code" placeholder="Enter Company Code">
-        </label>
-        <label class="item item-input"
-          ng-class="{invalid: noUserCode}">
-          <input type="password" ng-model="loginData.user_code" placeholder="Enter Employee Verification Code">
-        </label>
-        <button class="button button-block button-energized login-btn" type="submit">LOGIN</button>
+        <p class="login-itm">
+          <label class="login-input"
+            ng-class="{invalid: noCompayCode}">
+            <input type="text" ng-model="loginData.email" placeholder="Email" class="ipt">
+          </label>
+        </p>
+        <p>
+          <label class="login-input"
+            ng-class="{invalid: noUserCode}">
+            <input type="password" ng-model="loginData.user_code" placeholder="Member Key" class="ipt">
+          </label>
+        </p>
+        <p class="login-itm">
+          <input type="checkbox" id="chk_agree" name="chk_agree">
+          <label for="#chk_agree">
+            I have read and agree to the <a href="#">T&Cs</a>
+          </label>
+        </p>
+        <p>
+          <button class="button button-block button-orange login-btn" type="submit">LOGIN</button>
+        </p>
+        <p class="login-itm t-c">
+          <a href="#">I forgot my Member Key</a>
+        </p>
       </div>
     </form>
+    <div class="login-caption-blk">
+      <p class="t-c">EmBenefit is available exclusively to employees of companies that have signed up for an account with EmBenefit. If you would like to learn more about our employee benefit program.  Contact us by filling up the enquiry form below or visit our website.</p>
+      <p>
+        <a href="#" class="t-c btn btn-dark">Visit Website</a>
+      </p>
+      <p>
+        <a href="#" class="t-c btn btn-dark">Enquiry</a>
+      </p>
+    </div>
   </ion-content>
 </ion-view>

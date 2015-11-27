@@ -114,62 +114,17 @@ angular.module('starter', [
       }
     }
   })
-  .state('app.notification', {
-    url: '/notification',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/notification.html',
-        controller: 'NotificationCtrl'
-      }
-    }
-  })
-  .state('app.handbooks', {
-    url: '/handbooks',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/handbooks.html',
-        controller: 'HandbooksCtrl'
-      }
-    }
-  })
-  .state('app.handbook', {
-    url: '/handbook/:handbook_id',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/handbook.html',
-        controller: 'HandbookCtrl'
-      }
-    }
-  })
-  .state('app.contacts', {
-    url: '/contacts',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/contacts.html',
-        controller: 'ContactCtrl'
-      }
-    }
-  })
-  .state('app.contact', {
-    url: '/contacts/:contactId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/contact.html',
-        controller: 'ContactDetailCtrl'
-      }
-    }
-  })
   
   ;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/handbooks');
+  $urlRouterProvider.otherwise('/app/login');
   $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://api.sg-benefits.com/**']);
   $httpProvider.defaults.headers.common = {
     "Content-Type": "application/json",
     "Accept": "application/hal+json, application/json, */*; q=0.01"
     // 'x-username': 'kenneth.yap@ap.magenta-consulting.com',
     // 'x-password': 'p@ssword'
-  }
+  };
 })
 .config(['$ionicAppProvider', function($ionicAppProvider) {
   $ionicAppProvider.identify({

@@ -7,7 +7,7 @@
 }
 .t-c { text-align: center; }
 .t-r { text-align: center; }
-a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
+a, a:hover, a:focus{ color: rgb(207, 174, 121); text-decoration: none; }
 .item-complex .item-content, .item-radio .item-content {
     padding: 16px 16px 16px 16px;
 }
@@ -19,6 +19,69 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     display: block;
 }
 .f-r { float: right; }
+.ipt {
+    width: 100%;
+    padding: 10px !important;
+    border: 1px solid #ddd !important;
+    height: auto !important;
+    outline: none;
+    color: rgb(64, 64, 64) !important;
+    border-radius: 5px;
+    -webkit-transition: all 0.2s linear;
+       -moz-transition: all 0.2s linear;
+        -ms-transition: all 0.2s linear;
+         -o-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+}
+.button.button-orange {
+    margin-top: 0px !important;
+    background-color: rgb(207, 174, 121);
+    color: #fff;
+    border: 1px solid rgb(181, 136, 65);
+    height: 40px;
+    min-height: 40px;
+    -webkit-transition: all 0.2s linear;
+       -moz-transition: all 0.2s linear;
+        -ms-transition: all 0.2s linear;
+         -o-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+}
+.button.button-orange:hover {
+    background-color: rgb(181, 136, 65);
+}
+p.login-itm {
+    margin-bottom: 20px;
+}
+.ipt:focus {
+    border: 1px solid rgb(207, 174, 121) !important;
+}
+#chk_agree {
+    vertical-align: -2px;
+}
+.btn {
+    padding: 6px 12px;
+    border-radius: 5px;
+    color: rgb(64, 64, 64);
+    -webkit-transition: all 0.2s linear;
+       -moz-transition: all 0.2s linear;
+        -ms-transition: all 0.2s linear;
+         -o-transition: all 0.2s linear;
+            transition: all 0.2s linear;
+}
+.btn.btn-primary {
+    border: 1px solid #ddd;
+}
+.btn.btn-primary:hover {
+    border: 1px solid #999;
+}
+.btn.btn-dark {
+    color: #fff;
+    background-color: rgb(64, 64, 64);
+    border: none;
+}
+.btn.btn-dark:hover {
+    background-color: rgb(34, 34, 34);
+}
 /* ------------------------------ */
 .bar.bar-energized {
     border-color: #cfae79;
@@ -33,7 +96,6 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .logo {
 	text-align: center;
 	margin: 20px 0;
-    height: 50px;
     background: url(../img/lgo.png) no-repeat center center;
     background-size: 40% auto;
 }
@@ -56,21 +118,34 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .mmmenu.active {
     background-color: #f4f4f4;
 }
+/* CSS LOGIN PAGE */
+.login-caption-blk {
+    background-color: #ddd;
+    padding: 15px;
+}
+.login-caption-blk .btn-dark {
+    width: 100%;
+    display: block;
+}
+.login-caption-blk p {
+    margin-bottom: 15px;
+}
+.login-caption-blk p:last-child {
+    margin-bottom: 0px;
+}
 /* HANDBOOK PAGE */
+body {
+    color: rgb(64, 64, 64);
+}
 .visual-header {
     height: 44px;
 }
-.logo {
-    margin-bottom: 20px;
-}
 .logo a {
     display: block;
-    height: 50px;
     background-color: #fff;
 }
 .logo a img {
-    height: 90%;
-    width: auto;
+    max-width: 100%;
 }
 .content-page {
     overflow-y: auto;
