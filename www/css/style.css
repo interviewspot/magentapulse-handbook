@@ -190,3 +190,13 @@ hr.line {
     border: none;
 }
 .l-tags .tag:after { content: ','; }
+.l-tags .tag:last-child:after { content: ''; }
+
+.item-icon-left .sec-title .icon,
+.item-icon-right .sec-title .icon {
+    font-size: 18px;
+}
+
+.list.menu-tab-page img {
+    max-width: 100%;
+}

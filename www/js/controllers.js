@@ -64,7 +64,7 @@ angular.module('starter.controllers', [])
 			$ionicLoading.hide();
 			if (typeof res == 'object' && res.status == 200 && res.data._embedded.items.length == 1) {
 
-				company_data = res.data._embedded.items[0]
+				company_data = res.data._embedded.items[0];
 				user_url = config.path.baseURL + config.path.users + '?search=user.code:' + $scope.loginData.user_code.trim();
 				OrgService.get($scope.loginData.company_code.trim()
 							 , $scope.loginData.user_code.trim()
@@ -314,7 +314,7 @@ angular.module('starter.controllers', [])
 				SectionService.get($scope.user.username
 								 , $scope.user.password
 								 , $scope.user.session_key
-								 , $scope.handbook._links.sections.href + "?limit=1000").then(function (return_data){
+								 , $scope.handbook._links.sections.href + "?search=section.parent{null}1&limit=500").then(function (return_data){
 					$ionicLoading.hide();
 
 					angular.forEach(return_data.data._embedded.items, function(item, i) {
@@ -327,7 +327,8 @@ angular.module('starter.controllers', [])
 
 						 			return_data.data._embedded.items[i]['lang'] = res.data;
 						 			// STORE in LOCAL
-						 			$scope.sections = orderSections(return_data.data._embedded.items);
+						 			$scope.sections = return_data.data._embedded.items;
+						 			$scope.sections[i].version = parseInt($scope.sections[i].version);
 									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
 										version : $scope.handbook.version,
 										data    : $scope.sections
@@ -360,11 +361,73 @@ angular.module('starter.controllers', [])
 		});
 	}
 
+
+	_findKeyArrayByValue = function($arr, $key, $val) {
+		re_val = null;
+		angular.forEach($arr, function(item, i) {
+			//console.log(item + " " + $val );
+			if (item[$key] == $val) {
+				re_val = i;
+				return;
+			}
+		});
+		return re_val;
+	};
+
+	_loadChildSection = function($section) {
+		//console.log($section.children._embedded);
+		if ($section.children._embedded) {return;}
+		//console.log($section.children._embedded);
+		if ($section._links.children) {
+			//console.log($section.id);
+			var j = _findKeyArrayByValue($scope.sections, 'id', $section.id);
+			$ionicLoading.show();
+			HandbookService.get($scope.user.username
+				  , $scope.user.password
+				  , $scope.user.session_key
+				  , $section._links.children.href ).then(function (res){
+				$ionicLoading.hide();
+				$scope.sections[j].children = res.data;
+
+				angular.forEach(res.data._embedded.items, function(item, i) {
+						(function(itemInstance) {
+							HandbookService.get($scope.user.username
+											  , $scope.user.password
+											  , $scope.user.session_key
+											  , itemInstance._links.translations.href ).then(function (res){
+						 		if (typeof res == 'object' && res.status == 200) {
+
+						 			//res.data._embedded.items[i]['lang'] = res.data;
+						 			// STORE in LOCAL
+						 			$scope.sections[j].children._embedded.items[i]['lang'] = res.data;
+						 			$scope.sections[j].children._embedded.items[i].version = parseInt($scope.sections[j].children._embedded.items[i].version);
+									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
+										version : $scope.handbook.version,
+										data    : $scope.sections
+									});
+						 		}
+						 	}, function (err){
+							 	console.log('Connect API Sections language fail!');
+							 	$ionicLoading.hide();
+							});
+						})(item);
+					});
+			}, function (err){
+			 	console.log('Connect API Sections language fail!');
+			 	$ionicLoading.hide();
+			});
+
+		}
+	};
+
 	$scope.toggleGroup = function(group) {
+		//console.log(group);
 	    if ($scope.isGroupShown(group)) {
-	    $scope.shownGroup = null;
+	    	$scope.shownGroup = null;
 	    } else {
-	      $scope.shownGroup = group;
+	     	$scope.shownGroup = group;
+	     	// LOAD MOVE CHILD
+	     	_loadChildSection(group);
 	    }
 	};
 
