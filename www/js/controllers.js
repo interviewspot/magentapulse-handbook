@@ -114,4 +114,10 @@ angular.module('starter.controllers', [])
 		$localstorage.setObject('user', null);
 		$location.path('/app/login');
 	});
+})
+/**
+ * myOfferCtrl
+ */
+.controller('myOfferCtrl', function ($scope) {
+
 });

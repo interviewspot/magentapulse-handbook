@@ -114,6 +114,15 @@ angular.module('starter', [
       }
     }
   })
+  .state('app.myoffer', {
+    url: '/myoffer',
+    views: {
+      'menuContent' : {
+        templateUrl : 'templates/myOffer.html',
+        controller: 'myOfferCtrl'
+      }
+    }
+  })
   
   ;
   // if none of the above states are matched, use this as the fallback

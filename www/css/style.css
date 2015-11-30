@@ -11,6 +11,16 @@ a, a:hover, a:focus{ color: rgb(207, 174, 121); text-decoration: none; }
 .item-complex .item-content, .item-radio .item-content {
     padding: 16px 16px 16px 16px;
 }
+.ico {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-repeat: no-repeat;
+    background-size: 25px auto;
+}
+.ico.ico-location {
+    background-image: url('../images/ico-location.png');
+}
 .clearfix:after {
     content: '';
     clear: both;
@@ -117,6 +127,114 @@ p.login-itm {
 }
 .mmmenu.active {
     background-color: #f4f4f4;
+}
+/* CSS HEADER */
+.header-inner {
+    position: relative;
+    width: 100%;
+}
+.header-inner .h-search {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    font-size: 24px;
+    color: #000;
+    display: block;
+}
+.header-inner .h-location {
+    position: absolute;
+    top: 5px;
+    display: block;
+}
+.header-inner .h-menu {
+    font-size: 16px;
+    width: 100px;
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    margin-left: -50px;
+    text-align: center;
+}
+.header-inner .h-menu span {
+    display: block;
+    font-size: 14px;
+    position: relative;
+    text-transform: uppercase;
+}
+.header-inner .h-menu span::after {
+    content: "\f0d7";
+    display: inline-block;
+    font-size: 14px;
+    font-family: 'FontAwesome';
+    position: absolute;
+    top: 0;
+}
+.header-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 45px;
+}
+.pb-50 {
+    padding-bottom: 50px;
+}
+/* CSS LIST */
+.list .item .address {
+    font-size: 12px;
+    color: #999;
+}
+.list .item .field-wrap {
+    position: relative;
+}
+.list .item .field-wrap i {
+    font-size: 14px;
+    color: #999;
+}
+.list .item .field-wrap span {
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    color: #999;
+}
+/* CSS FOOTER */
+.bg-gray {
+    background-color: #eee !important;
+    border-top: 1px solid #ddd !important;
+}
+.bar-footer li {
+    float: left;
+    width: 20%;
+}
+.bar-footer li a {
+    display: block;
+    text-transform: uppercase;
+    color: #333;
+    font-size: 8px;
+    text-align: center;
+}
+.bar-footer ul {
+    width: 100%;
+}
+.bar-footer li i {
+    display: block;
+    font-size: 12px;
+    border: 1px solid #333;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    margin: 0 auto;
+}
+.bar-footer li:hover a {
+    color: rgb(207, 174, 121);
+}
+.bar-footer li:hover i {
+    border: 1px solid rgb(207, 174, 121);
 }
 /* CSS LOGIN PAGE */
 .login-caption-blk {
