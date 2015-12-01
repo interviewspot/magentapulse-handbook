@@ -20,6 +20,7 @@ angular.module('starter.controllers', [])
 			$scope.isSigned = false;
 		}
 	});
+
 })
 /**
  * LoginCtrl
@@ -118,6 +119,37 @@ angular.module('starter.controllers', [])
 /**
  * myOfferCtrl
  */
-.controller('myOfferCtrl', function ($scope) {
-
-});
+.controller('myOfferCtrl', function ($scope, $location) {
+	// active page
+	$scope.isActive = function (path) {
+		return $location.path() === '/' + path ? true : false;
+	};
+})
+/**
+ * F&B Ctrl
+ */
+.controller('fbCtrl', function ($scope, $location) {
+	// active page
+	$scope.isActive = function (path) {
+		return $location.path() === '/' + path ? true : false;
+	};
+})
+/**
+ * Health Ctrl
+ */
+.controller('healthCtrl', function ($scope, $location) {
+	// active page
+	$scope.isActive = function (path) {
+		return $location.path() === '/' + path ? true : false;
+	};
+})
+/**
+ * Kids Ctrl
+ */
+.controller('kidCtrl', function ($scope, $location) {
+	// active page
+	$scope.isActive = function (path) {
+		return $location.path() === '/' + path ? true : false;
+	};
+})
+;

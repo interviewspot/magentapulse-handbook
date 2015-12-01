@@ -13,13 +13,23 @@ a, a:hover, a:focus{ color: rgb(207, 174, 121); text-decoration: none; }
 }
 .ico {
     display: inline-block;
+    background-repeat: no-repeat;
+}
+.ico.w25 {
     width: 25px;
     height: 25px;
-    background-repeat: no-repeat;
     background-size: 25px auto;
+}
+.ico.w20 {
+    width: 20px;
+    height: 20px;
+    background-size: 20px auto;
 }
 .ico.ico-location {
     background-image: url('../images/ico-location.png');
+}
+.ico.ico-logo {
+    background-image: url('../images/logo.png');
 }
 .clearfix:after {
     content: '';
@@ -135,15 +145,15 @@ p.login-itm {
 }
 .header-inner .h-search {
     position: absolute;
-    top: 5px;
+    top: 7px;
     right: 0;
-    font-size: 24px;
+    font-size: 18px;
     color: #000;
     display: block;
 }
 .header-inner .h-location {
     position: absolute;
-    top: 5px;
+    top: 7px;
     display: block;
 }
 .header-inner .h-menu {
@@ -197,6 +207,27 @@ p.login-itm {
     font-size: 12px;
     color: #999;
 }
+.content-pagi {
+    margin: 15px 0;
+}
+.content-pagi li {
+    width: 25%;
+    float: left;
+}
+.content-pagi li a {
+    background-color: rgb(207, 174, 121);
+    color: #fff;
+    display: block;
+    padding: 7px 0;
+    text-align: center;
+    border-right: 1px solid #fff;
+}
+.content-pagi li:last-child a {
+    border-right: none;
+}
+.content-pagi li a:hover,.content-pagi li a.active {
+    background-color: #C19245;
+}
 /* CSS FOOTER */
 .bg-gray {
     background-color: #eee !important;
@@ -229,6 +260,9 @@ p.login-itm {
     line-height: 20px;
     text-align: center;
     margin: 0 auto;
+}
+.bar-footer li i.ico-logo {
+    border: none;
 }
 .bar-footer li:hover a {
     color: rgb(207, 174, 121);

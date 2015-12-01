@@ -123,6 +123,33 @@ angular.module('starter', [
       }
     }
   })
+  .state('app.fb', {
+    url: '/fb',
+    views: {
+      'menuContent' : {
+        templateUrl : 'templates/fb.html',
+        controller: 'fbCtrl'
+      }
+    }
+  })
+  .state('app.health', {
+    url: '/health',
+    views: {
+      'menuContent' : {
+        templateUrl : 'templates/health.html',
+        controller: 'healthCtrl'
+      }
+    }
+  })
+  .state('app.kid', {
+    url: '/kids',
+    views: {
+      'menuContent' : {
+        templateUrl : 'templates/kid.html',
+        controller: 'kidCtrl'
+      }
+    }
+  })
   
   ;
   // if none of the above states are matched, use this as the fallback
