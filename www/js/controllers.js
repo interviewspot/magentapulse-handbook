@@ -152,4 +152,19 @@ angular.module('starter.controllers', [])
 		return $location.path() === '/' + path ? true : false;
 	};
 })
+/**
+ * Location Ctrl
+ */
+.controller('locationCtrl', function ($scope, $location) {
+	// active page
+	$scope.isActive = function (path) {
+		return $location.path() === '/' + path ? true : false;
+	};
+})
+/**
+ * store detail Ctrl
+ */
+.controller('storeDetailCtrl', function ($scope, $location) {
+
+})
 ;

@@ -151,10 +151,24 @@ p.login-itm {
     color: #000;
     display: block;
 }
-.header-inner .h-location {
+.header-inner .h-back {
+    font-size: 18px;
+    display: block;
+    position: absolute;
+    top: 0;
+}
+.header-inner.head-ctent {
+    line-height: 34px;
+    color: rgb(207, 174, 121);
+}
+.header-inner .h-location, .header-inner .h-location-menu {
     position: absolute;
     top: 7px;
     display: block;
+}
+.header-inner .h-location-menu {
+    color: #000;
+    font-size: 20px;
 }
 .header-inner .h-menu {
     font-size: 16px;
@@ -190,9 +204,15 @@ p.login-itm {
     padding-bottom: 50px;
 }
 /* CSS LIST */
+.list .item.item-nbd {
+    border: none;
+}
 .list .item .address {
     font-size: 12px;
     color: #999;
+}
+.list .item .direction {
+    font-size: 14px;
 }
 .list .item .field-wrap {
     position: relative;
@@ -206,6 +226,14 @@ p.login-itm {
     right: 0;
     font-size: 12px;
     color: #999;
+}
+.area {
+    padding-left: 10px;
+    color: #999;
+}
+.area span {
+    margin-left: 5px;
+    color: rgb(64,64,64);
 }
 .content-pagi {
     margin: 15px 0;
@@ -227,6 +255,30 @@ p.login-itm {
 }
 .content-pagi li a:hover,.content-pagi li a.active {
     background-color: #C19245;
+}
+.blk-maps {
+    height: 800px;
+}
+.blk-maps iframe {
+    width: 100%;
+    height: 100%;
+}
+.maps-pagi {
+    position: absolute;
+    left: 10px;
+    top: -5px;
+    right: 10px;
+}
+.store-img {
+    height: 250px;
+    overflow: hidden;
+}
+.store-img img{
+    width: 100%;
+    height: auto;
+}
+.col-ctent {
+    padding: 10px;
 }
 /* CSS FOOTER */
 .bg-gray {

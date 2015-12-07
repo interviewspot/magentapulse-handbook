@@ -1,0 +1,94 @@
+<ion-view hide-nav-bar="true" hide-side-menu="true">
+    <div class="bar bar-header bar-light">
+        <div class="header-inner">
+            <a href="#" class="h-location-menu">
+                <i class="fa fa-bars"></i>
+            </a>
+            <!-- END: LOCATION -->
+            <a href="#" class="h-menu">
+                Singapore <span>all</span>
+            </a>
+            <a href="#" class="h-search">
+                <i class="fa fa-search"></i>
+            </a>
+            <!-- END: LOCATION -->
+        </div>
+    </div>
+    <!-- END: HEADER -->
+    <ion-content>
+        <div class="content has-header ionic-pseudo pb-50">
+            <div class="content-pagi clearfix maps-pagi">
+                <ul>
+                    <li>
+                        <a
+                        href="#/app/myoffer"
+                        ng-class="{active : isActive('app/myoffer')}">
+                            My Offers
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                        href="#/app/fb"
+                        ng-class="{active : isActive('app/fb')}">
+                            F&B
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                        href="#/app/health"
+                        ng-class="{active : isActive('app/health')}">
+                            Health
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                        href="#/app/kids"
+                        ng-class="{active : isActive('app/kids')}">
+                            kids
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- END PAGI -->
+            <div class="blk-maps">
+            	<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?ie=UTF8&amp;q=white+house&amp;fb=1&amp;gl=us&amp;hq=white+house&amp;hnear=white+house&amp;cid=0,0,12722852879538071423&amp;ll=38.89767,-77.03655&amp;spn=0.006295,0.006295&amp;t=m&amp;vpsrc=0&amp;iwloc=A&amp;iwloc=near&amp;output=embed"></iframe>
+            </div>
+        </div>
+        <!-- END: CONTENT -->
+    </ion-content>
+    <div class="bar bar-footer bar-balanced bg-gray">
+        <ul>
+            <li>
+                <a href="#" title="Offers">
+                    <i class="ico w20 ico-logo"></i>
+                    Offers
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Nearby">
+                    <i class="fa fa-map-marker"></i>
+                    Nearby
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Favorites">
+                    <i class="fa fa-star-o"></i>
+                    Favorites
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Savings">
+                    <i class="fa fa-usd"></i>
+                    Savings
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Account">
+                    <i class="fa fa-user"></i>
+                    Account
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- END: FOOTER -->
+</ion-view>

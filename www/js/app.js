@@ -150,6 +150,24 @@ angular.module('starter', [
       }
     }
   })
+  .state('app.location', {
+    url : '/location',
+    views: {
+      'menuContent' : {
+        templateUrl: 'templates/location.html',
+        controller : 'locationCtrl'
+      }
+    }
+  })
+  .state('app.store-detail', {
+    url : '/store-detail',
+    views: {
+      'menuContent' : {
+        templateUrl: 'templates/store-detail.html',
+        controller : 'storeDetailCtrl'
+      }
+    }
+  })
   
   ;
   // if none of the above states are matched, use this as the fallback
