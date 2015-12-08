@@ -14,7 +14,8 @@
             <figure class="store-img">
                 <img src="images/restaurant.jpg" alt="">
             </figure>
-            <div class="list">
+            <!-- END: IMG -->
+            <div class="list store-info">
                 <a class="item item-nbd item-thumbnail-left" href="#">
                     <img src="images/coffee-bean-logo.jpg">
                     <h2>Mr Punch Public House</h2>
@@ -26,10 +27,152 @@
                     <span>Brash Bahsa</span>
                 </div>
             </div>
-            <!-- END -->
+            <!-- END INFO -->
+            <div class="menu-pagi clearfix">
+                <ul>
+                    <li>
+                        <a href="#" title="About" class="active">About</a>
+                    </li>
+                    <li>
+                        <a href="#" title="Contact">Contact</a>
+                    </li>
+                    <li>
+                        <a href="#" title="Locations">Locations</a>
+                    </li>
+                    <li>
+                        <a href="#" title="Menu">Menu</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- END: MENU -->
+            <div class="store-desc">
+                Mr Punch Public House is a gastropub offering a good selection of beers, cocktails and alcoholic drinks alongside a European-inspired sharing menu.
+            </div>
+            <!-- END: DESC -->
+            <div class="store-offer">
+                <h3 class="store-offer-ttl">OFFER PROVIDED BY MERCHANT</h3>
+                <span class="cap">Click on offers below to Redeem or to view details</span>
+                <div
+                data-toggle="modal"
+                data-target="#myOffer"
+                class="offer-itm clearfix">
+                    <figure class="fir-icon">
+                        <i class="fa fa-cutlery"></i>
+                    </figure>
+                    <div class="offer-info">
+                        <h4>1-For-1 Main Menu</h4>
+                        <span>EXPIRES 31 DEC 2015</span>
+                    </div>
+                </div>
+                <!-- END: ITM -->
+            </div>
+            <!-- END: OFFER -->
         </div>
         <!-- END: CONTENT -->
     </ion-content>
+    <div class="modal fade md-offer" id="myOffer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">SGBenefit</h4>
+          </div>
+          <div class="modal-body">
+            <div class="md-body-inner">
+                <div class="md-logo">
+                    <img src="images/coffee-bean-logo.jpg">
+                </div>
+                <!-- END LOGO -->
+                <h2 class="md-ttl">1-For-1 Main Menu</h2>
+                <div class="md-caption">
+                    Enjoy a complimentary
+                    <a href='#'>MAIN MENU ITEM</a> when a <a href='#'>MAIN MENU ITEM</a> of equal or greater value is purchased.
+                </div>
+                <!-- END -->
+                <div class="md-purchase">
+                    <p class="small bold">Estimated Savings: SGD 22</p>
+                    <p><a
+                    title="Redeem"
+                    class="btn btn-yellow"
+                    data-toggle="modal"
+                    data-target="#myRedeem"
+                    data-dismiss="modal"
+                    >Redeem</a></p>
+                    <p class="bold">Expires 31 Dec 2015</p>
+                    <p>Visit outlet to redeem</p>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <p class="t-c">
+                  <a href="#">Review Terms of Use</a>
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Offer -->
+    <div class="modal fade md-offer" id="myRedeem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">SGBenefit</h4>
+          </div>
+          <div class="modal-body">
+            <div class="md-body-inner">
+                <div class="md-logo">
+                    <img src="images/coffee-bean-logo.jpg">
+                </div>
+                <!-- END LOGO -->
+                <h2 class="md-ttl">Successfully Redeemed!</h2>
+                <p>Redemption Code: AA1222354</p>
+                <div class="md-purchase">
+                    <p class="small bold">Estimated Savings: SGD 22</p>
+                    <p><a href="#" title="Subscribe" class="btn btn-yellow">Subscribe</a></p>
+                    <p>Subscribe and earn exclusive benefits or be the first to know of new promotions from this merchant</p>
+                </div>
+                <div class="share-social">
+                    <p class="small">Share This With Friends</p>
+                    <ul class="clearfix social-box">
+                        <li>
+                            <a href="#" class="sc-face" title="Facebook">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sc-twitter" title="Twitter">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sc-linkedin" title="Linkedin">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sc-google" title="Google plus">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sc-share" title="Share">
+                                <i class="fa fa-share-alt"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <p class="t-c">
+                  <a href="#">Review Terms of Use</a>
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal myRedeem -->
     <div class="bar bar-footer bar-balanced bg-gray">
         <ul>
             <li>

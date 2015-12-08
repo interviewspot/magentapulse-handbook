@@ -168,6 +168,24 @@ angular.module('starter', [
       }
     }
   })
+  .state('app.main-course', {
+    url : '/main-course',
+    views: {
+      'menuContent' : {
+        templateUrl: 'templates/main-course.html',
+        controller : 'courseCtrl'
+      }
+    }
+  })
+  .state('app.menu-demo', {
+    url : '/menu-demo',
+    views: {
+      'menuContent' : {
+        templateUrl: 'templates/menu-demo.html',
+        controller : 'menuDemoCtrl'
+      }
+    }
+  })
   
   ;
   // if none of the above states are matched, use this as the fallback

@@ -164,7 +164,19 @@ angular.module('starter.controllers', [])
 /**
  * store detail Ctrl
  */
-.controller('storeDetailCtrl', function ($scope, $location) {
+.controller('storeDetailCtrl', function ($scope) {
+
+})
+/**
+ * main course Ctrl
+ */
+.controller('courseCtrl', function ($scope) {
+
+})
+/**
+ * menu demo Ctrl
+ */
+.controller('menuDemoCtrl', function ($scope) {
 
 })
 ;
