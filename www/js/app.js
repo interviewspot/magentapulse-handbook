@@ -159,8 +159,16 @@ angular.module('starter', [
       }
     }
   })
-  
-  ;
+  .state('app.settings', {
+    url: '/settings',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsCtrl'
+      }
+    }
+  })
+;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/handbooks');
   $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://api.sg-benefits.com/**']);

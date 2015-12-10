@@ -80,7 +80,7 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .content-page h2 { font-size: 24px; }
 .sec-title {
     white-space: nowrap !important;
-    font-size: 14px !important;
+    font-size: 14px;
 }
 .section-ct {
     padding-bottom: 10px;
@@ -201,3 +201,39 @@ hr.line {
 .list.menu-tab-page img {
     max-width: 100%;
 }
+/* SETTINGS ------------------------------------- */
+.fz-12 {font-size:12px;}
+.fz-14 {font-size:14px;}
+.fz-16 {font-size:16px;}
+.fz-18 {font-size:18px;}
+
+.fz-12 .p-tabs,
+.fz-14 .p-tabs,
+.fz-16 .p-tabs,
+.fz-18 .p-tabs {
+    font-size: 14px;
+}
+
+.fz-12 .list.menu-tab-page,
+.fz-12 .hb-title { font-size:12px; }
+.fz-12 .item .small-txt { font-size:11px; }
+.fz-12 .sec-title { font-size:12px; }
+.fz-12 .item * { font-size:12px; line-height: 1.4; }
+
+.fz-14 .list.menu-tab-page,
+.fz-14 .hb-title { font-size:14px; }
+.fz-14 .item .small-txt { font-size:13px; }
+.fz-14 .sec-title { font-size:14px; }
+.fz-14 .item * { font-size:14px; line-height: 1.4;}
+
+.fz-16 .list.menu-tab-page,
+.fz-16 .hb-title { font-size:16px; }
+.fz-16 .item .small-txt { font-size:15px; }
+.fz-16 .sec-title { font-size:16px; }
+.fz-16 .item * { font-size:16px; line-height: 1.4;}
+
+.fz-18 .list.menu-tab-page,
+.fz-18 .hb-title { font-size:18px; }
+.fz-18 .item .small-txt { font-size:17px; }
+.fz-18 .sec-title { font-size:18px; }
+.fz-18 .item * { font-size:18px; line-height: 1.4;}
