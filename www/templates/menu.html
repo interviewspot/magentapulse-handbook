@@ -35,6 +35,10 @@
           Notifcations
           <!-- <span class="numb">14</span>
         </ion-item> -->
+        <ion-item class="mmmenu" menu-close href="#/app/settings" ng-if="isSigned">
+           <i class="icon ion-ios-gear"></i>
+           Settings
+        </ion-item>
         <ion-item class="mmmenu" menu-close href="#/app/logout" ng-if="isSigned">
            <i class="icon ion-log-out"></i>
            Logout

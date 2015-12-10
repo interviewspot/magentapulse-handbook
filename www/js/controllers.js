@@ -19,13 +19,16 @@ angular.module('starter.controllers', [])
 		} else {
 			$scope.isSigned = false;
 		}
+
+		// GET SETTINS
+		$scope.settings = $localstorage.getObject('settings');
+		//console.log($scope.settings);
 	});
 })
 /**
  * LoginCtrl
  */
 .controller('LoginCtrl', function($scope, $stateParams, $location, $ionicPush, LoginService, $ionicLoading, $localstorage, OrgService) {
-	console.log('load login');
 	$scope.loginData = {};
 	$scope.user = $localstorage.getObject('user');
 	$scope.noCompayCode = false;
@@ -124,7 +127,6 @@ angular.module('starter.controllers', [])
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 
-
 	// menu active
     $scope.isActive = function(path) {
         if ($location.path().search(path) >= 0) return true;
@@ -164,7 +166,7 @@ angular.module('starter.controllers', [])
 		// GET HANDBOOKs
 		if ($scope.org._links.handbooks) {
 			$scope.handbooks = $localstorage.getObject('handbooks');
-			console.log('sss'+$scope.handbooks);
+
 			var ony_active = "?search=handbook.active:1";
 			HandbookService.get($scope.user.username
 							  , $scope.user.password
@@ -212,6 +214,8 @@ angular.module('starter.controllers', [])
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.handbook_id = $stateParams.handbook_id
+
+
 
 	// menu active
     $scope.isActive = function(path) {
@@ -462,7 +466,6 @@ angular.module('starter.controllers', [])
 	$scope.org 		= $scope.user.company;
 
 
-	console.log($scope.contacts);
 	// menu active
     $scope.isActive = function(path) {
         if ($location.path().search(path) >= 0) return true;
@@ -564,6 +567,7 @@ angular.module('starter.controllers', [])
 	$scope.org 		= $scope.user.company;
 	$scope.notifis  = [];
 
+
 	if (!$scope.user) {
 		$location.path('/app/login');
 	} else {
@@ -630,10 +634,31 @@ angular.module('starter.controllers', [])
 				console.log('Error');
 			});
 		}
-
-
-
-
 	}
+})
+
+/**
+ * NotificationCtrl : Notification PAGE
+ */
+.controller('SettingsCtrl',
+	function($scope, $rootScope, $location, $stateParams, $localstorage, $ionicLoading, $ionicPush) {
+
+	$scope.settings = $localstorage.getObject('settings');
+	if (!$scope.settings || $scope.settings == undefined) {
+		$scope.settings = {
+			"fontsize" : "fz-14"
+		};
+	}
+
+	$scope.$watch(
+		"settings.fontsize",
+		function handleFooChange( nv, ov ) {
+	    	// STORE in LOCAL
+	    	if (nv && nv != undefined) {
+	    		$localstorage.setObject('settings', $scope.settings);
+	    	}
+		}
+	);
+
 })
 ;
