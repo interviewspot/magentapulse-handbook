@@ -123,7 +123,8 @@ angular.module('starter.controllers', [])
 	function($scope, $rootScope, $location, $stateParams, $ionicPush, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
-	$scope.org      = $scope.user.company;
+
+
 	// menu active
     $scope.isActive = function(path) {
         if ($location.path().search(path) >= 0) return true;
@@ -135,6 +136,8 @@ angular.module('starter.controllers', [])
 		$location.path('/app/login');
 		return;
 	}
+
+	//$scope.org      = $scope.user.company;
 
 	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$ionicLoading.show();
