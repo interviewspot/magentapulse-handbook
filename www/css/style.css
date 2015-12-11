@@ -19,6 +19,7 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     display: block;
 }
 .f-r { float: right; }
+
 /* ------------------------------ */
 .bar.bar-energized {
     border-color: #cfae79;
@@ -237,3 +238,7 @@ hr.line {
 .fz-18 .item .small-txt { font-size:17px; }
 .fz-18 .sec-title { font-size:18px; }
 .fz-18 .item * { font-size:18px; line-height: 1.4;}
+/* PLATFORM */
+.platform-ios .content-page {
+    padding-top: 20px;
+}
