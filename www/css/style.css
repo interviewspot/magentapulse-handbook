@@ -91,7 +91,7 @@ a, a:hover, a:focus{ color: rgb(207, 174, 121); text-decoration: none; }
 .button.button-orange {
     margin-top: 0px !important;
     background-color: rgb(207, 174, 121);
-    color: #fff;
+    color: #000;
     border: 1px solid rgb(181, 136, 65);
     height: 40px;
     min-height: 40px;
@@ -285,11 +285,11 @@ p.login-itm {
 }
 .content-pagi li a {
     background-color: rgb(207, 174, 121);
-    color: #fff;
+    color: #000;
     display: block;
     padding: 7px 0;
     text-align: center;
-    border-right: 1px solid #fff;
+    border-right: 1px solid #eee;
 }
 .content-pagi li:last-child a {
     border-right: none;
@@ -400,7 +400,7 @@ p.login-itm {
 /* PAGE MAIN COURSE */
 .main-course {
   background-color: rgb(207, 174, 121);
-  color: #fff;
+  color: #000;
   padding-top: 50px;
   padding-bottom: 50px;
 }
@@ -434,7 +434,7 @@ p.login-itm {
 .course-ttl {
   font-size: 16px;
   margin: 0 0 10px 0;
-  color: #fff;
+  color: #000;
 }
 .main-course.error {
   background-color: #a5a5a5;
