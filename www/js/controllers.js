@@ -150,7 +150,8 @@ angular.module('starter.controllers', [])
 			ImgService.get($scope.user.username
 						 , $scope.user.password
 						 , $scope.user.session_key
-						 , $scope.org._links.logo.href + '/url' ).then(function (res) {
+						 , $scope.org._links.logo.href).then(function (res) {
+
 				if (typeof res == 'object' && res.status == 200) {
 					$scope.org['logo'] = res.data.url;
 					$scope.user.company['logo'] = res.data.url;
@@ -268,9 +269,10 @@ angular.module('starter.controllers', [])
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
 			ImgService.get($scope.user.username
-				, $scope.user.password
-				, $scope.user.session_key
-				, $scope.org._links.logo.href + '/url' ).then(function (res) {
+						 , $scope.user.password
+						 , $scope.user.session_key
+						 , $scope.org._links.logo.href).then(function (res) {
+
 				if (typeof res == 'object' && res.status == 200) {
 					$scope.org['logo'] = res.data.url;
 					$scope.user.company['logo'] = res.data.url;
@@ -279,7 +281,7 @@ angular.module('starter.controllers', [])
 					$localstorage.setObject('user', $scope.user);
 				}
 			}, function (err){
-			 	console('Connect API IMG fail!');
+			 	console.log ('Connect API IMG fail!');
 			});
 		}
 
@@ -481,9 +483,10 @@ angular.module('starter.controllers', [])
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
 			ImgService.get($scope.user.username
-				, $scope.user.password
-				, $scope.user.session_key
-				, $scope.org._links.logo.href + '/url' ).then(function (res) {
+						 , $scope.user.password
+						 , $scope.user.session_key
+						 , $scope.org._links.logo.href).then(function (res) {
+
 				if (typeof res == 'object' && res.status == 200) {
 					$scope.org['logo'] = res.data.url;
 					$scope.user.company['logo'] = res.data.url;
@@ -492,7 +495,7 @@ angular.module('starter.controllers', [])
 					$localstorage.setObject('user', $scope.user);
 				}
 			}, function (err){
-			 	console.log('Connect API IMG fail!');
+			 	console.log ('Connect API IMG fail!');
 			});
 		}
 
@@ -578,7 +581,8 @@ angular.module('starter.controllers', [])
 			ImgService.get($scope.user.username
 						 , $scope.user.password
 						 , $scope.user.session_key
-						 , $scope.org._links.logo.href + '/url' ).then(function (res) {
+						 , $scope.org._links.logo.href).then(function (res) {
+
 				if (typeof res == 'object' && res.status == 200) {
 					$scope.org['logo'] = res.data.url;
 					$scope.user.company['logo'] = res.data.url;
@@ -587,7 +591,7 @@ angular.module('starter.controllers', [])
 					$localstorage.setObject('user', $scope.user);
 				}
 			}, function (err){
-			 	console.log('Connect API IMG fail!');
+			 	console.log ('Connect API IMG fail!');
 			});
 		}
 
