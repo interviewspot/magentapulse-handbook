@@ -174,6 +174,12 @@ p.login-itm {
     background-color: #f4f4f4;
 }
 /* CSS HEADER */
+.header-wrap {
+  top: 44px;
+}
+.has-header.t22 {
+  top: 0;
+}
 .header-inner {
     position: relative;
     width: 100%;
