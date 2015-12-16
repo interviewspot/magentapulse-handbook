@@ -2,18 +2,6 @@
 var config = {
   path : {
       'baseURL'               : 'https://api.sg-benefits.com',
-      'clients'               : '/organisations',
-      'client'                : '/organisations/:org_id',
-      'handbooks'             : '/organisations/:org_id/handbooks',
-      'handbook'              : '/organisations/:org_id/handbooks/:hand_id',
-      'sections'              : '/organisations/:org_id/handbooks/:hand_id/sections',
-      'section'               : '/organisations/:org_id/handbooks/:hand_id/sections/:section_id',
-      'section_children'      : '/organisations/:org_id/handbooks/:hand_id/sections/:section_id/children',
-      'section_parent'        : '/organisations/:org_id/handbooks/:hand_id/sections/parent',
-      'contacts'              : '/organisations/:org_id/positions',
-      'contact'               : '/organisations/:org_id/positions/:position_id',
-      'users'                 : '/users',
-      'user'                  : '/users/:email',
   }
 };
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -45,35 +33,35 @@ angular.module('starter', [
     }
 
 
-    // NOTIFICATION
-    var io = Ionic.io();
-    var push = new Ionic.Push({
-      "onNotification": function(notification) {
-        alert('Received push notification!');
-      },
-      "pluginConfig": {
-        "android": {
-          "iconColor": "#0000FF"
-        }
-      }
-    });
-    var user = Ionic.User.current();
+    // // NOTIFICATION
+    // var io = Ionic.io();
+    // var push = new Ionic.Push({
+    //   "onNotification": function(notification) {
+    //     alert('Received push notification!');
+    //   },
+    //   "pluginConfig": {
+    //     "android": {
+    //       "iconColor": "#0000FF"
+    //     }
+    //   }
+    // });
+    // var user = Ionic.User.current();
 
-    if (!user.id) {
-      user.id = Ionic.User.anonymousId();
-    }
+    // if (!user.id) {
+    //   user.id = Ionic.User.anonymousId();
+    // }
 
-    // Just add some dummy data..
-    user.set('name', 'sgbenefit');
-    user.set('bio', 'bio_1');
-    user.save();
+    // // Just add some dummy data..
+    // user.set('name', 'sgbenefit');
+    // user.set('bio', 'bio_1');
+    // user.save();
 
-    var callback = function(data) {
-      push.addTokenToUser(user);
-      user.save();
-      console.log(data);
-    };
-    push.register(callback);
+    // var callback = function(data) {
+    //   push.addTokenToUser(user);
+    //   user.save();
+    //   console.log(data);
+    // };
+    // push.register(callback);
   });
 
 })

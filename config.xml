@@ -10,13 +10,17 @@
   <content src="index.html"/>
   <access origin="*"/>
 
-  <allow-intent href="geo:*" />
+  <allow-navigation href="*" />
+  <allow-intent href="*" />
+
   <!-- Allow images, xhrs, etc. to google.com -->
   <access origin="http://google.com" />
   <access origin="https://google.com" />
 
   <!-- Access to the subdomain maps.google.com -->
   <access origin="http://maps.google.com" />
+  <access origin="http://maps.googleapis.com" />
+  <access origin="https://maps-api-ssl.google.com" />
 
   <!-- Access to all the subdomains on google.com -->
   <access origin="http://*.google.com" />
