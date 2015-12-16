@@ -10,7 +10,7 @@
   </ion-side-menu-content>
 
   <!-- SIDE BAR MENU-->
-  <ion-side-menu side="left" ng-if="isSigned">
+  <ion-side-menu side="left" ng-if="!isSigned">
     <ion-header-bar class="bar-energized">
       <h1 class="title">Menu</h1>
     </ion-header-bar>
@@ -20,24 +20,33 @@
            <i class="icon ion-log-in"></i>
            Login
         </ion-item>
-        <ion-item class="mmmenu"
-          menu-close href="#/app/handbooks"
-          ng-if="isSigned">
-           <i class="icon ion-ios-bookmarks"></i>
-           Employee Handbooks
+        <ion-item class="mmmenu" menu-close href="#/app/myoffer" ng-if="!isSigned">
+           <i class="fa fa-briefcase"></i>
+           My Offer
         </ion-item>
-        <ion-item class="mmmenu" menu-close href="#/app/contacts" ng-if="isSigned">
-           <i class="icon ion-android-contacts"></i>
-           Contacts
+        <ion-item class="mmmenu" menu-close href="#/app/fb" ng-if="!isSigned">
+           <i class="fa fa-cutlery"></i>
+           F&B
         </ion-item>
-        <!-- <ion-item class="mmmenu" menu-close href="#/app/notification" ng-if="isSigned">
-          <i class="icon ion-android-notifications-none"></i>
-          Notifcations
-          <!-- <span class="numb">14</span>
-        </ion-item> -->
-        <ion-item class="mmmenu" menu-close href="#/app/logout" ng-if="isSigned">
-           <i class="icon ion-log-out"></i>
-           Logout
+        <ion-item class="mmmenu" menu-close href="#/app/health" ng-if="!isSigned">
+           <i class="fa fa-heartbeat"></i>
+           Health
+        </ion-item>
+        <ion-item class="mmmenu" menu-close href="#/app/kids" ng-if="!isSigned">
+           <i class="fa fa-child"></i>
+           Kid
+        </ion-item>
+        <ion-item class="mmmenu" menu-close href="#/app/location" ng-if="!isSigned">
+           <i class="fa fa-map-marker"></i>
+           Location
+        </ion-item>
+        <ion-item class="mmmenu" menu-close href="#/app/store-detail" ng-if="!isSigned">
+           <i class="fa fa-home"></i>
+           Detail
+        </ion-item>
+        <ion-item class="mmmenu" menu-close href="#/app/main-course" ng-if="!isSigned">
+           <i class="fa fa-server"></i>
+           Main Course
         </ion-item>
       </ion-list>
     </ion-content>

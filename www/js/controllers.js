@@ -26,6 +26,8 @@ angular.module('starter.controllers', [])
  * LoginCtrl
  */
 .controller('LoginCtrl', function($scope, $stateParams, $location, $ionicPush, LoginService, $ionicLoading, $localstorage, OrgService) {
+	$scope.isSigned = true;
+
 	console.log('load login');
 	$scope.loginData = {};
 	$scope.user = $localstorage.getObject('user');
