@@ -157,13 +157,14 @@ angular.module('starter.controllers', [])
 /**
  * Location Ctrl
  */
-.controller('locationCtrl', function ($scope, $location, $ionicLoading, $compile) {
+.controller('locationCtrl', function ($scope, $location, $ionicLoading, $compile, $sce) {
 	// active page
 	$scope.isActive = function (path) {
 		return $location.path() === '/' + path ? true : false;
 	};
 
-	function initialize() {
+
+	$scope.init = function() {
         var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
 
         var mapOptions = {
@@ -185,20 +186,22 @@ angular.module('starter.controllers', [])
         var marker = new google.maps.Marker({
           position: myLatlng,
           map: map,
-          title: 'Benefit App'
+          title: 'AG BENEFIT'
         });
 
-        // google.maps.event.addListener(marker, 'click', function() {
-        //   infowindow.open(map,marker);
-        // });
+        google.maps.event.addListener(marker, 'click', function() {
+         	infowindow.open(map,marker);
+        });
 
         $scope.map = map;
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
+        $('.blk-maps').height(window.screen.height);
+    };
 
-      $scope.centerOnMe = function() {
+    // google.maps.event.addDomListener(window, 'load', initialize);
+    //ionic.Platform.ready(init);
+    $scope.centerOnMe = function() {
         if(!$scope.map) {
-          return;
+            return;
         }
 
         $scope.loading = $ionicLoading.show({
@@ -212,11 +215,11 @@ angular.module('starter.controllers', [])
         }, function(error) {
           alert('Unable to get location: ' + error.message);
         });
-      };
+    };
 
-      $scope.clickTest = function() {
+    $scope.clickTest = function() {
         alert('Example of infowindow with ng-click')
-      };
+    };
 })
 /**
  * store detail Ctrl

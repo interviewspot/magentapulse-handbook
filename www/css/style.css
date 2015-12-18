@@ -101,10 +101,7 @@ a, a:hover, a:focus{ color: rgb(207, 174, 121); text-decoration: none; }
          -o-transition: all 0.2s linear;
             transition: all 0.2s linear;
 }
-#map {
-  width: 100%;
-  height: 100%;
-}
+#map { height:100%; width:100%; position:absolute; top:0; left:0; bottom:0; right: 0; }
 .button.button-orange:hover {
     background-color: rgb(181, 136, 65);
 }
@@ -302,7 +299,7 @@ p.login-itm {
     background-color: #C19245;
 }
 .blk-maps {
-    height: 800px;
+    height: 480px;
 }
 .blk-maps iframe {
     width: 100%;

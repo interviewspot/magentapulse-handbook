@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.sgbenefitapp" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Handbook</name>
+  <name>Sg Benefit</name>
   <description>
         Magenta team's project
   </description>
@@ -16,11 +16,6 @@
   <!-- Allow images, xhrs, etc. to google.com -->
   <access origin="http://google.com" />
   <access origin="https://google.com" />
-
-  <!-- Access to the subdomain maps.google.com -->
-  <access origin="http://maps.google.com" />
-  <access origin="http://maps.googleapis.com" />
-  <access origin="https://maps-api-ssl.google.com" />
 
   <!-- Access to all the subdomains on google.com -->
   <access origin="http://*.google.com" />
