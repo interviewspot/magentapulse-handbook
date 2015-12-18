@@ -73,6 +73,7 @@ angular.module('starter.controllers', [])
 							 , $scope.loginData.user_code.trim()
 							 , user_url).then(function (res) {
 
+					// LOGIN OK
 					if (typeof res == 'object' && res.data._embedded.items.length == 1) {
 
 						// STORE in LOCAL
@@ -82,6 +83,9 @@ angular.module('starter.controllers', [])
 							company  : company_data,
 							user     : res.data._embedded.items[0]
 						});
+
+						// RESET CACHE
+
 
 						// GO TO HANDBOOK PAGE
 						$location.path('/app/handbooks');
@@ -114,7 +118,7 @@ angular.module('starter.controllers', [])
 .controller('LogoutCtrl', function($scope, $stateParams, $localstorage, $location) {
 	$scope.$on('$ionicView.enter', function(e) {
 		$scope.user = null;
-		$localstorage.setObject('user', null);
+		$localStorage.$reset();
 		$location.path('/app/login');
 	});
 })
@@ -153,11 +157,19 @@ angular.module('starter.controllers', [])
 						 , $scope.org._links.logo.href).then(function (res) {
 
 				if (typeof res == 'object' && res.status == 200) {
-					$scope.org['logo'] = res.data.url;
-					$scope.user.company['logo'] = res.data.url;
+					//console.log(res.data._links);
+					ImgService.get($scope.user.username
+						 , $scope.user.password
+						 , $scope.user.session_key
+						 , config.path.baseURL + res.data._links.url.href).then(function (res) {
 
-					// STORE in LOCAL
-					$localstorage.setObject('user', $scope.user);
+						//console.log(res.data);
+						$scope.org['logo'] = res.data.url;
+						$scope.user.company['logo'] = res.data.url;
+
+						// STORE in LOCAL
+						$localstorage.setObject('user', $scope.user);
+					});
 				}
 			}, function (err){
 			 	console.log ('Connect API IMG fail!');
@@ -274,11 +286,19 @@ angular.module('starter.controllers', [])
 						 , $scope.org._links.logo.href).then(function (res) {
 
 				if (typeof res == 'object' && res.status == 200) {
-					$scope.org['logo'] = res.data.url;
-					$scope.user.company['logo'] = res.data.url;
+					//console.log(res.data._links);
+					ImgService.get($scope.user.username
+						 , $scope.user.password
+						 , $scope.user.session_key
+						 , config.path.baseURL + res.data._links.url.href).then(function (res) {
 
-					// STORE in LOCAL
-					$localstorage.setObject('user', $scope.user);
+						//console.log(res.data);
+						$scope.org['logo'] = res.data.url;
+						$scope.user.company['logo'] = res.data.url;
+
+						// STORE in LOCAL
+						$localstorage.setObject('user', $scope.user);
+					});
 				}
 			}, function (err){
 			 	console.log ('Connect API IMG fail!');
@@ -480,6 +500,7 @@ angular.module('starter.controllers', [])
 		$ionicLoading.show();
 		$scope.contacts = $localstorage.getObject('contacts').data;
 
+
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
 			ImgService.get($scope.user.username
@@ -488,18 +509,30 @@ angular.module('starter.controllers', [])
 						 , $scope.org._links.logo.href).then(function (res) {
 
 				if (typeof res == 'object' && res.status == 200) {
-					$scope.org['logo'] = res.data.url;
-					$scope.user.company['logo'] = res.data.url;
+					//console.log(res.data._links);
+					ImgService.get($scope.user.username
+						 , $scope.user.password
+						 , $scope.user.session_key
+						 , config.path.baseURL + res.data._links.url.href).then(function (res) {
 
-					// STORE in LOCAL
-					$localstorage.setObject('user', $scope.user);
+						//console.log(res.data);
+						$scope.org['logo'] = res.data.url;
+						$scope.user.company['logo'] = res.data.url;
+
+						// STORE in LOCAL
+						$localstorage.setObject('user', $scope.user);
+					});
 				}
 			}, function (err){
 			 	console.log ('Connect API IMG fail!');
 			});
 		}
 
-		// GET HANDBOOK
+		if ($scope.contacts) {
+			$ionicLoading.hide();
+			return;
+		}
+		// GET CONTACT
 		$scope.ch_color = '#' + 'cfae79';
 		ContactService.get($scope.user.username
 						 , $scope.user.password
@@ -584,11 +617,19 @@ angular.module('starter.controllers', [])
 						 , $scope.org._links.logo.href).then(function (res) {
 
 				if (typeof res == 'object' && res.status == 200) {
-					$scope.org['logo'] = res.data.url;
-					$scope.user.company['logo'] = res.data.url;
+					//console.log(res.data._links);
+					ImgService.get($scope.user.username
+						 , $scope.user.password
+						 , $scope.user.session_key
+						 , config.path.baseURL + res.data._links.url.href).then(function (res) {
 
-					// STORE in LOCAL
-					$localstorage.setObject('user', $scope.user);
+						//console.log(res.data);
+						$scope.org['logo'] = res.data.url;
+						$scope.user.company['logo'] = res.data.url;
+
+						// STORE in LOCAL
+						$localstorage.setObject('user', $scope.user);
+					});
 				}
 			}, function (err){
 			 	console.log ('Connect API IMG fail!');
