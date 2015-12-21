@@ -6,23 +6,24 @@ angular.module('starter.controllers', [])
 /**
  * AppCtrl All site.
  */
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $localstorage, $ionicPush) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $localstorage, $ionicPush, $location) {
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
 	// To listen for when this page is active (for example, to refresh data),
 	// listen for the $ionicView.enter event:
 	$scope.isSigned = false;
 	$scope.$on('$ionicView.enter', function(e) {
+		// CHECK USER
 		$scope.user = $localstorage.getObject('user');
 		if ($scope.user && $scope.user.username) {
 			$scope.isSigned = true;
 		} else {
 			$scope.isSigned = false;
+			$location.path('/app/login');
 		}
 
 		// GET SETTINS
 		$scope.settings = $localstorage.getObject('settings');
-		//console.log($scope.settings);
 	});
 })
 /**
@@ -33,6 +34,8 @@ angular.module('starter.controllers', [])
 	$scope.user = $localstorage.getObject('user');
 	$scope.noCompayCode = false;
 	$scope.noUserCode   = false;
+
+	//console.log("sss : " + $scope.$$parent.isSigned);
 
 	if ($scope.user &&  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$location.path('/app/handbooks');
@@ -145,7 +148,6 @@ angular.module('starter.controllers', [])
 	}
 
 	//$scope.org      = $scope.user.company;
-
 	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$ionicLoading.show();
 		$scope.org = $scope.user.company;
@@ -494,6 +496,12 @@ angular.module('starter.controllers', [])
         if ($location.path().search(path) >= 0) return true;
         return false;
     };
+
+    // CHECK USER LOGIN
+	if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
+		$location.path('/app/login');
+		return;
+	}
 
 	if (!$scope.user) {
 		$location.path('/app/login');
