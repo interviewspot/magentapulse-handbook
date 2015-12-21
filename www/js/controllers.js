@@ -116,9 +116,10 @@ angular.module('starter.controllers', [])
  * LogoutCtrl
  */
 .controller('LogoutCtrl', function($scope, $stateParams, $localstorage, $location) {
+
 	$scope.$on('$ionicView.enter', function(e) {
 		$scope.user = null;
-		$localStorage.$reset();
+		$localstorage.reset();
 		$location.path('/app/login');
 	});
 })
