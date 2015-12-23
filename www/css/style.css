@@ -34,7 +34,7 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 .logo {
 	text-align: center;
 	margin: 20px 0;
-    height: 50px;
+    height: 60px;
     background: url(../img/lgo.png) no-repeat center center;
     background-size: 40% auto;
 }
@@ -66,11 +66,11 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 }
 .logo a {
     display: block;
-    height: 50px;
+    height: 60px;
     background-color: #fff;
 }
 .logo a img {
-    height: 90%;
+    height: 100%;
     width: auto;
 }
 .content-page {
