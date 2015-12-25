@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.benefitmobile2414213" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Handbook</name>
+<widget id="com.ionicframework.sgbenefitapp" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Sg Benefit</name>
   <description>
-        An Ionic Framework and Cordova project.
-    </description>
+        Magenta team's project
+  </description>
   <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
-    </author>
+      Magenta team
+  </author>
   <content src="index.html"/>
   <access origin="*"/>
+
+  <allow-navigation href="*" />
+  <allow-intent href="*" />
+
+  <!-- Allow images, xhrs, etc. to google.com -->
+  <access origin="http://google.com" />
+  <access origin="https://google.com" />
+
+  <!-- Access to all the subdomains on google.com -->
+  <access origin="http://*.google.com" />
+
+
   <access origin="tel:*" launch-external="yes"/>
   <access origin="mailto:*" launch-external="yes"/>
   <preference name="webviewbounce" value="false"/>

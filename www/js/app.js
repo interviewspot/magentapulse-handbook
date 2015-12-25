@@ -2,18 +2,6 @@
 var config = {
   path : {
       'baseURL'               : 'https://api.sg-benefits.com',
-      'clients'               : '/organisations',
-      'client'                : '/organisations/:org_id',
-      'handbooks'             : '/organisations/:org_id/handbooks',
-      'handbook'              : '/organisations/:org_id/handbooks/:hand_id',
-      'sections'              : '/organisations/:org_id/handbooks/:hand_id/sections',
-      'section'               : '/organisations/:org_id/handbooks/:hand_id/sections/:section_id',
-      'section_children'      : '/organisations/:org_id/handbooks/:hand_id/sections/:section_id/children',
-      'section_parent'        : '/organisations/:org_id/handbooks/:hand_id/sections/parent',
-      'contacts'              : '/organisations/:org_id/positions',
-      'contact'               : '/organisations/:org_id/positions/:position_id',
-      'users'                 : '/users',
-      'user'                  : '/users/:email',
   }
 };
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -45,35 +33,35 @@ angular.module('starter', [
     }
 
 
-    // NOTIFICATION
-    var io = Ionic.io();
-    var push = new Ionic.Push({
-      "onNotification": function(notification) {
-        alert('Received push notification!');
-      },
-      "pluginConfig": {
-        "android": {
-          "iconColor": "#0000FF"
-        }
-      }
-    });
-    var user = Ionic.User.current();
+    // // NOTIFICATION
+    // var io = Ionic.io();
+    // var push = new Ionic.Push({
+    //   "onNotification": function(notification) {
+    //     alert('Received push notification!');
+    //   },
+    //   "pluginConfig": {
+    //     "android": {
+    //       "iconColor": "#0000FF"
+    //     }
+    //   }
+    // });
+    // var user = Ionic.User.current();
 
-    if (!user.id) {
-      user.id = Ionic.User.anonymousId();
-    }
+    // if (!user.id) {
+    //   user.id = Ionic.User.anonymousId();
+    // }
 
-    // Just add some dummy data..
-    user.set('name', 'sgbenefit');
-    user.set('bio', 'bio_1');
-    user.save();
+    // // Just add some dummy data..
+    // user.set('name', 'sgbenefit');
+    // user.set('bio', 'bio_1');
+    // user.save();
 
-    var callback = function(data) {
-      push.addTokenToUser(user);
-      user.save();
-      console.log(data);
-    };
-    push.register(callback);
+    // var callback = function(data) {
+    //   push.addTokenToUser(user);
+    //   user.save();
+    //   console.log(data);
+    // };
+    // push.register(callback);
   });
 
 })
@@ -190,7 +178,9 @@ angular.module('starter', [
   ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');
-  $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://api.sg-benefits.com/**']);
+  $sceDelegateProvider.resourceUrlWhitelist(['self',
+      'https://api.sg-benefits.com/**',
+      'http://maps.google.com/**']);
   $httpProvider.defaults.headers.common = {
     "Content-Type": "application/json",
     "Accept": "application/hal+json, application/json, */*; q=0.01"
@@ -206,7 +196,10 @@ angular.module('starter', [
   });
 }]);
 
-
+// android map api key: AIzaSyAJZR93qIV721hsq6vwcXokliidN0WnZu8
+// ios mapp api key: AIzaSyBe47muzhtMCpOpyUXJxblAPCw-G8MZlZo [com.magentapulse.sgbenefit]
+// AIzaSyDtGb40BoqhmWh_YCCge9pSbXEf-8tiqpU
+// cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyAJZR93qIV721hsq6vwcXokliidN0WnZu8" --variable API_KEY_FOR_IOS="AIzaSyBe47muzhtMCpOpyUXJxblAPCw-G8MZlZo"
 // Project ID: 4c177bdb
 // project number GCM: 918288733027
 // api key AIzaSyBds2WK_6GH859BWD-nsBAHI2RH27Jrf6c
