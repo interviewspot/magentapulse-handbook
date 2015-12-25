@@ -1,4 +1,4 @@
-<ion-view view-title="Login">
+<ion-view hide-nav-bar="true" hide-side-menu="true">
   <ion-content>
     <div class="logo">
         <a href="#/">
@@ -8,15 +8,15 @@
     <form ng-submit="doLogin()">
       <div class="list list-inset frm">
         <p class="login-itm">
-          <label class="login-input"
+          <label class="login-input item item-input"
             ng-class="{invalid: noCompayCode}">
-            <input type="text" ng-model="loginData.email" placeholder="Email" class="ipt">
+            <input type="text" ng-model="loginData.company_code" placeholder="Enter Company Code">
           </label>
         </p>
         <p>
-          <label class="login-input"
+          <label class="login-input item item-input"
             ng-class="{invalid: noUserCode}">
-            <input type="password" ng-model="loginData.user_code" placeholder="Member Key" class="ipt">
+            <input type="password" ng-model="loginData.user_code" placeholder="Enter Employee Verification Code">
           </label>
         </p>
         <p class="login-itm">

@@ -605,7 +605,7 @@ body {
 }
 /* LOGIN PAGE */
 .frm .invalid {
-    background-color: #fff0f0;
+    background-color: #FBEFDD;
 }
 .frm .login-btn {
     margin-top: 40px;

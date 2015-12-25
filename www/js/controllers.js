@@ -26,8 +26,6 @@ angular.module('starter.controllers', [])
  * LoginCtrl
  */
 .controller('LoginCtrl', function($scope, $stateParams, $location, $ionicPush, LoginService, $ionicLoading, $localstorage, OrgService) {
-	$scope.isSigned = true;
-
 	console.log('load login');
 	$scope.loginData = {};
 	$scope.user = $localstorage.getObject('user');
@@ -35,7 +33,7 @@ angular.module('starter.controllers', [])
 	$scope.noUserCode   = false;
 
 	if ($scope.user &&  (typeof $scope.user == 'object' && $scope.user.username)) {
-		$location.path('/app/handbooks');
+		$location.path('/app/myoffer');
 	}
 	$scope.doLogin = function() {
 		// var login = LoginService.login($scope.loginData.company_code, $scope.loginData.password);
@@ -84,7 +82,7 @@ angular.module('starter.controllers', [])
 						});
 
 						// GO TO HANDBOOK PAGE
-						$location.path('/app/handbooks');
+						$location.path('/app/myoffer');
 						location.reload();
 					}
 
