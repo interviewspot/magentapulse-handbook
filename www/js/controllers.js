@@ -119,11 +119,64 @@ angular.module('starter.controllers', [])
 /**
  * myOfferCtrl
  */
-.controller('myOfferCtrl', function ($scope, $location) {
-	// active page
-	$scope.isActive = function (path) {
-		return $location.path() === '/' + path ? true : false;
-	};
+.controller('myOfferCtrl',
+	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, ClientsService, $localstorage, $ionicLoading, OrgService, ImgService) {
+		$scope.cur_path = $location.path();
+		$scope.user     = $localstorage.getObject('user');
+		//$scope.org 		= $scope.user.company;
+		var _URL_outlet = {
+			_links : config.path.baseURL + config.path.outlets
+		};
+
+		// active page
+		$scope.isActive = function (path) {
+			return $location.path() === '/' + path ? true : false;
+		};
+
+		if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
+			$location.path('/app/login');
+			return;
+		}
+
+		if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
+			$ionicLoading.show();
+
+			// GET BUSINESS
+			ClientsService.get($scope.user.username
+							, $scope.user.password
+							, $scope.user.session_key
+							, _URL_outlet._links).then(function(res_data){
+				if(res_data.status != 200 || typeof res_data != 'object') { return; }
+				$ionicLoading.hide();
+				// get data
+				$scope.outlet_list = res_data.data._embedded.items;
+
+				console.log($scope.outlet_list);
+
+				angular.forEach($scope.outlet_list, function(item, i) {
+					ClientsService.get($scope.user.username
+							, $scope.user.password
+							, $scope.user.session_key
+							, $scope.outlet_list[i]._links.location.href).then(function(res){
+						if(res.status != 200 || typeof res != 'object') { return; }
+
+						//$scope.outlets = res.data;
+						console.log(res.data);
+
+					}, function (err){
+					  console.log('Connect API Sections fail!');
+					  $ionicLoading.hide();
+					});
+				});
+			}, function (err){
+			  console.log('Connect API Sections fail!');
+			  $ionicLoading.hide();
+			});
+		}
+
+		$scope.getAddressOutlet = function (id) {
+
+		};
 })
 /**
  * F&B Ctrl

@@ -2,6 +2,19 @@
 var config = {
   path : {
       'baseURL'               : 'https://api.sg-benefits.com',
+      'clients'               : '/organisations',
+      'client'                : '/organisations/:org_id',
+      'handbooks'             : '/organisations/:org_id/handbooks',
+      'handbook'              : '/organisations/:org_id/handbooks/:hand_id',
+      'sections'              : '/organisations/:org_id/handbooks/:hand_id/sections',
+      'section'               : '/organisations/:org_id/handbooks/:hand_id/sections/:section_id',
+      'section_children'      : '/organisations/:org_id/handbooks/:hand_id/sections/:section_id/children',
+      'section_parent'        : '/organisations/:org_id/handbooks/:hand_id/sections/parent',
+      'contacts'              : '/organisations/:org_id/positions',
+      'contact'               : '/organisations/:org_id/positions/:position_id',
+      'users'                 : '/users',
+      'user'                  : '/users/:email',
+      'outlets'               : '/promotion/outlets'
   }
 };
 // angular.module is a global place for creating, registering and retrieving Angular modules

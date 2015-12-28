@@ -499,6 +499,35 @@ p.login-itm {
 .login-caption-blk p:last-child {
     margin-bottom: 0px;
 }
+/* CLIENTS PAGE */
+.tbl-clients {
+  width: 100%;
+}
+.tbl-clients td, .tbl-clients th {
+  padding: 5px;
+}
+.tbl-clients th {
+  font-weight: bold;
+  text-align: left;
+  width: 150px;
+}
+.tbl-clients .td-actions a {
+  width: 20px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+}
+.tbl-clients .td-actions a:hover {
+  color: #000;
+}
+.client-itm {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.client-itm:last-child {
+  border-bottom: none;
+}
 /* HANDBOOK PAGE */
 body {
     color: rgb(64, 64, 64);

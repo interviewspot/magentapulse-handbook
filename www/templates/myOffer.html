@@ -51,95 +51,17 @@
             </div>
             <!-- -->
             <div class="list">
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>Mr Punch Public House</h2>
-                    <p class="address">26 Seah Street, 300m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-cutlery"></i>
-                        <span>Bistro</span>
-                    </div>
-                </a>
-                <!-- END -->
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>The Boiler Louisiana Seafood & Beer</h2>
-                    <p class="address">Novelty BizCentre, 350m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-beer"></i>
-                        <span>Bistro</span>
-                    </div>
-                </a>
-                <!-- END -->
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>Salads Wraps and Greens</h2>
-                    <p class="address">The Commerze, 450m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-cutlery"></i>
-                        <span>Salads</span>
-                    </div>
-                </a>
-                <!-- END -->
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>Mr Punch Public House</h2>
-                    <p class="address">26 Seah Street, 300m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-coffee"></i>
-                        <span>Bistro</span>
-                    </div>
-                </a>
-                <!-- END -->
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>The Boiler Louisiana Seafood & Beer</h2>
-                    <p class="address">Novelty BizCentre, 350m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-beer"></i>
-                        <span>Bistro</span>
-                    </div>
-                </a>
-                <!-- END -->
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>Salads Wraps and Greens</h2>
-                    <p class="address">The Commerze, 450m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-cutlery"></i>
-                        <span>Salads</span>
-                    </div>
-                </a>
-                <!-- END -->
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>Mr Punch Public House</h2>
-                    <p class="address">26 Seah Street, 300m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-cutlery"></i>
-                        <span>Bistro</span>
-                    </div>
-                </a>
-                <!-- END -->
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>The Boiler Louisiana Seafood & Beer</h2>
-                    <p class="address">Novelty BizCentre, 350m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-coffee"></i>
-                        <span>Bistro</span>
-                    </div>
-                </a>
-                <!-- END -->
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/coffee-bean-logo.jpg">
-                    <h2>Salads Wraps and Greens</h2>
-                    <p class="address">The Commerze, 450m</p>
-                    <div class="field-wrap">
-                        <i class="fa fa-cutlery"></i>
-                        <span>Salads</span>
-                    </div>
-                </a>
+                <div ng-repeat="(key, outlet) in outlet_list">
+                    <a class="item item-thumbnail-left" href="#">
+                        <img src="images/coffee-bean-logo.jpg">
+                        <h2>{{ outlet.name }}</h2>
+                        <p class="address">26 Seah Street, 300m</p>
+                        <div class="field-wrap">
+                            <i class="fa fa-cutlery"></i>
+                            <span>Bistro</span>
+                        </div>
+                    </a>
+                </div>
                 <!-- END -->
             </div>
             <!-- END: LIST -->
