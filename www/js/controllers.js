@@ -127,7 +127,7 @@ angular.module('starter.controllers', [])
 		var _URL_outlet = {
 			_links : config.path.baseURL + config.path.outlets
 		};
-
+//console.log($scope.org._links);
 		// active page
 		$scope.isActive = function (path) {
 			return $location.path() === '/' + path ? true : false;
@@ -140,6 +140,7 @@ angular.module('starter.controllers', [])
 
 		if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 			$ionicLoading.show();
+			console.log($scope.user);
 
 			// GET BUSINESS
 			ClientsService.get($scope.user.username
@@ -148,35 +149,31 @@ angular.module('starter.controllers', [])
 							, _URL_outlet._links).then(function(res_data){
 				if(res_data.status != 200 || typeof res_data != 'object') { return; }
 				$ionicLoading.hide();
-				// get data
+				//get data
 				$scope.outlet_list = res_data.data._embedded.items;
 
 				console.log($scope.outlet_list);
 
-				angular.forEach($scope.outlet_list, function(item, i) {
-					ClientsService.get($scope.user.username
-							, $scope.user.password
-							, $scope.user.session_key
-							, $scope.outlet_list[i]._links.location.href).then(function(res){
-						if(res.status != 200 || typeof res != 'object') { return; }
+				// angular.forEach($scope.outlet_list, function(item, i) {
+				// 	ClientsService.get($scope.user.username
+				// 			, $scope.user.password
+				// 			, $scope.user.session_key
+				// 			, $scope.outlet_list[i]._links.location.href).then(function(res){
+				// 		if(res.status != 200 || typeof res != 'object') { return; }
 
-						//$scope.outlets = res.data;
-						console.log(res.data);
+				// 		//$scope.outlets = res.data;
+				// 		console.log(res.data);
 
-					}, function (err){
-					  console.log('Connect API Sections fail!');
-					  $ionicLoading.hide();
-					});
-				});
+				// 	}, function (err){
+				// 	  console.log('Connect API Sections fail!');
+				// 	  $ionicLoading.hide();
+				// 	});
+				// });
 			}, function (err){
 			  console.log('Connect API Sections fail!');
 			  $ionicLoading.hide();
 			});
 		}
-
-		$scope.getAddressOutlet = function (id) {
-
-		};
 })
 /**
  * F&B Ctrl

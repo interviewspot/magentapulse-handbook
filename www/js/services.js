@@ -86,10 +86,10 @@ angular.module('starter.services', [])
             // url: config.path.baseURL + config.path.users,
             url: url,
             headers: {
-                "x-mode"    : "org_code",
+                //"x-mode"    : "org_code",
                 'x-username': username,
                 'x-password': password,
-                'x-session' : session
+                //'x-session' : session
             }
         })
         .then(function success(res){
@@ -100,7 +100,7 @@ angular.module('starter.services', [])
             return;
         });
         return d.promise;
-    }
+    };
 
     return services;
 })
