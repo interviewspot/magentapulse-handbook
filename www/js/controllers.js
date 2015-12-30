@@ -120,14 +120,14 @@ angular.module('starter.controllers', [])
  * myOfferCtrl
  */
 .controller('myOfferCtrl',
-	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, ClientsService, $localstorage, $ionicLoading, OrgService, ImgService) {
+	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, aRest, $localstorage, $ionicLoading, OrgService) {
 		$scope.cur_path = $location.path();
 		$scope.user     = $localstorage.getObject('user');
-		//$scope.org 		= $scope.user.company;
+		$scope.org 		= $scope.user.company;
 		var _URL_outlet = {
 			_links : config.path.baseURL + config.path.outlets
 		};
-//console.log($scope.org._links);
+
 		// active page
 		$scope.isActive = function (path) {
 			return $location.path() === '/' + path ? true : false;
@@ -140,39 +140,94 @@ angular.module('starter.controllers', [])
 
 		if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 			$ionicLoading.show();
-			console.log($scope.user);
+			$scope.limit = 1;
+			$scope.page  = 1;
+			$scope.pagination = {};
+			$scope.outlet_list = [];
+			$scope.noMoreItemsAvailable = false;
 
-			// GET BUSINESS
-			ClientsService.get($scope.user.username
+			// GET IMG
+			if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
+				aRest.get($scope.user.username
+					, $scope.user.password
+					, $scope.user.user.session_key
+					, $scope.org._links.logo.href + '/url' ).then(function (res) {
+					if (typeof res == 'object' && res.status == 200) {
+						$scope.org['logo'] = res.data.url;
+						$scope.user.company['logo'] = res.data.url;
+
+						// STORE in LOCAL
+						$localstorage.setObject('user', $scope.user);
+					}
+				}, function (err){
+				 	console.log('Connect API IMG fail!');
+				});
+			}
+
+			// function load more offer
+			$scope.loadOfferMore = function () {
+				if($scope.page > $scope.pagination.pages) {
+					$scope.noMoreItemsAvailable = true;
+					return;
+				}
+
+				// GET OUTLET LIST
+				aRest.get($scope.user.username
+								, $scope.user.password
+								, $scope.user.user.session_key
+								, _URL_outlet._links + '?limit=' + $scope.limit + '&page=' + $scope.page ).then(function(res_data){
+
+					if(res_data.status != 200 || typeof res_data != 'object') { return; }
+					$ionicLoading.hide();
+
+					//get data
+					$scope.outlet_list = $scope.outlet_list.concat(res_data.data._embedded.items);
+
+					// get outlet address
+					$scope.getOutletAddress($scope.outlet_list);
+
+
+					$scope.pagination       = {
+						"page": res_data.data.page,
+						"limit": res_data.data.limit,
+						"pages": res_data.data.pages,
+						"total": res_data.data.total
+					};
+					$scope.page = res_data.data.page + 1;
+
+					$scope.$broadcast('scroll.infiniteScrollComplete');
+
+				}, function (err){
+				  console.log('Connect API Sections fail!');
+				  $ionicLoading.hide();
+				});
+
+
+			};
+
+			$scope.getOutletAddress = function (data_outlet) {
+				angular.forEach(data_outlet, function(item, i) {
+					if( data_outlet[i]._links.location == undefined) { return; }
+
+					aRest.get($scope.user.username
 							, $scope.user.password
 							, $scope.user.session_key
-							, _URL_outlet._links).then(function(res_data){
-				if(res_data.status != 200 || typeof res_data != 'object') { return; }
-				$ionicLoading.hide();
-				//get data
-				$scope.outlet_list = res_data.data._embedded.items;
+							, data_outlet[i]._links.location.href).then(function(res){
+						if(res.status != 200 || typeof res != 'object') { return; }
 
-				console.log($scope.outlet_list);
+						// add address location
+						data_outlet[i]['outlet_address'] = res.data.name;
 
-				// angular.forEach($scope.outlet_list, function(item, i) {
-				// 	ClientsService.get($scope.user.username
-				// 			, $scope.user.password
-				// 			, $scope.user.session_key
-				// 			, $scope.outlet_list[i]._links.location.href).then(function(res){
-				// 		if(res.status != 200 || typeof res != 'object') { return; }
+					}, function (err){
+					  console.log('Connect API Sections fail!');
+					  $ionicLoading.hide();
+					});
+				});
+			};
 
-				// 		//$scope.outlets = res.data;
-				// 		console.log(res.data);
-
-				// 	}, function (err){
-				// 	  console.log('Connect API Sections fail!');
-				// 	  $ionicLoading.hide();
-				// 	});
-				// });
-			}, function (err){
-			  console.log('Connect API Sections fail!');
-			  $ionicLoading.hide();
-			});
+			$scope.$on('$stateChangeSuccess', function() {
+				$scope.loadOfferMore();
+		    });
 		}
 })
 /**

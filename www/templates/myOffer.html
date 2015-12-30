@@ -50,12 +50,12 @@
                 </ul>
             </div>
             <!-- -->
-            <div class="list">
+            <ion-list class="list">
                 <div ng-repeat="(key, outlet) in outlet_list">
-                    <a class="item item-thumbnail-left" href="#">
-                        <img src="images/coffee-bean-logo.jpg">
+                    <a class="item item-thumbnail-left" href="#/app/store-detail">
+                        <img ng-src="{{org.logo}}">
                         <h2>{{ outlet.name }}</h2>
-                        <p class="address">26 Seah Street, 300m</p>
+                        <p class="address">{{outlet.outlet_address}}</p>
                         <div class="field-wrap">
                             <i class="fa fa-cutlery"></i>
                             <span>Bistro</span>
@@ -63,8 +63,13 @@
                     </a>
                 </div>
                 <!-- END -->
-            </div>
+            </ion-list>
             <!-- END: LIST -->
+            <ion-infinite-scroll
+                ng-if="!noMoreItemsAvailable"
+                on-infinite="loadOfferMore()"
+                distance="1%">
+            </ion-infinite-scroll>
         </div>
         <!-- END: CONTENT -->
     </ion-content>
