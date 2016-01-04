@@ -161,10 +161,19 @@ angular.module('starter', [
     }
   })
   .state('app.store-detail', {
-    url : '/store-detail',
+    url : '/store-detail/:outlet_id',
     views: {
       'menuContent' : {
         templateUrl: 'templates/store-detail.html',
+        controller : 'storeDetailCtrl'
+      }
+    }
+  })
+  .state('app.store-contact', {
+    url : '/store-contact/:outlet_id',
+    views: {
+      'menuContent' : {
+        templateUrl: 'templates/store-contact.html',
         controller : 'storeDetailCtrl'
       }
     }

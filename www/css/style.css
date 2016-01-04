@@ -342,6 +342,17 @@ p.login-itm {
     background-color: #eee;
     margin-bottom: 10px;
 }
+.store-desc table {
+  width: 100%;
+}
+.store-desc table td,
+.store-desc table th {
+  padding: 5px;
+}
+.store-desc table th {
+  text-align: left;
+  font-weight: bold;
+}
 .store-offer {
     padding-left: 10px;
 }
@@ -527,6 +538,10 @@ p.login-itm {
 }
 .client-itm:last-child {
   border-bottom: none;
+}
+.item-thumbnail-left > img:first-child {
+  width: auto;
+  height: auto;
 }
 /* HANDBOOK PAGE */
 body {

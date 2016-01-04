@@ -52,7 +52,7 @@
             <!-- -->
             <ion-list class="list">
                 <div ng-repeat="(key, outlet) in outlet_list">
-                    <a class="item item-thumbnail-left" href="#/app/store-detail">
+                    <a class="item item-thumbnail-left" href="#/app/store-detail/{{outlet.id}}">
                         <img ng-src="{{org.logo}}">
                         <h2>{{ outlet.name }}</h2>
                         <p class="address">{{outlet.outlet_address}}</p>

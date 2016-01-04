@@ -176,15 +176,13 @@ angular.module('starter.controllers', [])
 								, $scope.user.password
 								, $scope.user.user.session_key
 								, _URL_outlet._links + '?limit=' + $scope.limit + '&page=' + $scope.page ).then(function(res_data){
-
 					if(res_data.status != 200 || typeof res_data != 'object') { return; }
 					$ionicLoading.hide();
-
 					//get data
 					$scope.outlet_list = $scope.outlet_list.concat(res_data.data._embedded.items);
 
 					// get outlet address
-					$scope.getOutletAddress($scope.outlet_list);
+					_getOutletAddress($scope.outlet_list);
 
 
 					$scope.pagination       = {
@@ -205,7 +203,7 @@ angular.module('starter.controllers', [])
 
 			};
 
-			$scope.getOutletAddress = function (data_outlet) {
+			_getOutletAddress = function (data_outlet) {
 				angular.forEach(data_outlet, function(item, i) {
 					if( data_outlet[i]._links.location == undefined) { return; }
 
@@ -327,8 +325,155 @@ angular.module('starter.controllers', [])
 /**
  * store detail Ctrl
  */
-.controller('storeDetailCtrl', function ($scope) {
+.controller('storeDetailCtrl', function ($scope, $rootScope, $location, $stateParams, $ionicPush, $localstorage, $ionicLoading, aRest) {
+	// active page
+	$scope.isActive = function (path) {
+		return $location.path() === '/' + path ? true : false;
+	};
 
+	$scope.cur_path = $location.path();
+	$scope.user     = $localstorage.getObject('user');
+	$scope.org 		= $scope.user.company;
+	$scope.outlet_id = $stateParams.outlet_id;
+	var _URL_outlet = {
+			_links : config.path.baseURL + config.path.outlets
+		};
+
+	if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
+		$location.path('/app/login');
+		return;
+	}
+
+	if(!$scope.outlet_id ) {
+		$location.path('/app/myoffer');
+		return;
+	}
+
+	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
+		$ionicLoading.show();
+
+		$scope.detail_outlet = {};
+		aRest.get($scope.user.username
+			, $scope.user.password
+			, $scope.user.user.session_key
+			, _URL_outlet._links + '?search=outlet.id:' + $scope.outlet_id).then(function(res_data){
+				$ionicLoading.hide();
+
+				if(!res_data.data._embedded.items ) {
+					$location.path('/app/myoffer');
+					return;
+				}
+				$scope.detail_outlet = res_data.data._embedded.items[0];
+
+				// get outlet address
+				_getOutletDetailAddress($scope.detail_outlet);
+
+				// get outlet bussiness
+				_getOutletBussiness($scope.detail_outlet);
+
+		}, function (err){
+		  console.log('Connect API Sections fail!');
+		  $ionicLoading.hide();
+		});
+
+		// get outlet address
+		_getOutletDetailAddress = function (data_outlet) {
+			if( data_outlet._links.location == undefined) { return; }
+
+			aRest.get($scope.user.username
+					, $scope.user.password
+					, $scope.user.user.session_key
+					, data_outlet._links.location.href).then(function(res){
+				if(res.status != 200 || typeof res != 'object') { return; }
+
+				// add address location
+				data_outlet['outlet_address'] = res.data.name;
+
+			}, function (err){
+			  console.log('Connect API Sections fail!');
+			  $ionicLoading.hide();
+			});
+		};
+
+		// get outlet bussiness
+		_getOutletBussiness = function (data_outlet) {
+			if( data_outlet._links.business == undefined) { return; }
+
+			aRest.get($scope.user.username
+					, $scope.user.password
+					, $scope.user.user.session_key
+					, data_outlet._links.business.href).then(function(res){
+				if(res.status != 200 || typeof res != 'object') { return; }
+
+				$scope.outlet_business = res.data;
+
+				// get owner business
+				_getOwnerBusiness($scope.outlet_business);
+
+			}, function (err){
+			  console.log('Connect API Sections fail!');
+			  $ionicLoading.hide();
+			});
+		};
+
+		// get owner business
+		_getOwnerBusiness = function (data_owner) {
+			aRest.get($scope.user.username
+				, $scope.user.password
+				, $scope.user.user.session_key
+				, data_owner._links.owner.href).then(function(res_owner){
+					console.log(res_owner.data);
+					// about company
+					$scope.detail_outlet['about_company'] = res_owner.data.about_company;
+					$scope.detail_outlet['company_name'] = res_owner.data.name;
+					$scope.detail_outlet['office_address'] = res_owner.data.office_address;
+					$scope.detail_outlet['code'] = res_owner.data.code;
+					$scope.detail_outlet['head_office_no'] = res_owner.data.head_office_no;
+
+					// GET LOGO
+					aRest.get($scope.user.username
+						, $scope.user.password
+						, $scope.user.user.session_key
+						, res_owner.data._links.logo.href + '/url').then(function (res_logo) {
+						if (typeof res_logo == 'object' && res_logo.status == 200) {
+							$scope.detail_outlet['logo'] = res_logo.data.url;
+						}
+					}, function (err){
+					 	console.log('Connect API IMG fail!');
+					});
+
+					// GET BANNERs
+					if(!res_owner.data._links.banners) { return;}
+					aRest.get($scope.user.username
+						, $scope.user.password
+						, $scope.user.user.session_key
+						, res_owner.data._links.banners.href).then(function (res) {
+						if (typeof res == 'object' && res.status == 200) {
+
+							var _URL_getBanner = config.path.baseURL + res.data._embedded.items[0]._links.url.href;
+
+							aRest.get($scope.user.username
+								, $scope.user.password
+								, $scope.user.user.session_key
+								, _URL_getBanner).then(function (res_banner) {
+								if (typeof res_banner == 'object' && res_banner.status == 200) {
+									$scope.detail_outlet['banner'] = res_banner.data.url;
+								}
+							}, function (err){
+							 	console.log('Connect API IMG fail!');
+							});
+
+						}
+					}, function (err){
+					 	console.log('Connect API IMG fail!');
+					});
+
+			}, function (err){
+			  console.log('Connect API Sections fail!');
+			  $ionicLoading.hide();
+			});
+		};
+	}
 })
 /**
  * main course Ctrl
