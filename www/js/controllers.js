@@ -183,7 +183,7 @@ angular.module('starter.controllers', [])
 		if ($scope.org._links.handbooks) {
 			$scope.handbooks = $localstorage.getObject('handbooks');
 
-			var ony_active = "?search=handbook.active:1";
+			var ony_active = "?search=handbook.enabled:1";
 			HandbookService.get($scope.user.username
 							  , $scope.user.password
 							  , $scope.user.session_key
