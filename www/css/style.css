@@ -452,6 +452,55 @@ p.login-itm {
 .main-course.error {
   background-color: #a5a5a5;
 }
+.itm-head-menu {
+  width: 150px;
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  height: 33px;
+}
+.itm-head-menu:after {
+  left: 0;
+}
+.itm-head-menu select {
+  padding-right: 0;
+  max-width: none;
+  white-space: normal;
+  position: relative;
+  right: inherit;
+  direction: ltr;
+}
+.pop-outlet .out-info h3 {
+  font-size: 14px;
+  line-height: 18px;
+  margin-bottom: 0;
+  color: #000;
+  text-transform: capitalize;
+}
+.pop-outlet .out-info {
+  margin-left: 50px;
+}
+.pop-outlet a {
+  color: #727272;
+}
+.pop-outlet figure {
+  float: left;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+}
+.pop-outlet figure img {
+  max-width: none;
+  height: 100%;
+}
+.gm-style .gm-style-iw {
+  width: 220px !important;
+}
+.pop-outlet .out-info p {
+  margin-bottom: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
 /* CSS FOOTER */
 .bg-gray {
     background-color: #eee !important;

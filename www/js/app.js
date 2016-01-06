@@ -178,6 +178,15 @@ angular.module('starter', [
       }
     }
   })
+  .state('app.store-location', {
+    url : '/store-location/:outlet_id',
+    views: {
+      'menuContent' : {
+        templateUrl: 'templates/store-location.html',
+        controller : 'storeDetailCtrl'
+      }
+    }
+  })
   .state('app.main-course', {
     url : '/main-course',
     views: {

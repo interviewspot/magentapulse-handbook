@@ -1,0 +1,237 @@
+<ion-view view-title="Detail">
+    <div class="bar bar-header bar-light header-wrap">
+        <div class="header-inner t-c head-ctent">
+            <a href="#" title="Back" class="h-back">
+                <i class="fa fa-chevron-left"></i>
+            </a>
+            {{detail_outlet.name}}
+
+        </div>
+    </div>
+    <!-- END: HEADER -->
+    <ion-content>
+        <div class="content has-header ionic-pseudo pb-50">
+            <figure class="store-img">
+                <img ng-src="{{detail_outlet.banner}}" alt="">
+            </figure>
+            <!-- END: IMG -->
+            <div class="list store-info">
+                <a class="item item-nbd item-thumbnail-left" href="#">
+                    <img ng-src="{{detail_outlet.logo}}">
+                    <h2>{{detail_outlet.name}}</h2>
+                    <p class="direction">{{detail_outlet.outlet_address}}</p>
+                    <p class="address">Bistro, 300m</p>
+                </a>
+                <div class="area">
+                    Area: Central:
+                    <span>Brash Bahsa</span>
+                </div>
+            </div>
+            <!-- END INFO -->
+            <div class="menu-pagi clearfix">
+                <ul>
+                    <li>
+                        <a
+                        href="#/app/store-detail/{{detail_outlet.id}}"
+                        title="About">
+                        About</a>
+                    </li>
+                    <li>
+                        <a
+                        href="#/app/store-contact/{{detail_outlet.id}}"
+                        title="Contact">Contact</a>
+                    </li>
+                    <li>
+                        <a
+                        class="active"
+                        href="#/app/store-location/{{detail_outlet.id}}"
+                        title="Locations">Locations</a>
+                    </li>
+                    <li>
+                        <a href="#" title="Menu">Menu</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- END: MENU -->
+            <div
+            class="store-desc">
+                <table>
+                    <tr>
+                        <th>Company Reg Biz Name</th>
+                        <td>{{detail_outlet.company_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <td>{{detail_outlet.code}}</td>
+                    </tr>
+                    <tr>
+                        <th>Address</th>
+                        <td>{{detail_outlet.office_address}}</td>
+                    </tr>
+                    <tr>
+                        <th>Office Number</th>
+                        <td>{{detail_outlet.head_office_no}}</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- END: DESC -->
+            <div class="store-offer">
+                <h3 class="store-offer-ttl">OFFER PROVIDED BY MERCHANT</h3>
+                <span class="cap">Click on offers below to Redeem or to view details</span>
+                <div
+                data-toggle="modal"
+                data-target="#myOffer"
+                class="offer-itm clearfix">
+                    <figure class="fir-icon">
+                        <i class="fa fa-cutlery"></i>
+                    </figure>
+                    <div class="offer-info">
+                        <h4>1-For-1 Main Menu</h4>
+                        <span>EXPIRES 31 DEC 2015</span>
+                    </div>
+                </div>
+                <!-- END: ITM -->
+            </div>
+            <!-- END: OFFER -->
+        </div>
+        <!-- END: CONTENT -->
+    </ion-content>
+    <div class="modal fade md-offer" id="myOffer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">SGBenefit</h4>
+          </div>
+          <div class="modal-body">
+            <div class="md-body-inner">
+                <div class="md-logo">
+                    <img src="images/coffee-bean-logo.jpg">
+                </div>
+                <!-- END LOGO -->
+                <h2 class="md-ttl">1-For-1 Main Menu</h2>
+                <div class="md-caption">
+                    Enjoy a complimentary
+                    <a href='#'>MAIN MENU ITEM</a> when a <a href='#'>MAIN MENU ITEM</a> of equal or greater value is purchased.
+                </div>
+                <!-- END -->
+                <div class="md-purchase">
+                    <p class="small bold">Estimated Savings: SGD 22</p>
+                    <p><a
+                    title="Redeem"
+                    class="btn btn-yellow"
+                    data-toggle="modal"
+                    data-target="#myRedeem"
+                    data-dismiss="modal"
+                    >Redeem</a></p>
+                    <p class="bold">Expires 31 Dec 2015</p>
+                    <p>Visit outlet to redeem</p>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <p class="t-c">
+                  <a href="#">Review Terms of Use</a>
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Offer -->
+    <div class="modal fade md-offer" id="myRedeem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">SGBenefit</h4>
+          </div>
+          <div class="modal-body">
+            <div class="md-body-inner">
+                <div class="md-logo">
+                    <img src="images/coffee-bean-logo.jpg">
+                </div>
+                <!-- END LOGO -->
+                <h2 class="md-ttl">Successfully Redeemed!</h2>
+                <p>Redemption Code: AA1222354</p>
+                <div class="md-purchase">
+                    <p class="small bold">Estimated Savings: SGD 22</p>
+                    <p><a href="#" title="Subscribe" class="btn btn-yellow">Subscribe</a></p>
+                    <p>Subscribe and earn exclusive benefits or be the first to know of new promotions from this merchant</p>
+                </div>
+                <div class="share-social">
+                    <p class="small">Share This With Friends</p>
+                    <ul class="clearfix social-box">
+                        <li>
+                            <a href="#" class="sc-face" title="Facebook">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sc-twitter" title="Twitter">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sc-linkedin" title="Linkedin">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sc-google" title="Google plus">
+                                <i class="fa fa-google-plus"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sc-share" title="Share">
+                                <i class="fa fa-share-alt"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <p class="t-c">
+                  <a href="#">Review Terms of Use</a>
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal myRedeem -->
+    <div class="bar bar-footer bar-balanced bg-gray">
+        <ul>
+            <li>
+                <a href="#" title="Offers">
+                    <i class="ico w20 ico-logo"></i>
+                    Offers
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Nearby">
+                    <i class="fa fa-map-marker"></i>
+                    Nearby
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Favorites">
+                    <i class="fa fa-star-o"></i>
+                    Favorites
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Savings">
+                    <i class="fa fa-usd"></i>
+                    Savings
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Account">
+                    <i class="fa fa-user"></i>
+                    Account
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- END: FOOTER -->
+</ion-view>

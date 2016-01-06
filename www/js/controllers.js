@@ -120,7 +120,7 @@ angular.module('starter.controllers', [])
  * myOfferCtrl
  */
 .controller('myOfferCtrl',
-	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, aRest, $localstorage, $ionicLoading, OrgService) {
+	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, aRest, $localstorage, $ionicLoading) {
 		$scope.cur_path = $location.path();
 		$scope.user     = $localstorage.getObject('user');
 		$scope.org 		= $scope.user.company;
@@ -257,45 +257,192 @@ angular.module('starter.controllers', [])
 })
 /**
  * Location Ctrl
+ * 1. GET OUTLET LOCATION
+ * 1.1 get outlet address
+ * 1.2 get outlet bussiness
+ * 1.3 get owner business (get logo)
+ * 2. INIT MAPs
  */
-.controller('locationCtrl', function ($scope, $location, $ionicLoading, $compile, $sce) {
+.controller('locationCtrl',
+	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, aRest, $localstorage, $ionicLoading, $compile, $sce) {
+	// 1. GET OUTLET LOCATION
+	$scope.cur_path = $location.path();
+	$scope.user     = $localstorage.getObject('user');
+	$scope.org 		= $scope.user.company;
+	var _URL_outlet = {
+		_links : config.path.baseURL + config.path.outlets
+	};
+
 	// active page
 	$scope.isActive = function (path) {
 		return $location.path() === '/' + path ? true : false;
 	};
 
+	if (!$scope.user ||  (typeof $scope.user == 'object' && !$scope.user.username)) {
+		$location.path('/app/login');
+		return;
+	}
 
+	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
+		// GET OUTLET LIST
+		aRest.get($scope.user.username
+						, $scope.user.password
+						, $scope.user.user.session_key
+						, _URL_outlet._links ).then(function(res_data){
+			if(res_data.status != 200 || typeof res_data != 'object') { return; }
+			$ionicLoading.hide();
+
+			//get data
+			$scope.outlet_list = res_data.data._embedded.items;
+
+			// get outlet address
+			_getOutletAddress($scope.outlet_list);
+
+
+		}, function (err){
+		  console.log('Connect API Sections fail!');
+		  $ionicLoading.hide();
+		});
+
+		// 1.1 get outlet address
+		_getOutletAddress = function (data_outlet) {
+			angular.forEach(data_outlet, function(item, i) {
+				if( data_outlet[i]._links.location == undefined) { return; }
+
+				aRest.get($scope.user.username
+						, $scope.user.password
+						, $scope.user.session_key
+						, data_outlet[i]._links.location.href).then(function(res){
+					if(res.status != 200 || typeof res != 'object') { return; }
+
+					// get outlet bussiness
+					$scope.outlet_list[i]['logo_url']     = "";
+					_getOutletBussiness(data_outlet[i], i, function() {
+						// add address location
+						$scope.outlet_list[i]['geo_location'] = res.data;
+
+						$scope.addMaker($scope.outlet_list[i], i);
+
+						if (data_outlet.length-1 == i) {
+							$scope.map.fitBounds($scope.bounds);
+						}
+					});
+
+				}, function (err){
+				  console.log('Connect API Sections fail!');
+				  $ionicLoading.hide();
+				});
+			});
+
+		};
+		// 1.2 get outlet bussiness
+		_getOutletBussiness = function (data_outlet, index, callback) {
+			if( data_outlet._links.business == undefined) { return; }
+
+			aRest.get($scope.user.username
+					, $scope.user.password
+					, $scope.user.user.session_key
+					, data_outlet._links.business.href).then(function(res){
+				if(res.status != 200 || typeof res != 'object') { return; }
+
+				$scope.outlet_business = res.data;
+
+				// get owner business
+				_getOwnerBusiness($scope.outlet_business, index, callback);
+
+			}, function (err){
+			  console.log('Connect API Sections fail!');
+			  $ionicLoading.hide();
+			});
+		};
+
+		// 1.3 get owner business (get logo)
+		_getOwnerBusiness = function (data_owner, index, callback) {
+			aRest.get($scope.user.username
+				, $scope.user.password
+				, $scope.user.user.session_key
+				, data_owner._links.owner.href).then(function(res_owner){
+
+					// GET LOGO
+					aRest.get($scope.user.username
+						, $scope.user.password
+						, $scope.user.user.session_key
+						, res_owner.data._links.logo.href + '/url').then(function (res_logo) {
+
+						if (typeof res_logo == 'object' && res_logo.status == 200) {
+							$scope.outlet_list[index]['logo_url'] = res_logo.data.url;
+						}
+
+						callback();
+
+					}, function (err){
+					 	console.log('Connect API IMG fail!');
+					});
+
+			}, function (err){
+			  console.log('Connect API Sections fail!');
+			  $ionicLoading.hide();
+			});
+		};
+	}
+
+	// 2. INIT MAPs
 	$scope.init = function() {
-        var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
+        var myLatlng = new google.maps.LatLng(1.308122, 103.818424);
 
         var mapOptions = {
           center: myLatlng,
-          zoom: 16,
+          zoom: 14,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map"),
             mapOptions);
 
-        //Marker + infowindow + angularjs compiled ng-click
-        var contentString = "<div><a ng-click='clickTest()'>Click me!</a></div>";
-        var compiled = $compile(contentString)($scope);
+        $scope.map = map;
+        $scope.bounds = new google.maps.LatLngBounds();
+        $('.blk-maps').height(window.screen.height);
 
-        var infowindow = new google.maps.InfoWindow({
-          content: compiled[0]
-        });
+
+    };
+
+    // function add maker
+    $scope.addMaker = function (data_outlet, index) {
+    	console.log($scope.outlet_list[index].logo_url);
+    	var myLatlng = new google.maps.LatLng(data_outlet.geo_location.geo_lat, data_outlet.geo_location.geo_lng);
+    	$scope.bounds.extend(myLatlng);
 
         var marker = new google.maps.Marker({
           position: myLatlng,
-          map: map,
-          title: 'AG BENEFIT'
+          map: $scope.map,
+          title: data_outlet.geo_location.name,
         });
+
+        //Marker + infowindow + angularjs compiled ng-click
+        var contentString = "<div class='pop-outlet'>"
+        				  +		"<a href='#/app/store-detail/"+ data_outlet.id +"'>"
+        				  +			"<figure><img ng-src='"+ $scope.outlet_list[index].logo_url +"'/></figure>"
+        				  +			"<div class='out-info'><h3>"+ data_outlet.name +"</h3>"
+        				  +				"<p>"+ data_outlet.geo_location.name +"</p>"
+        				  +			"</div>"
+        				  +		"</a>"
+        				  +	"</div>";
+        var compiled = $compile(contentString)($scope);
+
+        var infowindow;
+        infowindow = null;
 
         google.maps.event.addListener(marker, 'click', function() {
-         	infowindow.open(map,marker);
+        	if(infowindow) {
+	            infowindow.close();
+	            infowindow = null;
+	            return;
+	        }
+         	infowindow = new google.maps.InfoWindow({
+	          content: compiled[0]
+	        });
+	        infowindow.open($scope.map, marker);
         });
 
-        $scope.map = map;
-        $('.blk-maps').height(window.screen.height);
     };
 
     // google.maps.event.addDomListener(window, 'load', initialize);
