@@ -41,7 +41,7 @@
 				<div class="item"
                     ng-show="isGroupShown(section)" >
                     <div class="section-ct"
-                        ng-show="{section.lang['en_us'].description || section.description}"
+                        ng-show="section.lang['en_us'].description || section.description"
                         ng-class="(section.children._embedded) ? '' : 'no-child'"
                         ng-bind-html="section.lang['en_us'].description ? section.lang['en_us'].description : section.description"
                         ></div>
