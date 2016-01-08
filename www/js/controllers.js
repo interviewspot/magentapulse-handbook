@@ -472,7 +472,7 @@ angular.module('starter.controllers', [])
 /**
  * store detail Ctrl
  */
-.controller('storeDetailCtrl', function ($scope, $rootScope, $location, $stateParams, $ionicPush, $localstorage, $ionicLoading, aRest) {
+.controller('storeDetailCtrl', function ($scope, $rootScope, $location, $stateParams, $ionicPush, $localstorage, $ionicLoading, aRest, $uibModal, $log) {
 	// active page
 	$scope.isActive = function (path) {
 		return $location.path() === '/' + path ? true : false;
@@ -482,6 +482,7 @@ angular.module('starter.controllers', [])
 	$scope.user     = $localstorage.getObject('user');
 	$scope.org 		= $scope.user.company;
 	$scope.outlet_id = $stateParams.outlet_id;
+	console.log($scope.user.user);
 	var _URL_outlet = {
 			_links : config.path.baseURL + config.path.outlets
 		};
@@ -557,6 +558,9 @@ angular.module('starter.controllers', [])
 				// get owner business
 				_getOwnerBusiness($scope.outlet_business);
 
+				// get promotions business
+				_getPromotionsBusiness($scope.outlet_business);
+
 			}, function (err){
 			  console.log('Connect API Sections fail!');
 			  $ionicLoading.hide();
@@ -569,7 +573,8 @@ angular.module('starter.controllers', [])
 				, $scope.user.password
 				, $scope.user.user.session_key
 				, data_owner._links.owner.href).then(function(res_owner){
-					console.log(res_owner.data);
+					if (typeof res_owner != 'object' && res_owner.status != 200) { return; }
+
 					// about company
 					$scope.detail_outlet['about_company'] = res_owner.data.about_company;
 					$scope.detail_outlet['company_name'] = res_owner.data.name;
@@ -620,7 +625,64 @@ angular.module('starter.controllers', [])
 			  $ionicLoading.hide();
 			});
 		};
+
+		// get promotions buniness
+		_getPromotionsBusiness = function (data_promotion) {
+			if( data_promotion._links.promotions == undefined) { return; }
+
+			aRest.get($scope.user.username
+				, $scope.user.password
+				, $scope.user.user.session_key
+				, data_promotion._links.promotions.href + '?search=promotion.enabled:1').then(function(res_promotion){
+
+				if (typeof res_promotion != 'object' && res_promotion.status != 200) { return; }
+
+				$scope.detail_outlet['promotions'] = res_promotion.data;
+
+			}, function (err){
+				console.log('Connect API Sections fail!');
+				$ionicLoading.hide();
+			});
+		};
+
+		// function show modal
+		$scope.openModalPromotion = function (data_promo, id) {
+		    var modalInstance = $uibModal.open({
+		      templateUrl: 'myPromotion.html',
+		      controller: 'popPromotionCtrl',
+		      resolve: {
+		        items: function () {
+		          return {
+		          	data : $scope.detail_outlet,
+		          	id : id
+		          }
+		        }
+		      }
+		    });
+
+		    modalInstance.result.then(function (selectedItem) {
+		      $scope.selected = selectedItem;
+		    }, function () {
+		      $log.info('Modal dismissed at: ' + new Date());
+		    });
+		  };
 	}
+})
+/**
+ * popPromotionCtrl
+ */
+.controller('popPromotionCtrl',
+	function ($scope, $uibModalInstance, items) {
+		$scope.md_promotion = items.data.promotions._embedded.items[items.id];
+		$scope.outlet_info  = items.data;
+
+		$scope.ok = function () {
+			$uibModalInstance.close($scope.selected.item);
+		};
+
+		$scope.cancel = function () {
+			$uibModalInstance.dismiss('cancel');
+		};
 })
 /**
  * main course Ctrl

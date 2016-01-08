@@ -8,6 +8,7 @@
     "ionic-service-push": "~0.1.13",
     "platform.js": "platform#~1.3.0",
     "jquery": "~2.1.0",
-    "ionic-platform-web-client": "~0.2.1"
+    "ionic-platform-web-client": "~0.2.1",
+    "angular-bootstrap": "~0.14.3"
   }
 }

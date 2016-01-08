@@ -61,66 +61,68 @@
             <div class="store-offer">
                 <h3 class="store-offer-ttl">OFFER PROVIDED BY MERCHANT</h3>
                 <span class="cap">Click on offers below to Redeem or to view details</span>
-                <div
-                data-toggle="modal"
-                data-target="#myOffer"
-                class="offer-itm clearfix">
-                    <figure class="fir-icon">
-                        <i class="fa fa-cutlery"></i>
-                    </figure>
-                    <div class="offer-info">
-                        <h4>1-For-1 Main Menu</h4>
-                        <span>EXPIRES 31 DEC 2015</span>
+
+                <div ng-repeat="(key, promotion) in detail_outlet.promotions._embedded.items">
+                    <div
+                    ng-click="openModalPromotion(detail_outlet, key)"
+                    class="offer-itm clearfix">
+                        <figure class="fir-icon">
+                            <i class="fa fa-cutlery"></i>
+                        </figure>
+                        <div class="offer-info">
+                            <h4>{{promotion.title}}</h4>
+                            <span>EXPIRES {{promotion.expire_on  | date:'dd MMM yyyy'}}</span>
+                        </div>
                     </div>
                 </div>
                 <!-- END: ITM -->
+
             </div>
             <!-- END: OFFER -->
         </div>
         <!-- END: CONTENT -->
-    </ion-content>
-    <div class="modal fade md-offer" id="myOffer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">SGBenefit</h4>
-          </div>
-          <div class="modal-body">
-            <div class="md-body-inner">
-                <div class="md-logo">
-                    <img src="images/coffee-bean-logo.jpg">
-                </div>
-                <!-- END LOGO -->
-                <h2 class="md-ttl">1-For-1 Main Menu</h2>
-                <div class="md-caption">
-                    Enjoy a complimentary
-                    <a href='#'>MAIN MENU ITEM</a> when a <a href='#'>MAIN MENU ITEM</a> of equal or greater value is purchased.
-                </div>
-                <!-- END -->
-                <div class="md-purchase">
-                    <p class="small bold">Estimated Savings: SGD 22</p>
-                    <p><a
-                    title="Redeem"
-                    class="btn btn-yellow"
-                    data-toggle="modal"
-                    data-target="#myRedeem"
-                    data-dismiss="modal"
-                    >Redeem</a></p>
-                    <p class="bold">Expires 31 Dec 2015</p>
-                    <p>Visit outlet to redeem</p>
+        <script type="text/ng-template" id="myPromotion.html">
+            <div class="md-offer">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{outlet_info.name}}</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="md-body-inner">
+                        <div class="md-logo">
+                            <img ng-src="{{outlet_info.logo}}">
+                        </div>
+                        <!-- END LOGO -->
+                        <h2 class="md-ttl">{{md_promotion.title}}</h2>
+                        <div class="md-caption">
+                            Enjoy a complimentary
+                            <a href='#'>MAIN MENU ITEM</a> when a <a href='#'>MAIN MENU ITEM</a> of equal or greater value is purchased.
+                        </div>
+                        <!-- END -->
+                        <div class="md-purchase">
+                            <p class="small bold">Estimated Savings: SGD {{md_promotion.estimated_value}}</p>
+                            <p>
+                            <a
+                            href="#/app/main-course"
+                            title="Redeem"
+                            class="btn btn-yellow"
+                            >Redeem</a></p>
+                            <p class="bold">Expires {{md_promotion.expire_on  | date:'dd MMM yyyy'}}</p>
+                            <p>Visit outlet to redeem</p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                      <p class="t-c">
+                          <a href="#">Review Terms of Use</a>
+                      </p>
+                  </div>
                 </div>
             </div>
-          </div>
-          <div class="modal-footer">
-              <p class="t-c">
-                  <a href="#">Review Terms of Use</a>
-              </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Modal Offer -->
+        </script>
+        <!-- Modal Offer -->
+    </ion-content>
     <div class="modal fade md-offer" id="myRedeem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
