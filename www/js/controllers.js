@@ -409,6 +409,7 @@ angular.module('starter.controllers', [])
     $scope.addMaker = function (data_outlet, index) {
     	console.log($scope.outlet_list[index].logo_url);
     	var myLatlng = new google.maps.LatLng(data_outlet.geo_location.geo_lat, data_outlet.geo_location.geo_lng);
+
     	$scope.bounds.extend(myLatlng);
 
         var marker = new google.maps.Marker({
@@ -472,7 +473,8 @@ angular.module('starter.controllers', [])
 /**
  * store detail Ctrl
  */
-.controller('storeDetailCtrl', function ($scope, $rootScope, $location, $stateParams, $ionicPush, $localstorage, $ionicLoading, aRest, $uibModal, $log) {
+.controller('storeDetailCtrl',
+	function ($scope, $rootScope, $location, $stateParams, $ionicPush, $localstorage, $ionicLoading, aRest, $uibModal, $log) {
 	// active page
 	$scope.isActive = function (path) {
 		return $location.path() === '/' + path ? true : false;
@@ -500,6 +502,7 @@ angular.module('starter.controllers', [])
 	if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$ionicLoading.show();
 
+		// DGET DETAIl OUTLET
 		$scope.detail_outlet = {};
 		aRest.get($scope.user.username
 			, $scope.user.password
@@ -515,9 +518,11 @@ angular.module('starter.controllers', [])
 
 				// get outlet address
 				_getOutletDetailAddress($scope.detail_outlet);
-
+				console.log($scope.detail_outlet);
 				// get outlet bussiness
 				_getOutletBussiness($scope.detail_outlet);
+				// get promotions business
+				_getPromotionsBusiness($scope.detail_outlet);
 
 		}, function (err){
 		  console.log('Connect API Sections fail!');
@@ -559,7 +564,7 @@ angular.module('starter.controllers', [])
 				_getOwnerBusiness($scope.outlet_business);
 
 				// get promotions business
-				_getPromotionsBusiness($scope.outlet_business);
+				//_getPromotionsBusiness($scope.outlet_business);
 
 			}, function (err){
 			  console.log('Connect API Sections fail!');
@@ -687,7 +692,12 @@ angular.module('starter.controllers', [])
 /**
  * main course Ctrl
  */
-.controller('courseCtrl', function ($scope) {
+.controller('courseCtrl',
+	function ($scope, $uibModal) {
+		if ($('.modal').length) {
+			$('.modal').remove();
+			$('.modal-backdrop').remove();
+		}
 
 })
 /**

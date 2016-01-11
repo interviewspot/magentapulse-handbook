@@ -978,6 +978,11 @@ button.close {
 .md-offer .share-social p {
   margin-bottom: 5px;
 }
+.modal-content {
+  border: none;
+  background-color: none;
+  background: none;
+}
 @media (min-width: 768px) {
   .modal-dialog {
     width: 600px;
