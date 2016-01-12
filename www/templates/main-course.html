@@ -4,19 +4,19 @@
             <a href="#" title="Back" class="h-back">
                 <i class="fa fa-chevron-left"></i>
             </a>
-            Mr Punch Public House
+            {{outlets_promo.company_name}}
         </div>
     </div>
     <!-- END: HEADER -->
     <ion-content class="main-course t-c">
         <div class="content has-header ionic-pseudo pb-50">
             <div class="mc-logo">
-                <img src="images/coffee-bean-logo.jpg" alt="">
+                <img ng-src="{{outlets_promo.logo}}" ng-alt="{{outlets_promo.company_name}}">
             </div>
             <!-- END LOGO -->
-            <h2 class="course-ttl">Main Course</h2>
-            <p>Company Name: Magenta Consulting</p>
-            <p>Employee Name: Kenneth Yap</p>
+            <h2 class="course-ttl">{{outlets_promo.name}}</h2>
+            <p>Company Name: {{outlets_promo.company_name}}</p>
+            <p>Employee Name:  {{user.user.first_name}} {{user.user.last_name}}</p>
             <ul class="clearfix input-course">
                 <li>
                     <input type="password" class="ipt" maxlength="1">
@@ -32,6 +32,12 @@
                 </li>
             </ul>
             <p class="large italic">Enter your 4-Digit Pin to Redeem</p>
+            <p class="clearfix">
+                <a
+                    href="javascript:;"
+                    ng-click="submitPin()"
+                    class="btn btn-yellow">SUBMIT</a>
+            </p>
         </div>
         <!-- END: CONTENT -->
     </ion-content>

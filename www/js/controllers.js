@@ -345,7 +345,7 @@ angular.module('starter.controllers', [])
 	};
 })
 /**
- * Location Ctrl
+ * Location Ctrl MAP PAGE
  * 1. GET OUTLET LOCATION
  * 1.1 get outlet address
  * 1.2 get outlet bussiness
@@ -409,11 +409,11 @@ angular.module('starter.controllers', [])
 					_getOutletBussiness(data_outlet[i], i, function() {
 						// add address location
 						$scope.outlet_list[i]['geo_location'] = res.data;
-
+						console.log($scope.outlet_list);
 						$scope.addMaker($scope.outlet_list[i], i);
 
 						if (data_outlet.length-1 == i) {
-							$scope.map.fitBounds($scope.bounds);
+							//$scope.map.fitBounds($scope.bounds);
 						}
 					});
 
@@ -490,8 +490,6 @@ angular.module('starter.controllers', [])
         $scope.map = map;
         $scope.bounds = new google.maps.LatLngBounds();
         $('.blk-maps').height(window.screen.height);
-
-
     };
 
     // function add maker
@@ -500,7 +498,7 @@ angular.module('starter.controllers', [])
     	var myLatlng = new google.maps.LatLng(data_outlet.geo_location.geo_lat, data_outlet.geo_location.geo_lng);
 
     	$scope.bounds.extend(myLatlng);
-
+    	console.log(myLatlng);
         var marker = new google.maps.Marker({
           position: myLatlng,
           map: $scope.map,
@@ -569,9 +567,9 @@ angular.module('starter.controllers', [])
 		return $location.path() === '/' + path ? true : false;
 	};
 
-	$scope.cur_path = $location.path();
-	$scope.user     = $localstorage.getObject('user');
-	$scope.org 		= $scope.user.company;
+	$scope.cur_path  = $location.path();
+	$scope.user      = $localstorage.getObject('user');
+	$scope.org 		 = $scope.user.company;
 	$scope.outlet_id = $stateParams.outlet_id;
 	console.log($scope.user.user);
 	var _URL_outlet = {
@@ -689,6 +687,7 @@ angular.module('starter.controllers', [])
 					});
 
 					// GET BANNERs
+					console.log(res_owner.data._links);
 					if(!res_owner.data._links.banners) { return;}
 					aRest.get($scope.user.username
 						, $scope.user.password
@@ -697,21 +696,23 @@ angular.module('starter.controllers', [])
 						if (typeof res == 'object' && res.status == 200) {
 
 							var _URL_getBanner = config.path.baseURL + res.data._embedded.items[0]._links.url.href;
+							console.log(_URL_getBanner);
 
 							aRest.get($scope.user.username
 								, $scope.user.password
 								, $scope.user.user.session_key
 								, _URL_getBanner).then(function (res_banner) {
 								if (typeof res_banner == 'object' && res_banner.status == 200) {
+									console.log(res_banner.data);
 									$scope.detail_outlet['banner'] = res_banner.data.url;
 								}
 							}, function (err){
-							 	console.log('Connect API IMG fail!');
+							 	console.log('Connect API BANNER fail!');
 							});
 
 						}
 					}, function (err){
-					 	console.log('Connect API IMG fail!');
+					 	console.log('Connect API BANNER fail!');
 					});
 
 			}, function (err){
@@ -766,9 +767,10 @@ angular.module('starter.controllers', [])
  * popPromotionCtrl
  */
 .controller('popPromotionCtrl',
-	function ($scope, $uibModalInstance, items) {
+	function ($scope, $uibModalInstance, $localstorage, items) {
 		$scope.md_promotion = items.data.promotions._embedded.items[items.id];
 		$scope.outlet_info  = items.data;
+		$localstorage.setObject('outlets_promo', items.data);
 
 		$scope.ok = function () {
 			$uibModalInstance.close($scope.selected.item);
@@ -782,12 +784,23 @@ angular.module('starter.controllers', [])
  * main course Ctrl
  */
 .controller('courseCtrl',
-	function ($scope, $uibModal) {
+	function ($scope, $uibModal, $location, $localstorage) {
 		if ($('.modal').length) {
 			$('.modal').remove();
 			$('.modal-backdrop').remove();
 		}
 
+		$scope.outlets_promo = $localstorage.getObject('outlets_promo');
+		if (!$scope.outlets_promo || typeof $scope.outlets_promo != 'object') {
+			$location.path('/app/myoffer');
+			return;
+		}
+		$scope.user = $localstorage.getObject('user');
+		console.log($scope.user);
+
+		$scope.submitPin = function () {
+			console.log('ok');
+		}
 })
 /**
  * menu demo Ctrl
