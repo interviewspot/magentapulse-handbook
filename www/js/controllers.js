@@ -413,6 +413,7 @@ angular.module('starter.controllers', [])
 						$scope.addMaker($scope.outlet_list[i], i);
 
 						if (data_outlet.length-1 == i) {
+							//console.log($scope.bounds);
 							//$scope.map.fitBounds($scope.bounds);
 						}
 					});
@@ -494,11 +495,11 @@ angular.module('starter.controllers', [])
 
     // function add maker
     $scope.addMaker = function (data_outlet, index) {
-    	console.log($scope.outlet_list[index].logo_url);
+    	if (!data_outlet.geo_location.geo_lat) {return;}
     	var myLatlng = new google.maps.LatLng(data_outlet.geo_location.geo_lat, data_outlet.geo_location.geo_lng);
 
     	$scope.bounds.extend(myLatlng);
-    	console.log(myLatlng);
+    	//console.log(myLatlng);
         var marker = new google.maps.Marker({
           position: myLatlng,
           map: $scope.map,
@@ -785,9 +786,11 @@ angular.module('starter.controllers', [])
  */
 .controller('courseCtrl',
 	function ($scope, $uibModal, $location, $localstorage) {
+		console.log($('.modal').length);
 		if ($('.modal').length) {
 			$('.modal').remove();
 			$('.modal-backdrop').remove();
+			$('body').removeClass('modal-open');
 		}
 
 		$scope.outlets_promo = $localstorage.getObject('outlets_promo');
@@ -796,10 +799,37 @@ angular.module('starter.controllers', [])
 			return;
 		}
 		$scope.user = $localstorage.getObject('user');
-		console.log($scope.user);
+		//console.log($scope.user);
+		$scope.pin_code   = [];
+		$scope.redeem_cls = '';
+
+		if ($scope.user.user.four_digit_pin) {
+			$scope.msg_error = "Enter your 4-Digit Pin to Redeem";
+		} else {
+			$scope.msg_error = 0;
+		}
 
 		$scope.submitPin = function () {
-			console.log('ok');
+
+			if (!$scope.pin_code.length) {
+				$scope.msg_error = 'Please enter your pin code!';
+
+				return;
+			} else if ($scope.pin_code.length < 4) {
+				$scope.msg_error = 'Enter your 4-Digit Pin to Redeem';
+				return;
+			}
+			var redeem_code =  ' ' + $scope.pin_code[0] + $scope.pin_code[1] + $scope.pin_code[2] + $scope.pin_code[3];
+			console.log($scope.user.user.four_digit_pin);
+			if (redeem_code.trim() == $scope.user.user.four_digit_pin.trim()) {
+				$scope.msg_error  = 'Ok, go!';
+				$scope.redeem_cls = '';
+			} else {
+				$scope.msg_error  = 'Wrong';
+				$scope.redeem_cls = 'grey';
+			}
+
+
 		}
 })
 /**

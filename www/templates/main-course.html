@@ -8,7 +8,7 @@
         </div>
     </div>
     <!-- END: HEADER -->
-    <ion-content class="main-course t-c">
+    <ion-content class="main-course t-c" ng-class="redeem_cls">
         <div class="content has-header ionic-pseudo pb-50">
             <div class="mc-logo">
                 <img ng-src="{{outlets_promo.logo}}" ng-alt="{{outlets_promo.company_name}}">
@@ -17,27 +17,33 @@
             <h2 class="course-ttl">{{outlets_promo.name}}</h2>
             <p>Company Name: {{outlets_promo.company_name}}</p>
             <p>Employee Name:  {{user.user.first_name}} {{user.user.last_name}}</p>
-            <ul class="clearfix input-course">
-                <li>
-                    <input type="password" class="ipt" maxlength="1">
-                </li>
-                <li>
-                    <input type="password" class="ipt" maxlength="1">
-                </li>
-                <li>
-                    <input type="password" class="ipt" maxlength="1">
-                </li>
-                <li>
-                    <input type="password" class="ipt" maxlength="1">
-                </li>
-            </ul>
-            <p class="large italic">Enter your 4-Digit Pin to Redeem</p>
-            <p class="clearfix">
-                <a
-                    href="javascript:;"
-                    ng-click="submitPin()"
-                    class="btn btn-yellow">SUBMIT</a>
-            </p>
+            <div class="redeem-box-blk" ng-if="!msg_error">
+                <p class="large">You don't have Redeem Code, go back!</p>
+            </div>
+            <div class="redeem-box-blk" ng-if="msg_error">
+                <p class="large">{{msg_error}}</p>
+
+                <ul class="clearfix input-course">
+                    <li>
+                        <input type="password" ng-model="pin_code[0]" class="ipt" maxlength="1">
+                    </li>
+                    <li>
+                        <input type="password" ng-model="pin_code[1]" class="ipt" maxlength="1">
+                    </li>
+                    <li>
+                        <input type="password" ng-model="pin_code[2]"class="ipt" maxlength="1">
+                    </li>
+                    <li>
+                        <input type="password" ng-model="pin_code[3]" class="ipt" maxlength="1">
+                    </li>
+                </ul>
+                <p class="bton-blk clearfix">
+                    <a
+                        href="javascript:;"
+                        ng-click="submitPin()"
+                        class="btn btn-yellow">REDEEM</a>
+                </p>
+            </div>
         </div>
         <!-- END: CONTENT -->
     </ion-content>
