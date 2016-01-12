@@ -117,7 +117,7 @@ angular.module('starter.controllers', [])
 	});
 })
 /**
- * myOfferCtrl
+ * myOfferCtrl #/app/myoffer
  */
 .controller('myOfferCtrl',
 	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, aRest, $localstorage, $ionicLoading) {
@@ -140,14 +140,16 @@ angular.module('starter.controllers', [])
 
 		if ($scope.user ||  (typeof $scope.user == 'object' && $scope.user.username)) {
 			$ionicLoading.show();
-			$scope.limit = 1;
-			$scope.page  = 1;
-			$scope.pagination = {};
+			$scope.limit = 10;
+			$scope.page  = 0;
+			$scope.pagination = {
+				pages : 2
+			};
 			$scope.outlet_list = [];
 			$scope.noMoreItemsAvailable = false;
 
 			// GET IMG
-			if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
+			/*if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
 				aRest.get($scope.user.username
 					, $scope.user.password
 					, $scope.user.user.session_key
@@ -163,28 +165,51 @@ angular.module('starter.controllers', [])
 				 	console.log('Connect API IMG fail!');
 				});
 			}
-
+*/
 			// function load more offer
 			$scope.loadOfferMore = function () {
-				if($scope.page > $scope.pagination.pages) {
+
+				if($scope.page >= $scope.pagination.pages) {
 					$scope.noMoreItemsAvailable = true;
 					return;
 				}
-
+				if($scope.page <= 0) {
+					$scope.page = 1;
+					return;
+				}
 				// GET OUTLET LIST
 				aRest.get($scope.user.username
 								, $scope.user.password
 								, $scope.user.user.session_key
-								, _URL_outlet._links + '?limit=' + $scope.limit + '&page=' + $scope.page ).then(function(res_data){
+								, _URL_outlet._links + '?search=outlet.enabled:1'
+													+ '&limit=' + $scope.limit
+													+ '&page=' + $scope.page ).then(function(res_data){
+					//console.log(_URL_outlet._links + '?limit=' + $scope.limit + '&page=' + $scope.page);
 					if(res_data.status != 200 || typeof res_data != 'object') { return; }
+					//console.log(res_data.data.page);
 					$ionicLoading.hide();
-					//get data
+
+					// Get data
 					$scope.outlet_list = $scope.outlet_list.concat(res_data.data._embedded.items);
 
-					// get outlet address
-					_getOutletAddress($scope.outlet_list);
+					// Get Address
+					_getOutletAddress(res_data.data._embedded.items, function (more_data) {
+						//$scope.outlet_list = $scope.outlet_list.concat(more_data);
+						angular.forEach(more_data, function(value, key) {
+							var key = _getKeybyId($scope.outlet_list, value.id);
+							$scope.outlet_list[key] = value;
+						});
+					});
 
+					// Get LOGO of Bussiness
+					_getOutletLogo(res_data.data._embedded.items, function (more_data) {
+						angular.forEach(more_data, function(value, key) {
+							var key = _getKeybyId($scope.outlet_list, value.id);
+							$scope.outlet_list[key]['url_logo'] = value.url_logo;
+						});
+					});
 
+					// Register paging
 					$scope.pagination       = {
 						"page": res_data.data.page,
 						"limit": res_data.data.limit,
@@ -193,6 +218,7 @@ angular.module('starter.controllers', [])
 					};
 					$scope.page = res_data.data.page + 1;
 
+					// Regis complete Page
 					$scope.$broadcast('scroll.infiniteScrollComplete');
 
 				}, function (err){
@@ -203,7 +229,20 @@ angular.module('starter.controllers', [])
 
 			};
 
-			_getOutletAddress = function (data_outlet) {
+			_getKeybyId = function (obj, id) {
+				var return_val = 0;
+				angular.forEach(obj, function(value, key) {
+					if (value.id == id) {
+						return_val = key;
+						return;
+					}
+				});
+				return return_val;
+			};
+
+			_getOutletAddress = function (data_outlet, callback) {
+				//console.log(data_outlet);
+				if (!data_outlet.length) {return;}
 				angular.forEach(data_outlet, function(item, i) {
 					if( data_outlet[i]._links.location == undefined) { return; }
 
@@ -216,6 +255,10 @@ angular.module('starter.controllers', [])
 						// add address location
 						data_outlet[i]['outlet_address'] = res.data.name;
 
+						if (data_outlet.length-1 == i) {
+							callback(data_outlet);
+						}
+
 					}, function (err){
 					  console.log('Connect API Sections fail!');
 					  $ionicLoading.hide();
@@ -223,6 +266,52 @@ angular.module('starter.controllers', [])
 				});
 			};
 
+			// GET OUTLET LOGO
+			_getOutletLogo = function (data_outlet, callback) {
+				console.log(data_outlet);
+				if (!data_outlet.length) {return;}
+				angular.forEach(data_outlet, function(item, i) {
+					//console.log( data_outlet[i]._links.business);
+					if( data_outlet[i]._links.business == undefined) { return; }
+
+					aRest.get($scope.user.username
+							, $scope.user.password
+							, $scope.user.session_key
+							, data_outlet[i]._links.business.href).then(function(res){
+						if(res.status != 200 || typeof res != 'object') { return; }
+						//console.log(res.data);
+						aRest.get($scope.user.username
+							, $scope.user.password
+							, $scope.user.session_key
+							, res.data._links.owner.href).then(function(res){
+							if(res.status != 200 || typeof res != 'object') { return; }
+							//console.log(res.data);
+							aRest.get($scope.user.username
+								, $scope.user.password
+								, $scope.user.session_key
+								, res.data._links.logo.href).then(function(res){
+								if(res.status != 200 || typeof res != 'object') { return; }
+								//console.log(res.data);
+								aRest.get($scope.user.username
+									, $scope.user.password
+									, $scope.user.session_key
+									, config.path.baseURL + res.data._links.url.href).then(function(res){
+									if(res.status != 200 || typeof res != 'object') { return; }
+									data_outlet[i]['url_logo'] = res.data.url;
+									if (data_outlet.length-1 == i) {
+										callback(data_outlet);
+									}
+								});
+							});
+						});
+					}, function (err){
+					  console.log('Connect API Sections fail!');
+					  $ionicLoading.hide();
+					});
+				});
+			};
+
+			// ON SCROLL END
 			$scope.$on('$stateChangeSuccess', function() {
 				$scope.loadOfferMore();
 		    });
