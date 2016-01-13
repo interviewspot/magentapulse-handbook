@@ -674,6 +674,7 @@ angular.module('starter.controllers', [])
 					$scope.detail_outlet['office_address'] = res_owner.data.office_address;
 					$scope.detail_outlet['code'] = res_owner.data.code;
 					$scope.detail_outlet['head_office_no'] = res_owner.data.head_office_no;
+					$scope.detail_outlet['this_company']   = res_owner.data;
 
 					// GET LOGO
 					aRest.get($scope.user.username
@@ -768,7 +769,7 @@ angular.module('starter.controllers', [])
  * popPromotionCtrl
  */
 .controller('popPromotionCtrl',
-	function ($scope, $uibModalInstance, $localstorage, items) {
+	function ($scope, $uibModalInstance, $location, $localstorage, items) {
 		$scope.md_promotion = items.data.promotions._embedded.items[items.id];
 		$scope.outlet_info  = items.data;
 		$localstorage.setObject('outlets_promo', items.data);
@@ -779,6 +780,11 @@ angular.module('starter.controllers', [])
 
 		$scope.cancel = function () {
 			$uibModalInstance.dismiss('cancel');
+		};
+
+		$scope.gotoRedeem = function() {
+			$uibModalInstance.dismiss('cancel');
+			$location.path('/app/main-course');
 		};
 })
 /**
@@ -799,11 +805,12 @@ angular.module('starter.controllers', [])
 			return;
 		}
 		$scope.user = $localstorage.getObject('user');
-		//console.log($scope.user);
+		console.log($scope.outlets_promo);
 		$scope.pin_code   = [];
 		$scope.redeem_cls = '';
+		$scope.btn_text   = 'REDEEM';
 
-		if ($scope.user.user.four_digit_pin) {
+		if ($scope.user.user.four_digit_pin && $scope.outlets_promo.this_company.redemption_password) {
 			$scope.msg_error = "Enter your 4-Digit Pin to Redeem";
 		} else {
 			$scope.msg_error = 0;
@@ -813,24 +820,72 @@ angular.module('starter.controllers', [])
 
 			if (!$scope.pin_code.length) {
 				$scope.msg_error = 'Please enter your pin code!';
-
+				if ($scope.redeem_cls == 'grey') {
+					$scope.msg_error = 'Please enter redemption pass!';
+				}
 				return;
 			} else if ($scope.pin_code.length < 4) {
 				$scope.msg_error = 'Enter your 4-Digit Pin to Redeem';
+				if ($scope.redeem_cls == 'grey') {
+					$scope.msg_error = 'Please enter 4-Digit!';
+				}
 				return;
 			}
+
 			var redeem_code =  ' ' + $scope.pin_code[0] + $scope.pin_code[1] + $scope.pin_code[2] + $scope.pin_code[3];
-			console.log($scope.user.user.four_digit_pin);
-			if (redeem_code.trim() == $scope.user.user.four_digit_pin.trim()) {
-				$scope.msg_error  = 'Ok, go!';
-				$scope.redeem_cls = '';
+
+			if ($scope.redeem_cls == 'grey') {
+				if (redeem_code.trim() == $scope.outlets_promo.this_company.redemption_password.trim()) {
+					$scope.msg_error  = 'OK';
+					_openModalRedeem();
+				} else {
+					$scope.msg_error  = 'Wrong 4-Digit password';
+				}
 			} else {
-				$scope.msg_error  = 'Wrong';
-				$scope.redeem_cls = 'grey';
+				//console.log($scope.user.user.four_digit_pin);
+				if (redeem_code.trim() == $scope.user.user.four_digit_pin.trim()) {
+					$scope.msg_error  = 'Enter redemption password';
+					$scope.redeem_cls = 'grey';
+					$scope.btn_text   = 'Enter';
+				} else {
+					$scope.msg_error  = 'Wrong 4-Digit Pin';
+					$scope.redeem_cls = '';
+				}
 			}
-
-
 		}
+
+		// function show modal
+		_openModalRedeem = function () {
+			var modalInstance = $uibModal.open({
+				templateUrl: 'templates/modal/redeemModal.html',
+				controller: 'redeemCtrl',
+				resolve: {
+				send_obj: function () {
+				 	return {
+				  		data : ''
+				    }
+				}
+			}
+			});
+
+			modalInstance.result.then(function (selectedItem) {
+			 	console.log(selectedItem);
+			}, function () {
+				$log.info('Modal dismissed at: ' + new Date());
+			});
+		};
+})
+/**
+ * redeem demo Ctrl
+ */
+.controller('redeemCtrl'
+	, function ($scope, $uibModalInstance, $location, $localstorage, send_obj) {
+
+	$scope.outlets_promo = $localstorage.getObject('outlets_promo');
+	$scope.cancel = function () {
+		$uibModalInstance.dismiss('cancel');
+	};
+
 })
 /**
  * menu demo Ctrl

@@ -21,6 +21,7 @@
                 <p class="large">You don't have Redeem Code, go back!</p>
             </div>
             <div class="redeem-box-blk" ng-if="msg_error">
+            <form ng-submit="submitPin()">
                 <p class="large">{{msg_error}}</p>
 
                 <ul class="clearfix input-course">
@@ -38,11 +39,10 @@
                     </li>
                 </ul>
                 <p class="bton-blk clearfix">
-                    <a
-                        href="javascript:;"
-                        ng-click="submitPin()"
-                        class="btn btn-yellow">REDEEM</a>
+                    <button type="submit"
+                        class="btn btn-yellow">{{btn_text}}</button>
                 </p>
+            </form>
             </div>
         </div>
         <!-- END: CONTENT -->
