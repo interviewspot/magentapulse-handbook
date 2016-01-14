@@ -48,6 +48,27 @@ angular.module('starter.services', [])
         return d.promise;
     };
 
+    services.post = function (username, password, url, data) {
+        var d = $q.defer();
+        $http({
+            method: 'POST',
+            url: url,
+            data: data,
+            headers: {
+                "x-mode"    : "org_code",
+                'x-username': username,
+                'x-password': password
+            }
+        })
+        .then(function success(res){
+            d.resolve(res);
+            return;
+        }, function error(error) {
+            d.reject(error);
+            return;
+        });
+        return d.promise;
+    };
     return services;
 })
 

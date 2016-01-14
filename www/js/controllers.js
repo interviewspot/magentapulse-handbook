@@ -19,6 +19,10 @@ angular.module('starter.controllers', [])
 		} else {
 			$scope.isSigned = false;
 		}
+		$(".h-back").on('click', function(e){
+			e.preventDefault();
+			 window.history.back();
+		});
 	});
 
 })
@@ -148,25 +152,7 @@ angular.module('starter.controllers', [])
 			$scope.outlet_list = [];
 			$scope.noMoreItemsAvailable = false;
 
-			// GET IMG
-			/*if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-				aRest.get($scope.user.username
-					, $scope.user.password
-					, $scope.user.user.session_key
-					, $scope.org._links.logo.href + '/url' ).then(function (res) {
-					if (typeof res == 'object' && res.status == 200) {
-						$scope.org['logo'] = res.data.url;
-						$scope.user.company['logo'] = res.data.url;
-
-						// STORE in LOCAL
-						$localstorage.setObject('user', $scope.user);
-					}
-				}, function (err){
-				 	console.log('Connect API IMG fail!');
-				});
-			}
-*/
-			// function load more offer
+		// function load more offer
 			$scope.loadOfferMore = function () {
 
 				if($scope.page >= $scope.pagination.pages) {
@@ -222,7 +208,7 @@ angular.module('starter.controllers', [])
 					$scope.$broadcast('scroll.infiniteScrollComplete');
 
 				}, function (err){
-				  console.log('Connect API Sections fail!');
+				  console.log('Connect API Outlet fail!');
 				  $ionicLoading.hide();
 				});
 
@@ -260,7 +246,7 @@ angular.module('starter.controllers', [])
 						}
 
 					}, function (err){
-					  console.log('Connect API Sections fail!');
+					  console.log('Connect API Locations fail!');
 					  $ionicLoading.hide();
 					});
 				});
@@ -305,7 +291,7 @@ angular.module('starter.controllers', [])
 							});
 						});
 					}, function (err){
-					  console.log('Connect API Sections fail!');
+					  console.log('Connect API business fail!');
 					  $ionicLoading.hide();
 					});
 				});
@@ -414,7 +400,7 @@ angular.module('starter.controllers', [])
 
 						if (data_outlet.length-1 == i) {
 							//console.log($scope.bounds);
-							//$scope.map.fitBounds($scope.bounds);
+							$scope.map.fitBounds($scope.bounds);
 						}
 					});
 
@@ -697,20 +683,24 @@ angular.module('starter.controllers', [])
 						, res_owner.data._links.banners.href).then(function (res) {
 						if (typeof res == 'object' && res.status == 200) {
 
-							var _URL_getBanner = config.path.baseURL + res.data._embedded.items[0]._links.url.href;
-							console.log(_URL_getBanner);
-
-							aRest.get($scope.user.username
+							$scope.detail_outlet['banner'] = [];
+							if (!res.data._embedded.items.length) {
+								return;
+							}
+							angular.forEach(res.data._embedded.items, function(item, i) {
+								var _URL_getBanner = config.path.baseURL + item._links.url.href;
+								aRest.get($scope.user.username
 								, $scope.user.password
 								, $scope.user.user.session_key
 								, _URL_getBanner).then(function (res_banner) {
-								if (typeof res_banner == 'object' && res_banner.status == 200) {
-									console.log(res_banner.data);
-									$scope.detail_outlet['banner'] = res_banner.data.url;
-								}
-							}, function (err){
-							 	console.log('Connect API BANNER fail!');
+									if (typeof res_banner == 'object' && res_banner.status == 200) {
+										$scope.detail_outlet['banner'].push(res_banner.data.url);
+									}
+								}, function (err){
+								 	console.log('Connect API BANNER ID '+  +' URL fail!');
+								});
 							});
+
 
 						}
 					}, function (err){
@@ -743,15 +733,15 @@ angular.module('starter.controllers', [])
 		};
 
 		// function show modal
-		$scope.openModalPromotion = function (data_promo, id) {
+		$scope.openModalPromotion = function (data_promo) {
 		    var modalInstance = $uibModal.open({
 		      templateUrl: 'myPromotion.html',
 		      controller: 'popPromotionCtrl',
 		      resolve: {
 		        items: function () {
 		          return {
-		          	data : $scope.detail_outlet,
-		          	id : id
+		          	outlet : $scope.detail_outlet,
+		          	promo_select : data_promo
 		          }
 		        }
 		      }
@@ -770,9 +760,10 @@ angular.module('starter.controllers', [])
  */
 .controller('popPromotionCtrl',
 	function ($scope, $uibModalInstance, $location, $localstorage, items) {
-		$scope.md_promotion = items.data.promotions._embedded.items[items.id];
-		$scope.outlet_info  = items.data;
-		$localstorage.setObject('outlets_promo', items.data);
+		$scope.md_promotion = items.promo_select;
+		$scope.outlet_info  = items.outlet;
+		items.outlet.promo_select = items.promo_select;
+		$localstorage.setObject('outlets_promo', items.outlet);
 
 		$scope.ok = function () {
 			$uibModalInstance.close($scope.selected.item);
@@ -791,7 +782,7 @@ angular.module('starter.controllers', [])
  * main course Ctrl
  */
 .controller('courseCtrl',
-	function ($scope, $uibModal, $location, $localstorage) {
+	function ($scope, $uibModal, $location, $localstorage, aRest, $ionicLoading) {
 		console.log($('.modal').length);
 		if ($('.modal').length) {
 			$('.modal').remove();
@@ -836,8 +827,8 @@ angular.module('starter.controllers', [])
 
 			if ($scope.redeem_cls == 'grey') {
 				if (redeem_code.trim() == $scope.outlets_promo.this_company.redemption_password.trim()) {
-					$scope.msg_error  = 'OK';
-					_openModalRedeem();
+					// POST REDEM
+					_postRedem(_openModalRedeem);
 				} else {
 					$scope.msg_error  = 'Wrong 4-Digit password';
 				}
@@ -847,6 +838,10 @@ angular.module('starter.controllers', [])
 					$scope.msg_error  = 'Enter redemption password';
 					$scope.redeem_cls = 'grey';
 					$scope.btn_text   = 'Enter';
+					$scope.pin_code[0] = '';
+					$scope.pin_code[1] = '';
+					$scope.pin_code[2] = '';
+					$scope.pin_code[3] = '';
 				} else {
 					$scope.msg_error  = 'Wrong 4-Digit Pin';
 					$scope.redeem_cls = '';
@@ -854,15 +849,47 @@ angular.module('starter.controllers', [])
 			}
 		}
 
+		_postRedem = function(callback) {
+			$ionicLoading.show();
+			var post_redeem = {
+				"redemption":{
+					"promotion": $scope.outlets_promo.promo_select.id,
+					"user": $scope.user.user.id,
+					"organisation": $scope.outlets_promo.this_company.id,
+					"retail_outlet": $scope.outlets_promo.id,
+					"user_pin": $scope.user.user.four_digit_pin,
+					"merchant_pin": $scope.outlets_promo.this_company.redemption_password
+				}
+			};
+			console.log($scope.outlets_promo.promo_select._links.redemptions.href);
+			aRest.post($scope.user.username
+					, $scope.user.password
+					, $scope.outlets_promo.promo_select._links.redemptions.href
+					, post_redeem )
+			.then(function(res_data){
+				if (res_data.status == "201") {
+					var api_red = res_data.headers().location;
+					callback(api_red);
+					return;
+				}
+				$ionicLoading.hide();
+			}, function (err){
+				console.log('Connect API redemptions fail!');
+				$ionicLoading.hide();
+				return;
+			});
+
+		};
+
 		// function show modal
-		_openModalRedeem = function () {
+		_openModalRedeem = function (api_red) {
 			var modalInstance = $uibModal.open({
 				templateUrl: 'templates/modal/redeemModal.html',
 				controller: 'redeemCtrl',
 				resolve: {
-				send_obj: function () {
+				items: function () {
 				 	return {
-				  		data : ''
+				  		api_red : api_red
 				    }
 				}
 			}
@@ -879,9 +906,33 @@ angular.module('starter.controllers', [])
  * redeem demo Ctrl
  */
 .controller('redeemCtrl'
-	, function ($scope, $uibModalInstance, $location, $localstorage, send_obj) {
-
+	, function ($scope, $uibModalInstance, $location, $ionicLoading, $localstorage, aRest, items) {
+	$scope.user = $localstorage.getObject('user');
 	$scope.outlets_promo = $localstorage.getObject('outlets_promo');
+	$ionicLoading.show();
+	console.log(items);
+
+	$scope.red = '';
+	// GET
+	aRest.get($scope.user.username
+		, $scope.user.password
+		, $scope.user.user.session_key
+		, config.path.baseURL + items.api_red ).then(function(res_data){
+		if (res_data.status == 200) {
+			console.log(res_data.data);
+			$scope.red = res_data.data;
+/*code: "K1MAQ6V"
+id: 8
+merchant_p_i_n: "4444"
+redeemed_at: "2016-01-14T18:58:54+0800"
+user_p_i_n: "1231"*/
+		}
+		$ionicLoading.hide();
+	}, function (err){
+		console.log('Connect API redemptions subcrib fail!');
+		$ionicLoading.hide();
+		return;
+	});
 	$scope.cancel = function () {
 		$uibModalInstance.dismiss('cancel');
 	};

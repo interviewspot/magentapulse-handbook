@@ -4,16 +4,18 @@
         <button type="button" class="close" ng-click="cancel()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">{{outlets_promo.company_name}}</h4>
+        <h4 class="modal-title" id="myModalLabel">
+            {{outlets_promo.company_name}} : {{outlets_promo.promo_select.title}}
+        </h4>
     </div>
     <div class="modal-body">
         <div class="md-body-inner">
             <div class="md-logo"><img ng-src="{{outlets_promo.logo}}" ng-alt="{{outlets_promo.company_name}}"></div>
             <!-- END LOGO -->
             <h2 class="md-ttl">Successfully Redeemed!</h2>
-            <p>Redemption Code: AA1222354</p>
+            <p>Redemption Code: {{red.code}}</p>
             <div class="md-purchase">
-                <p class="small bold">Estimated Savings: SGD 22</p>
+                <p class="small bold">Estimated Savings: SGD {{outlets_promo.promo_select.estimated_value}}</p>
                 <p><a href="#" title="Subscribe" class="btn btn-yellow">Subscribe</a></p>
                 <p>Subscribe and earn exclusive benefits or be the first to know of new promotions from this merchant</p>
             </div>
