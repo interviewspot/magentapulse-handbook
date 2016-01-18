@@ -1,2 +1,6 @@
 keytone: sghandbook
-pass alias: sghandbk 
+pass alias: sghandbk
+
+CN=Sg Magenta, OU=ltd, O=Magenta, L=Singapore, ST=Singapore, C=SG
+
+Alias = alias_name
