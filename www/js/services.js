@@ -145,6 +145,23 @@ angular.module('starter.services', [])
     return services;
 })
 
+// .factory('LocationSettings', ['$q', 'Diagnostic', function($q, Diagnostic) {
+//   return {
+//     getLocationSettings: function(options) {
+//       var q = $q.defer();
+//       Diagnostic.isLocationEnabled(function(result) {
+//         console.log("Location is " + (result ? "enabled" : "disabled"));
+//         q.resolve(result);
+//       }, function(err) {
+//         console.error("The following error occurred: "+err);
+//         q.reject(err);
+//       }, options);
+
+//       return q.promise;
+//     }
+//   }
+// }])
+
 .factory('$localstorage', ['$window', function($window) {
   return {
     set: function(key, value) {

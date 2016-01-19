@@ -339,7 +339,7 @@ angular.module('starter.controllers', [])
  * 2. INIT MAPs
  */
 .controller('locationCtrl',
-	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, aRest, $localstorage, $ionicLoading, $compile, $sce) {
+	function ($scope, $rootScope, $location, $stateParams,  $ionicPush, aRest, $localstorage, $ionicLoading, $compile, $sce, $cordovaGeolocation) {
 	// 1. GET OUTLET LOCATION
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
@@ -534,21 +534,51 @@ angular.module('starter.controllers', [])
           showBackdrop: false
         });
 
-        navigator.geolocation.getCurrentPosition(function(pos) {
-          $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+        // Diagnostic.isLocationEnabled(function(enabled){
+        //     console.log("Location is " + (enabled ? "enabled" : "disabled"));
+        // }, function(error){
+        //     console.error("The following error occurred: "+error);
+        // });
+     //    LocationSettings.getLocationSettings().then(function(result) {
+	    //   alert(result);
+	    // }, function(err) {
+	    //   alert(err);
+	    // });
 
-          var myLatlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-          var image  = new google.maps.MarkerImage('images/marker-home.png' );
-          var marker = new google.maps.Marker({
-          	position: myLatlng,
-         	map: $scope.map,
-         	icon: image,
-          });
+        var posOptions = {timeout: 10000, enableHighAccuracy: true};
+        $cordovaGeolocation
+		    .getCurrentPosition(posOptions)
+		    .then(function (position) {
+		    	var lat  = position.coords.latitude;
+	      		var long = position.coords.longitude;
+	  			$scope.map.setCenter(new google.maps.LatLng(lat, long));
+	  			var myLatlng = new google.maps.LatLng(lat, long);
 
-          $ionicLoading.hide();
-        }, function(error) {
-          alert('Unable to get location: ' + error.message);
-        });
+				var image  = new google.maps.MarkerImage('images/marker-home.png' );
+				var marker = new google.maps.Marker({
+					position: myLatlng,
+					map: $scope.map,
+					icon: image,
+				});
+				$ionicLoading.hide();
+	        }, function(err) {
+	          // error
+	        });
+        // $cordovaGeolocation.getCurrentPosition(function(pos) {
+        //   $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+
+        //   var myLatlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+        //   var image  = new google.maps.MarkerImage('images/marker-home.png' );
+        //   var marker = new google.maps.Marker({
+        //   	position: myLatlng,
+        //  	map: $scope.map,
+        //  	icon: image,
+        //   });
+
+        //   $ionicLoading.hide();
+        // }, function(error) {
+        //   alert('Unable to get location: ' + error.message);
+        // });
     };
 })
 /**

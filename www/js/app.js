@@ -30,7 +30,7 @@ angular.module('starter', [
   'angular.filter',
   'ngCordova',
   'ionic.service.push',
-  'ui.bootstrap'
+  'ui.bootstrap',
 ])
 
 .run(function($ionicPlatform) {
