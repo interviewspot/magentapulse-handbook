@@ -551,6 +551,7 @@ angular.module('starter.controllers', [])
 		    .then(function (position) {
 		    	var lat  = position.coords.latitude;
 	      		var long = position.coords.longitude;
+
 	  			$scope.map.setCenter(new google.maps.LatLng(lat, long));
 	  			var myLatlng = new google.maps.LatLng(lat, long);
 
@@ -562,7 +563,9 @@ angular.module('starter.controllers', [])
 				});
 				$ionicLoading.hide();
 	        }, function(err) {
-	          // error
+				// error
+				alert("Turn on your device's location and go back this screen.");
+				$ionicLoading.hide();
 	        });
         // $cordovaGeolocation.getCurrentPosition(function(pos) {
         //   $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
