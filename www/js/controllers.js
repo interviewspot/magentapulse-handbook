@@ -373,6 +373,8 @@ angular.module('starter.controllers', [])
 			// get outlet address
 			_getOutletAddress($scope.outlet_list);
 
+			// get position map
+			$scope.centerOnMe();
 
 		}, function (err){
 		  console.log('Connect API Sections fail!');
@@ -534,14 +536,19 @@ angular.module('starter.controllers', [])
 
         navigator.geolocation.getCurrentPosition(function(pos) {
           $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-          $scope.loading.hide();
+
+          var myLatlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+          var image  = new google.maps.MarkerImage('images/marker-home.png' );
+          var marker = new google.maps.Marker({
+          	position: myLatlng,
+         	map: $scope.map,
+         	icon: image,
+          });
+
+          $ionicLoading.hide();
         }, function(error) {
           alert('Unable to get location: ' + error.message);
         });
-    };
-
-    $scope.clickTest = function() {
-        alert('Example of infowindow with ng-click')
     };
 })
 /**
@@ -901,6 +908,24 @@ angular.module('starter.controllers', [])
 				$log.info('Modal dismissed at: ' + new Date());
 			});
 		};
+
+		$scope.$watch('pin_code[0]', function (nv) {
+			if(nv) {
+				$('#pin-2').focus();
+			}
+		});
+
+		$scope.$watch('pin_code[1]', function (nv) {
+			if(nv) {
+				$('#pin-3').focus();
+			}
+		});
+
+		$scope.$watch('pin_code[2]', function (nv) {
+			if(nv) {
+				$('#pin-4').focus();
+			}
+		});
 })
 /**
  * redeem demo Ctrl
