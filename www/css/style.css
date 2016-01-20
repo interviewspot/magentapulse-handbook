@@ -188,17 +188,24 @@ p.login-itm {
 }
 .header-inner .h-search {
     position: absolute;
-    top: 7px;
+    top: 2px;
     right: 0;
     font-size: 18px;
     color: #000;
     display: block;
 }
+.header-inner .h-search i,
+.header-inner .h-back i {
+  width: 30px;
+  height: 30px;
+  background-size: 30px;
+  font-size: 25px;
+}
 .header-inner .h-back {
     font-size: 18px;
     display: block;
     position: absolute;
-    top: 0;
+    top: 3px;
 }
 .header-inner.head-ctent {
     line-height: 34px;
@@ -206,8 +213,13 @@ p.login-itm {
 }
 .header-inner .h-location, .header-inner .h-location-menu {
     position: absolute;
-    top: 7px;
+    top: 2px;
     display: block;
+}
+.header-inner .h-location .ico.w20 {
+  width: 30px;
+  height: 30px;
+  background-size: 30px;
 }
 .header-inner .h-location-menu {
     color: #000;
