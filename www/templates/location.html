@@ -16,7 +16,7 @@
     <ion-content>
         <div class="content has-header t22 ionic-pseudo pb-50">
             <div class="content-pagi clearfix maps-pagi">
-                <ul>
+                <ul class="clearfix">
                     <li>
                         <a
                         href="#/app/myoffer"
@@ -24,25 +24,11 @@
                             My Offers
                         </a>
                     </li>
-                    <li>
+                    <li ng-repeat="(key, tab) in businessTabs">
                         <a
-                        href="#/app/fb"
+                        href="#/app/businesstype/{{tab.id}}"
                         ng-class="{active : isActive('app/fb')}">
-                            F&B
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                        href="#/app/health"
-                        ng-class="{active : isActive('app/health')}">
-                            Health
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                        href="#/app/kids"
-                        ng-class="{active : isActive('app/kids')}">
-                            kids
+                            {{tab.name}}
                         </a>
                     </li>
                 </ul>

@@ -1,8 +1,8 @@
 // Ionic Starter App
 var config = {
   path : {
-      // 'baseURL'               : 'https://api.sg-benefits.com',
-      'baseURL'               : 'https://api-01.sg-benefits.com',
+      'baseURL'               : 'https://api.sg-benefits.com',
+      //'baseURL'               : 'https://api-01.sg-benefits.com',
       'clients'               : '/organisations',
       'client'                : '/organisations/:org_id',
       'handbooks'             : '/organisations/:org_id/handbooks',
@@ -123,6 +123,15 @@ angular.module('starter', [
       'menuContent' : {
         templateUrl : 'templates/myOffer.html',
         controller: 'myOfferCtrl'
+      }
+    }
+  })
+  .state('app.businesstype', {
+    url: '/businesstype/:business_id',
+    views: {
+      'menuContent' : {
+        templateUrl : 'templates/businesstype.html',
+        controller: 'businessTypeCtrl'
       }
     }
   })
