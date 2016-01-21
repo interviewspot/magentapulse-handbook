@@ -131,7 +131,8 @@ angular.module('starter.controllers', [])
  * HandbooksCtrl : HANDBOOKs PAGE
  */
 .controller('HandbooksCtrl',
-	function($scope, $rootScope, $location, $stateParams, $ionicPush, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
+	function($scope, $rootScope, $location, $stateParams, $ionicPush, HandbookService, SectionService,
+			$localstorage, $ionicLoading, OrgService, ImgService, $tool_fn) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 
@@ -179,37 +180,49 @@ angular.module('starter.controllers', [])
 			});
 		}
 
+		$_handbooks = $localstorage.getObject('handbooks');
+
 		// GET HANDBOOKs
 		if ($scope.org._links.handbooks) {
-			$scope.handbooks = $localstorage.getObject('handbooks');
-
 			var ony_active = "?search=handbook.enabled:1";
 			HandbookService.get($scope.user.username
 							  , $scope.user.password
 							  , $scope.user.session_key
 							  , $scope.org._links.handbooks.href + ony_active).then(function (return_data){
+
 				$scope.handbooks = [];
 				$ionicLoading.hide();
 				if (typeof return_data.data != 'object' || !return_data.data._embedded ) {return;}
-				$scope.handbooks = return_data.data;
+				console.log (return_data.data);
+				// CHECK UPDATE CACHE
+				var updateCache = $tool_fn._checkHandbookChange(return_data.data, $_handbooks);
+				console.log (updateCache);
+				$localstorage.setObject('updateCache', updateCache);
 
-				// GET LANG
-				angular.forEach($scope.handbooks._embedded.items, function(item, i) {
-				 	HandbookService.get($scope.user.username
-				 					  , $scope.user.password
-				 					  , $scope.user.session_key
-				 					  , item._links.translations.href ).then(function (res){
-				 		if (typeof res == 'object' && res.status == 200) {
-				 			$scope.handbooks._embedded.items[i]['lang'] = res.data;
+				if (updateCache) {
+					console.log('_____translation');
+					$scope.handbooks = return_data.data;
+					// GET LANG
+					angular.forEach($scope.handbooks._embedded.items, function(item, i) {
+					 	HandbookService.get($scope.user.username
+					 					  , $scope.user.password
+					 					  , $scope.user.session_key
+					 					  , item._links.translations.href ).then(function (res){
+					 		if (typeof res == 'object' && res.status == 200) {
+					 			$scope.handbooks._embedded.items[i]['lang'] = res.data;
 
-				 			// STORE in LOCAL
-							$localstorage.setObject('handbooks', $scope.handbooks);
-				 		}
-				 	}, function (err){
-					 	console.log('Connect API Handbooks language fail!');
-					 	$ionicLoading.hide();
+					 			// STORE in LOCAL
+								$localstorage.setObject('handbooks', $scope.handbooks);
+					 		}
+					 	}, function (err){
+						 	console.log('Connect API Handbooks language fail!');
+						 	$ionicLoading.hide();
+						});
 					});
-				});
+				} else {
+					$scope.handbooks = $_handbooks;
+				}
+
 
 			}, function (err){
 			 	console.log('Connect API Handbooks fail!');
@@ -217,16 +230,22 @@ angular.module('starter.controllers', [])
 			});
 		} else {
 			$ionicLoading.hide();
-			$scope.handbooks = []; // NO HANDBOOK
+			if ($_handbooks) {
+				$scope.handbooks = $_handbooks;
+			} else {
+				$scope.handbooks = []; // NO HANDBOOK
+			}
 		}
 	}
-
 })
 
 /**
  * HandbookCtrl : HANDBOOK PAGE
  */
-.controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams, $ionicPush, HandbookService, SectionService, $localstorage, $ionicLoading, OrgService, ImgService) {
+.controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams,
+									$ionicPush, HandbookService, SectionService,
+									$localstorage, $ionicLoading, OrgService, ImgService,
+									$tool_fn) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.handbook_id = $stateParams.handbook_id
@@ -310,16 +329,29 @@ angular.module('starter.controllers', [])
 
 		// GET HANDBOOK
 		$scope.handbook = $localstorage.getObject('handbook_' + $scope.handbook_id);
-		$local_handbook = $localstorage.getObject('hdsections_' + $scope.handbook_id);
+		var $_handbook      = $localstorage.getObject('handbook_' + $scope.handbook_id);
+		var $local_handbook = $localstorage.getObject('hdsections_' + $scope.handbook_id);
 		$scope.sections = $local_handbook.data;
+		//var updateCache = $localstorage.getObject('updateCache');
 
+		// GET HANDBOOK
 		HandbookService.get($scope.user.username
 							, $scope.user.password
 							, $scope.user.session_key
 							, $scope.org._links.handbooks.href + "/" +  $scope.handbook_id).then(function (return_data){
 			$scope.handbook = return_data.data;
 			$scope.ch_color = '#' + 'cfae79';
+			$ionicLoading.hide();
 
+			if (($_handbook && $_handbook.version == $scope.handbook.version)
+				|| (typeof $_handbook == "object"
+					&& $_handbook.version
+					&& $_handbook.version == $scope.handbook.version)) {
+				$localstorage.setObject('updateCache', false);
+				return;
+			}
+
+			// GET HANDBOOK LANG
 			HandbookService.get($scope.user.username
 							  , $scope.user.password
 							  , $scope.user.session_key
@@ -336,21 +368,38 @@ angular.module('starter.controllers', [])
 			});
 
 			if (($local_handbook && $local_handbook.version == $scope.handbook.version)
-				|| (typeof $local_handbook == "object" && $local_handbook.version && $local_handbook.version == $scope.handbook.version)) {
+				|| (typeof $local_handbook == "object"
+					&& $local_handbook.version
+					&& $local_handbook.version == $scope.handbook.version)) {
 
 				$ionicLoading.hide();
 				$scope.sections = $local_handbook.data;
 			} else {
 
 				// GET SECTIONS of A HANDBOOK
+				// ?search=section.parent{null}1
 				SectionService.get($scope.user.username
 								 , $scope.user.password
 								 , $scope.user.session_key
 								 , $scope.handbook._links.sections.href + "?search=section.parent{null}1&limit=500").then(function (return_data){
 					$ionicLoading.hide();
 
+					// LOAD SUB SECTION FOR CACHE
+					/*SectionService.get($scope.user.username
+								 , $scope.user.password
+								 , $scope.user.session_key
+								 , $scope.handbook._links.sections.href + "?search=section.parent{null}0&limit=500").then(function (sub_sec){
+						console.log(sub_sec.data);
+						$localstorage.setObject('hd_allsections_' + $scope.handbook_id, sub_sec.data);
+					});*/
+
+					// TRANSLATE SECTION lvel 1
 					angular.forEach(return_data.data._embedded.items, function(item, i) {
 						(function(itemInstance) {
+							// Find child for section
+							if (item._links.children) {
+								//$scope.sections[i].child_ids = $tool_fn.explode();
+							}
 							HandbookService.get($scope.user.username
 											  , $scope.user.password
 											  , $scope.user.session_key
@@ -359,7 +408,7 @@ angular.module('starter.controllers', [])
 
 						 			return_data.data._embedded.items[i]['lang'] = res.data;
 						 			// STORE in LOCAL
-						 			$scope.sections = return_data.data._embedded.items;
+						 			$scope.sections 		   = return_data.data._embedded.items;
 						 			$scope.sections[i].version = parseInt($scope.sections[i].version);
 									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
 										version : $scope.handbook.version,
@@ -448,7 +497,6 @@ angular.module('starter.controllers', [])
 			 	console.log('Connect API Sections language fail!');
 			 	$ionicLoading.hide();
 			});
-
 		}
 	};
 
