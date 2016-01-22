@@ -4,3 +4,5 @@ pass alias: sghandbk
 CN=Sg Magenta, OU=ltd, O=Magenta, L=Singapore, ST=Singapore, C=SG
 
 Alias = alias_name
+
+/Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.2b.apk

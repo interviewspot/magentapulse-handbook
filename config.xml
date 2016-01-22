@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.magentapulse.magentacloudbook"
-        version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+        version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Handbook</name>
   <description>
         Magenta ltd
@@ -9,7 +9,10 @@
       Magenta ltd
     </author>
   <content src="index.html"/>
+
   <access origin="*"/>
+  <allow-intent href="*" />
+  <allow-navigation href="*" />
   <access origin="tel:*" launch-external="yes"/>
   <access origin="mailto:*" launch-external="yes"/>
   <preference name="webviewbounce" value="false"/>
