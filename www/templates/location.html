@@ -24,16 +24,38 @@
                             My Offers
                         </a>
                     </li>
-                    <li ng-repeat="(key, tab) in businessTabs">
-                        <a
-                        href="#/app/businesstype/{{tab.id}}"
-                        ng-class="{active : isActive('app/fb')}">
-                            {{tab.name}}
+                    <li class="has-child">
+                        <a ng-click="showMore()">
+                            More
+                            <i class="fa fa-caret-down"></i>
                         </a>
                     </li>
                 </ul>
             </div>
-
+            <div class="more-dropdown" ng-show="isShowMore">
+                <div class="more-dropdown-inner">
+                    <ul class="tab-list">
+                        <li ng-repeat="(key, tab) in businessTabs">
+                            <a
+                            href="#/app/myoffer/{{tab.id}}"
+                            ng-class="{active : isActive('app/fb')}">
+                                {{tab.name}}
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- END: LIST -->
+                    <a class="more-tab" ng-click="MoreTab()">
+                        <i class="fa fa-plus"></i>
+                        More
+                    </a>
+                    <a class="out_close" ng-click="hideMore()">
+                        Close
+                    </a>
+                </div>
+            </div>
+            <!-- END : MORE OUTLET -->
+            <div class="blur">
+            </div>
             <!-- END PAGI -->
 
             <div class="blk-maps" ng-init="init()">

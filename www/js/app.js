@@ -127,11 +127,11 @@ angular.module('starter', [
     }
   })
   .state('app.businesstype', {
-    url: '/businesstype/:business_id',
+    url: '/myoffer/:business_id',
     views: {
       'menuContent' : {
-        templateUrl : 'templates/businesstype.html',
-        controller: 'businessTypeCtrl'
+        templateUrl : 'templates/myoffer.html',
+        controller: 'myOfferCtrl'
       }
     }
   })
