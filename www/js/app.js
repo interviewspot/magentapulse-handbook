@@ -126,12 +126,12 @@ angular.module('starter', [
       }
     }
   })
-  .state('app.businesstype', {
-    url: '/myoffer/:business_id',
+  .state('app.buninesstype', {
+    url: '/buninesstype/:business_id',
     views: {
       'menuContent' : {
-        templateUrl : 'templates/myoffer.html',
-        controller: 'myOfferCtrl'
+        templateUrl : 'templates/businesstype.html',
+        controller: 'businessTypeCtrl'
       }
     }
   })

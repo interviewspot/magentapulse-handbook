@@ -26,7 +26,7 @@
     <ion-content>
         <div class="content has-header ionic-pseudo pb-50">
             <div class="content-pagi clearfix">
-                <ul>
+                <ul class="clearfix">
                     <li>
                         <a
                         href="#/app/myoffer"
@@ -34,11 +34,10 @@
                             My Offers
                         </a>
                     </li>
-                    <li ng-repeat="(key, tab) in businessTabs">
-                        <a
-                        href="#/app/businesstype/{{tab.id}}"
-                        ng-class="{active : isActive('app/fb')}">
-                            {{tab.name}}
+                    <li class="has-child">
+                        <a ng-click="showMore()">
+                            {{business_name}}
+                            <i class="fa fa-caret-down"></i>
                         </a>
                     </li>
                 </ul>
@@ -102,4 +101,28 @@
         </ul>
     </div>
     <!-- END: FOOTER -->
+    <div class="more-dropdown" ng-show="isShowMore">
+        <div class="more-dropdown-inner">
+            <ul class="tab-list">
+                <li ng-repeat="(key, tab) in businessTabs">
+                    <a
+                    href="#/app/buninesstype/{{tab.id}}"
+                    ng-class="{active : isActive(tab)}">
+                        {{tab.name}}
+                    </a>
+                </li>
+            </ul>
+            <!-- END: LIST -->
+            <a class="more-tab" ng-click="MoreTab()">
+                <i class="fa fa-plus"></i>
+                More
+            </a>
+            <a class="out_close" ng-click="hideMore()">
+                Close
+            </a>
+        </div>
+    </div>
+    <!-- END : MORE OUTLET -->
+    <div class="blur">
+    </div>
 </ion-view>

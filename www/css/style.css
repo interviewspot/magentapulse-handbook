@@ -316,17 +316,20 @@ p.login-itm {
 .more-dropdown li a {
     color: #000;
     display: block;
-    padding: 7px 0;
+    padding: 12px 0 12px 12px;
     border-bottom: 1px solid #eee;
+}
+.more-dropdown li a.active {
+  font-weight: bold;
 }
 .more-dropdown .more-dropdown-inner {
   position: relative;
   height: 380px;
 }
-.more-dropdown .tab-list {
+/*.more-dropdown .tab-list {
   height: 300px;
   overflow-y: auto;
-}
+}*/
 .more-dropdown .more-tab {
   cursor: pointer;
   display: inline-block;

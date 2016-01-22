@@ -32,30 +32,6 @@
                     </li>
                 </ul>
             </div>
-            <div class="more-dropdown" ng-show="isShowMore">
-                <div class="more-dropdown-inner">
-                    <ul class="tab-list">
-                        <li ng-repeat="(key, tab) in businessTabs">
-                            <a
-                            href="#/app/myoffer/{{tab.id}}"
-                            ng-class="{active : isActive('app/fb')}">
-                                {{tab.name}}
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- END: LIST -->
-                    <a class="more-tab" ng-click="MoreTab()">
-                        <i class="fa fa-plus"></i>
-                        More
-                    </a>
-                    <a class="out_close" ng-click="hideMore()">
-                        Close
-                    </a>
-                </div>
-            </div>
-            <!-- END : MORE OUTLET -->
-            <div class="blur">
-            </div>
             <!-- END PAGI -->
 
             <div class="blk-maps" ng-init="init()">
@@ -65,39 +41,28 @@
         </div>
         <!-- END: CONTENT -->
     </ion-content>
-    <!-- <div class="bar bar-footer bar-balanced bg-gray">
-        <ul>
-            <li>
-                <a href="#" title="Offers">
-                    <i class="ico w20 ico-logo"></i>
-                    Offers
-                </a>
-            </li>
-            <li>
-                <a href="#/app/location" title="Nearby">
-                    <i class="fa fa-map-marker"></i>
-                    Nearby
-                </a>
-            </li>
-            <li>
-                <a href="#" title="Favorites">
-                    <i class="fa fa-star-o"></i>
-                    Favorites
-                </a>
-            </li>
-            <li>
-                <a href="#" title="Savings">
-                    <i class="fa fa-usd"></i>
-                    Savings
-                </a>
-            </li>
-            <li>
-                <a href="#" title="Account">
-                    <i class="fa fa-user"></i>
-                    Account
-                </a>
-            </li>
-        </ul>
-    </div> -->
-    <!-- END: FOOTER -->
+    <div class="more-dropdown" ng-show="isShowMore">
+        <div class="more-dropdown-inner">
+            <ul class="tab-list">
+                <li ng-repeat="(key, tab) in businessTabs">
+                    <a
+                    href="#/app/buninesstype/{{tab.id}}"
+                    ng-class="{active : isActive('app/fb')}">
+                        {{tab.name}}
+                    </a>
+                </li>
+            </ul>
+            <!-- END: LIST -->
+            <a class="more-tab" ng-click="MoreTab()">
+                <i class="fa fa-plus"></i>
+                More
+            </a>
+            <a class="out_close" ng-click="hideMore()">
+                Close
+            </a>
+        </div>
+    </div>
+    <!-- END : MORE OUTLET -->
+    <div class="blur">
+    </div>
 </ion-view>
