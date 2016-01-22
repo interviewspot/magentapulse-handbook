@@ -322,6 +322,17 @@ angular.module('starter.services', [])
           }
           dateAsDateObject = new Date(Date.parse(ndate));
           return dateAsDateObject.getTime();
+        },
+        _findKeyArrayByValue : function($arr, $key, $val) {
+            re_val = null;
+            angular.forEach($arr, function(item, i) {
+                //console.log(item + " " + $val );
+                if (item[$key] == $val) {
+                    re_val = i;
+                    return;
+                }
+            });
+            return re_val;
         }
     };
 }])
