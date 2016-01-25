@@ -2,7 +2,7 @@
 var config = {
   path : {
       'baseURL'               : 'http://api-01.sg-benefits.com',
-      //'baseURL'               : 'https://api.sg-benefits.com',
+      //'baseURL'             : 'https://api.sg-benefits.com',
       'clients'               : '/organisations',
       'client'                : '/organisations/:org_id',
       'handbooks'             : '/organisations/:org_id/handbooks',
