@@ -1,12 +1,9 @@
 // Ionic Starter App
 var config = {
   path : {
-<<<<<<< HEAD
       'baseURL'               : 'https://api-01.sg-benefits.com',
-=======
-      'baseURL'               : 'http://api-01.sg-benefits.com',
->>>>>>> origin/app2
       //'baseURL'               : 'https://api.sg-benefits.com',
+
       'clients'               : '/organisations',
       'client'                : '/organisations/:org_id',
       'handbooks'             : '/organisations/:org_id/handbooks',
