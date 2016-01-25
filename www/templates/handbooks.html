@@ -13,9 +13,6 @@
 		    <input type="text" placeholder="Search" ng-model="searchText">
 		  </label>
 		</div>
-        <div class="row" ng-if="!handbooks._embedded.items" >
-            <div class="col">No data }!</div>
-        </div>
 		<div class="list menu-tab-page">
             <div ng-repeat="(key, handbook) in handbooks._embedded.items | filter:searchText">
                 <a href="#/app/handbook/{{handbook.id}}" class="item">
