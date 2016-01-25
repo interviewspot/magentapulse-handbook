@@ -118,12 +118,15 @@ angular.module('starter.controllers', [])
 /**
  * LogoutCtrl
  */
-.controller('LogoutCtrl', function($scope, $stateParams, $localstorage, $location) {
+.controller('LogoutCtrl', function($scope, $stateParams, $localstorage, $location, $ionicHistory) {
 
 	$scope.$on('$ionicView.enter', function(e) {
 		$scope.user = null;
 		$localstorage.reset();
-		$location.path('/app/login');
+        $ionicHistory.clearHistory();
+        $ionicHistory.clearCache().then(function(){
+            $location.path('/app/login');
+        });
 	});
 })
 
@@ -216,6 +219,7 @@ angular.module('starter.controllers', [])
 					 		}
 					 	}, function (err){
 						 	console.log('Connect API Handbooks language fail!');
+						 	alert("Connect the internet to get data!");
 						 	$ionicLoading.hide();
 						});
 					});
@@ -227,6 +231,11 @@ angular.module('starter.controllers', [])
 			}, function (err){
 			 	console.log('Connect API Handbooks fail!');
 			 	$ionicLoading.hide();
+			 	if (!$_handbooks) {
+			  		alert("Connect the internet to get data!");
+			  	} else {
+			  		$scope.handbooks = $_handbooks;
+			  	}
 			});
 		} else {
 			$ionicLoading.hide();
@@ -234,6 +243,9 @@ angular.module('starter.controllers', [])
 				$scope.handbooks = $_handbooks;
 			} else {
 				$scope.handbooks = []; // NO HANDBOOK
+				if (!$scope.handbooks) {
+			  		alert("Connect the internet to get data!");
+			  	}
 			}
 		}
 	}
@@ -328,12 +340,12 @@ angular.module('starter.controllers', [])
 		}
 
 		// GET HANDBOOK
-		$scope.handbook = $localstorage.getObject('handbook_' + $scope.handbook_id);
+		$scope.handbook     = $localstorage.getObject('handbook_' + $scope.handbook_id);
 		var $_handbook      = $localstorage.getObject('handbook_' + $scope.handbook_id);
 		var $local_handbook = $localstorage.getObject('hdsections_' + $scope.handbook_id);
 		$scope.sections = $local_handbook.data;
 		//var updateCache = $localstorage.getObject('updateCache');
-
+		console.log($local_handbook);
 		// GET HANDBOOK
 		HandbookService.get($scope.user.username
 							, $scope.user.password
@@ -343,10 +355,14 @@ angular.module('starter.controllers', [])
 			$scope.ch_color = '#' + 'cfae79';
 			$ionicLoading.hide();
 
-			if (($_handbook && $_handbook.version == $scope.handbook.version)
+			if (($_handbook
+				&& $_handbook.version == $scope.handbook.version
+				&& $_handbook.lang
+				&& $local_handbook.total)
 				|| (typeof $_handbook == "object"
 					&& $_handbook.version
-					&& $_handbook.version == $scope.handbook.version)) {
+					&& $_handbook.version == $scope.handbook.version
+					&& $local_handbook.total)) {
 				$localstorage.setObject('updateCache', false);
 				return;
 			} else {
@@ -367,12 +383,18 @@ angular.module('starter.controllers', [])
 		 	}, function (err){
 			 	console.log ('Connect API Handbooks language fail!');
 			 	$ionicLoading.hide();
+			 	if (!$scope.handbook) {
+			  		alert("Connect the internet to get data!");
+			  	}
 			});
 
-			if (($local_handbook && $local_handbook.version == $scope.handbook.version)
+			if (($local_handbook
+				&& $local_handbook.version == $scope.handbook.version
+				&& $local_handbook.total)
 				|| (typeof $local_handbook == "object"
 					&& $local_handbook.version
-					&& $local_handbook.version == $scope.handbook.version)) {
+					&& $local_handbook.version == $scope.handbook.version
+					&& $local_handbook.total)) {
 
 				$ionicLoading.hide();
 				$scope.sections = $local_handbook.data;
@@ -426,12 +448,21 @@ angular.module('starter.controllers', [])
 				}, function (err){
 				  console.log('Connect API Sections fail!');
 				  $ionicLoading.hide();
+				  if (!$scope.handbook.version) {
+			  		alert("Connect the internet to get data!");
+			  		$location.path('/app/handbooks');
+			  	  }
 				});
 			}
 
 		}, function (err){
 		 	console.log('Connect API Handbook fail!');
+		 	//console.log($_handbook);
 		 	$ionicLoading.hide();
+		 	if (!$scope.handbook.version) {
+		  		alert("Connect the internet to get data!");
+		  		$location.path('/app/handbooks');
+		  	}
 		});
 	}
 
@@ -607,6 +638,11 @@ angular.module('starter.controllers', [])
 			}, function (err){
 				$ionicLoading.hide();
 			  	console.log(err.status + ' : Connect API fail!');
+
+			  	if (!$scope.contacts) {
+			  		alert("Connect the internet to get data!");
+			  	}
+
 			});
 		}
 
@@ -671,6 +707,9 @@ angular.module('starter.controllers', [])
 			}, function (err){
 				$ionicLoading.hide();
 			  	console.log(err.status + ' : Connect API fail!');
+			  	if (!$scope.contacts) {
+			  		alert("Connect the internet to get data!");
+			  	}
 			});
 		}
 	}
