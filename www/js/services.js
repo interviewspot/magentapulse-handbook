@@ -162,6 +162,29 @@ angular.module('starter.services', [])
 //   }
 // }])
 
+// directive show tab
+.directive('outlettab', [function () {
+    return {
+        restrict: 'EA',
+        link: function (scope, ele, attrs) {
+            $(ele).on('click', function (e) {
+                var $this           =   $(this),
+                    data_link       =   $this.data('link'),
+                    $this_parent    =   $this.closest('.menu-pagi'),
+                    $tab_content    =   $this_parent.siblings('.store-desc');
+
+                if(!$this.hasClass('active')) {
+                    $this.addClass('active');
+                    $this.closest('li').siblings('li').find('.active').removeClass('active');
+                    $tab_content.siblings('.store-desc').removeClass('active');
+                    $('#' + data_link).addClass('active');
+                }
+
+            });
+        }
+    };
+}])
+
 .factory('$localstorage', ['$window', function($window) {
   return {
     set: function(key, value) {

@@ -14,12 +14,18 @@
             <figure class="store-img">
                 <img ng-src="{{detail_outlet.banner[1]}}" mg-alt="detail_outlet.name">
             </figure>
+            <!-- <ion-slide-box>
+              <ion-slide ng-repeat="(key, banner) in detail_outlet.banner">
+                <figure class="store-img" style="background-image: url('{{banner}}')">
+                </figure>
+              </ion-slide>
+            </ion-slide-box> -->
             <!-- END: IMG -->
             <div class="list store-info">
                 <a class="item item-nbd item-thumbnail-left" href="#">
                     <img ng-src="{{detail_outlet.logo}}">
                     <h2>{{detail_outlet.name}}</h2>
-                    <p class="direction">{{detail_outlet.outlet_address}}</p>
+                    <p class="direction">{{detail_outlet.geo_location.name}}</p>
                     <p class="address">Bistro, 300m</p>
                 </a>
                 <div class="area">
@@ -32,32 +38,63 @@
                 <ul>
                     <li>
                         <a
-                        href="#/app/store-detail/{{detail_outlet.id}}"
+                        outlettab
+                        data-link="about-tab"
                         title="About"
                         class="active">
                         About</a>
                     </li>
                     <li>
                         <a
-                        href="#/app/store-contact/{{detail_outlet.id}}"
+                        outlettab
+                        data-link="contact-tab"
                         title="Contact">Contact</a>
                     </li>
                     <li>
                         <a
-                        href=""
+                        data-link="location-tab"
                         title="Locations">Locations</a>
-                    </li>
-                    <li>
-                        <a href="" title="Menu">Menu</a>
                     </li>
                 </ul>
             </div>
             <!-- END: MENU -->
             <div
-            class="store-desc"
+            class="store-desc active"
+            id="about-tab"
             ng-bind-html="detail_outlet.about_company">
             </div>
             <!-- END: DESC -->
+            <div
+            id="contact-tab"
+            class="store-desc ">
+                <table>
+                    <tr>
+                        <th>Company Reg Biz Name</th>
+                        <td>{{detail_outlet.company_name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <td>{{detail_outlet.code}}</td>
+                    </tr>
+                    <tr>
+                        <th>Address</th>
+                        <td>{{detail_outlet.office_address}}</td>
+                    </tr>
+                    <tr>
+                        <th>Office Number</th>
+                        <td>{{detail_outlet.head_office_no}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div
+            id="location-tab"
+            class="store-desc ">
+                <div class="blk-maps" ng-init="init()">
+                    <div id="map-1" data-tap-disabled="true" ></div>
+                </div>
+            </div>
+            <!-- END: DESC -->
+            <!-- END TABS -->
             <div class="store-offer">
                 <h3 class="store-offer-ttl">OFFER PROVIDED BY MERCHANT</h3>
                 <span class="cap">Click on offers below to Redeem or to view details</span>

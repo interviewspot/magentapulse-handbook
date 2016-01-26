@@ -751,12 +751,17 @@ angular.module('starter.controllers', [])
 				$scope.detail_outlet = res_data.data._embedded.items[0];
 
 				// get outlet address
-				_getOutletDetailAddress($scope.detail_outlet);
-				console.log($scope.detail_outlet);
+				_getOutletDetailAddress($scope.detail_outlet, function(){
+					// maps
+					//$scope.addMaker($scope.detail_outlet);
+				});
+
 				// get outlet bussiness
 				_getOutletBussiness($scope.detail_outlet);
 				// get promotions business
 				_getPromotionsBusiness($scope.detail_outlet);
+
+
 
 		}, function (err){
 		  console.log('Connect API Sections fail!');
@@ -764,7 +769,7 @@ angular.module('starter.controllers', [])
 		});
 
 		// get outlet address
-		_getOutletDetailAddress = function (data_outlet) {
+		_getOutletDetailAddress = function (data_outlet, callback) {
 			if( data_outlet._links.location == undefined) { return; }
 
 			aRest.get($scope.user.username
@@ -774,7 +779,9 @@ angular.module('starter.controllers', [])
 				if(res.status != 200 || typeof res != 'object') { return; }
 
 				// add address location
-				data_outlet['outlet_address'] = res.data.name;
+				data_outlet['geo_location'] = res.data;
+
+				callback();
 
 			}, function (err){
 			  console.log('Connect API Sections fail!');
@@ -835,7 +842,6 @@ angular.module('starter.controllers', [])
 					});
 
 					// GET BANNERs
-					console.log(res_owner.data._links);
 					if(!res_owner.data._links.banners) { return;}
 					aRest.get($scope.user.username
 						, $scope.user.password
@@ -912,7 +918,65 @@ angular.module('starter.controllers', [])
 		    }, function () {
 		      $log.info('Modal dismissed at: ' + new Date());
 		    });
-		  };
+		};
+
+		// 2. INIT MAPs
+		$scope.init = function() {
+			var myLatlng = new google.maps.LatLng(1.308122, 103.818424);
+
+			var mapOptions = {
+			  center: myLatlng,
+			  zoom: 14,
+			  mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			var map = new google.maps.Map(document.getElementById("map-1"),
+				mapOptions);
+
+			$scope.map = map;
+			$scope.bounds = new google.maps.LatLngBounds();
+			$('.blk-maps').height(window.screen.height);
+		};
+
+		// function add maker
+		$scope.addMaker = function (data_outlet) { console.log(data_outlet.geo_location);
+			if (!data_outlet.geo_location.geo_lat) {return;}
+			var myLatlng = new google.maps.LatLng(data_outlet.geo_location.geo_lat, data_outlet.geo_location.geo_lng);
+
+			$scope.bounds.extend(myLatlng);
+			//console.log(myLatlng);
+			var marker = new google.maps.Marker({
+			  position: myLatlng,
+			  map: $scope.map,
+			  title: data_outlet.geo_location.name,
+			});
+
+			//Marker + infowindow + angularjs compiled ng-click
+			var contentString = "<div class='pop-outlet'>"
+							  +		"<a href='#/app/store-detail/"+ data_outlet.id +"'>"
+							  +			"<figure><img ng-src='"+ data_outlet.logo +"'/></figure>"
+							  +			"<div class='out-info'><h3>"+ data_outlet.name +"</h3>"
+							  +				"<p>"+ data_outlet.geo_location.name +"</p>"
+							  +			"</div>"
+							  +		"</a>"
+							  +	"</div>";
+			var compiled = $compile(contentString)($scope);
+
+			var infowindow;
+			infowindow = null;
+
+			google.maps.event.addListener(marker, 'click', function() {
+				if(infowindow) {
+					infowindow.close();
+					infowindow = null;
+					return;
+				}
+				infowindow = new google.maps.InfoWindow({
+				  content: compiled[0]
+				});
+				infowindow.open($scope.map, marker);
+			});
+
+		};
 	}
 })
 /**
@@ -957,6 +1021,7 @@ angular.module('starter.controllers', [])
 		}
 		$scope.user = $localstorage.getObject('user');
 		console.log($scope.outlets_promo);
+		console.log($scope.user);
 		$scope.pin_code   = [];
 		$scope.redeem_cls = '';
 		$scope.btn_text   = 'REDEEM';
@@ -1015,7 +1080,7 @@ angular.module('starter.controllers', [])
 				"redemption":{
 					"promotion": $scope.outlets_promo.promo_select.id,
 					"user": $scope.user.user.id,
-					"organisation": $scope.outlets_promo.this_company.id,
+					"organisation": $scope.user.company.id,
 					"retail_outlet": $scope.outlets_promo.id,
 					"user_pin": $scope.user.user.four_digit_pin,
 					"merchant_pin": $scope.outlets_promo.this_company.redemption_password

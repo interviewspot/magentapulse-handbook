@@ -400,6 +400,13 @@ p.login-itm {
     right: 10px;
     z-index: 10;
 }
+/*.store-img {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  height: 300px;
+  width: 800px;
+}*/
 .store-img img{
     width: 100%;
     height: auto;
@@ -414,6 +421,7 @@ p.login-itm {
 }
 .menu-pagi li a {
     font-size: 12px;
+    cursor: pointer;
 }
 .menu-pagi li a.active {
     font-size: 14px;
@@ -429,6 +437,11 @@ p.login-itm {
     padding: 10px;
     background-color: #eee;
     margin-bottom: 10px;
+    display: none;
+    font-size: 12px;
+}
+.store-desc.active {
+  display: block;
 }
 .store-desc table {
   width: 100%;
