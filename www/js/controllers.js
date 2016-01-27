@@ -594,7 +594,7 @@ angular.module('starter.controllers', [])
 		$location.path('/app/login');
 	} else {
 		$ionicLoading.show();
-		$scope.contacts = $localstorage.get('contacts').data;
+		$scope.contacts = $localstorage.get('contacts');
 
 
 		// GET IMG
