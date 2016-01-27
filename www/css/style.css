@@ -242,3 +242,9 @@ hr.line {
 .platform-ios .content-page {
     padding-top: 20px;
 }
+.load-nocache {
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}

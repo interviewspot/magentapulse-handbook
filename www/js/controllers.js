@@ -262,7 +262,12 @@ angular.module('starter.controllers', [])
 	$scope.user     = $localstorage.getObject('user');
 	$scope.handbook_id = $stateParams.handbook_id
 
-
+	$scope.refreshCached = function () {
+		$localstorage.setObject('handbook_' + $scope.handbook_id, {});
+		$localstorage.setObject('handbook_' + $scope.handbook_id, {});
+		$localstorage.setObject('hdsections_' + $scope.handbook_id, {});
+		location.reload();
+	};
 
 	// menu active
     $scope.isActive = function(path) {
@@ -566,7 +571,12 @@ angular.module('starter.controllers', [])
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.org 		= $scope.user.company;
-	$_handbooks = $localstorage.getObject('handbooks');
+	$_handbooks 	= $localstorage.getObject('handbooks');
+
+	$scope.refreshCached = function () {
+		$localstorage.setObject('contacts', {});
+		location.reload();
+	};
 
 	// menu active
     $scope.isActive = function(path) {
@@ -584,7 +594,7 @@ angular.module('starter.controllers', [])
 		$location.path('/app/login');
 	} else {
 		$ionicLoading.show();
-		$scope.contacts = $localstorage.getObject('contacts').data;
+		$scope.contacts = $localstorage.get('contacts').data;
 
 
 		// GET IMG

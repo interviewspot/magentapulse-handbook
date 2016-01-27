@@ -12,8 +12,12 @@
 		    <input type="text" placeholder="Search" ng-model="searchText">
 		  </label>
 		</div>
-        <div class="row" ng-if="!handbook" >
-            <div class="col">No data found!</div>
+        <div class="load-nocache" ng-if="!handbook">
+            <p>No data! please connect the internet and click refresh.</p>
+            <p><a href="javascript:;" ng-click="refreshCached()">
+                <span class="ion-refresh" data-pack="default" data-tags="reload, renew"></span>
+                REFRESH
+            </a></p>
         </div>
 		<div class="row" ng-if="handbook" ng-hide="searchText">
 			<div class="col">
