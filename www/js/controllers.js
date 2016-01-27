@@ -176,6 +176,7 @@ angular.module('starter.controllers', [])
 			};
 
 			// load more tab
+			$scope.isShwButton = false;
 			$scope.MoreTab = function () {
 				$scope.loadOfferTab();
 			};
@@ -184,6 +185,7 @@ angular.module('starter.controllers', [])
 			$scope.loadOfferTab = function () {
 
 				if($scope.tab_page > $scope.tab_pagination.pages) {
+					$scope.isShwButton = true;
 					return;
 				}
 				aRest.get($scope.user.username
@@ -206,6 +208,9 @@ angular.module('starter.controllers', [])
 							};
 							$scope.tab_page = res_data.data.page + 1;
 
+							if($scope.tab_page >= $scope.tab_pagination.pages) {
+								$scope.isShwButton = true;
+							}
 				}, function (err){
 				    console.log('Connect API Outlet fail!');
 				    $ionicLoading.hide();
@@ -297,12 +302,24 @@ angular.module('starter.controllers', [])
 							, data_outlet[i]._links.location.href).then(function(res){
 						if(res.status != 200 || typeof res != 'object') { return; }
 
-						// add address location
-						data_outlet[i]['outlet_address'] = res.data.name;
-
 						if (data_outlet.length-1 == i) {
 							callback(data_outlet);
 						}
+
+						// get outlet address
+						aRest.get($scope.user.username
+								, $scope.user.password
+								, $scope.user.session_key
+								, res.data._links.addresses.href).then(function(res){
+							if(res.status != 200 || typeof res != 'object') { return; }
+
+							// add address location
+							data_outlet[i]['outlet_address'] = res.data._embedded.items[0].value;
+
+						}, function (err){
+						  console.log('Connect API Locations fail!');
+						  $ionicLoading.hide();
+						});
 
 					}, function (err){
 					  console.log('Connect API Locations fail!');
@@ -439,45 +456,46 @@ angular.module('starter.controllers', [])
 		};
 
 		// load more tab
-		$scope.MoreTab = function () {
-			$scope.loadOfferTab();
-		};
+			$scope.isShwButton = false;
+			$scope.MoreTab = function () {
+				$scope.loadOfferTab();
+			};
 
-		// get tabs
-		$scope.loadOfferTab = function () {
+			// get tabs
+			$scope.loadOfferTab = function () {
 
-			if($scope.tab_page >= $scope.tab_pagination.pages) {
-				$scope.noMoreItemsAvailable = true;
-				return;
-			}
-			aRest.get($scope.user.username
-								, $scope.user.password
-								, $scope.user.user.session_key
-								, config.path.baseURL + '/tags?search=tag.businessType:1,tag.enabled:1'
-													  + '&limit=' + $scope.tab_limit
-													  + '&page=' + $scope.tab_page)
-								.then(function(res_data){
-						if(res_data.status != 200 || typeof res_data != 'object') { return; }
+				if($scope.tab_page > $scope.tab_pagination.pages) {
+					$scope.isShwButton = true;
+					return;
+				}
+				aRest.get($scope.user.username
+									, $scope.user.password
+									, $scope.user.user.session_key
+									, config.path.baseURL + '/tags?search=tag.businessType:1,tag.enabled:1'
+														  + '&limit=' + $scope.tab_limit
+														  + '&page=' + $scope.tab_page)
+									.then(function(res_data){
+							if(res_data.status != 200 || typeof res_data != 'object') { return; }
 
-						$scope.businessTabs = $scope.businessTabs.concat(res_data.data._embedded.items);
+							$scope.businessTabs = $scope.businessTabs.concat(res_data.data._embedded.items);
 
-						// Register paging
-						$scope.tab_pagination       = {
-							"page": res_data.data.page,
-							"limit": res_data.data.limit,
-							"pages": res_data.data.pages,
-							"total": res_data.data.total
-						};
-						$scope.tab_page = res_data.data.page + 1;
+							// Register paging
+							$scope.tab_pagination       = {
+								"page": res_data.data.page,
+								"limit": res_data.data.limit,
+								"pages": res_data.data.pages,
+								"total": res_data.data.total
+							};
+							$scope.tab_page = res_data.data.page + 1;
 
-						// Regis complete Page
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-
-			}, function (err){
-			    console.log('Connect API Outlet fail!');
-			    $ionicLoading.hide();
-			});
-		};
+							if($scope.tab_page >= $scope.tab_pagination.pages) {
+								$scope.isShwButton = true;
+							}
+				}, function (err){
+				    console.log('Connect API Outlet fail!');
+				    $ionicLoading.hide();
+				});
+			};
 
 		// GET OUTLET LIST
 		aRest.get($scope.user.username
@@ -517,7 +535,7 @@ angular.module('starter.controllers', [])
 					_getOutletBussiness(data_outlet[i], i, function() {
 						// add address location
 						$scope.outlet_list[i]['geo_location'] = res.data;
-						console.log($scope.outlet_list);
+
 						$scope.addMaker($scope.outlet_list[i], i);
 
 						if (data_outlet.length-1 == i) {
@@ -654,17 +672,6 @@ angular.module('starter.controllers', [])
           showBackdrop: false
         });
 
-        // Diagnostic.isLocationEnabled(function(enabled){
-        //     console.log("Location is " + (enabled ? "enabled" : "disabled"));
-        // }, function(error){
-        //     console.error("The following error occurred: "+error);
-        // });
-     //    LocationSettings.getLocationSettings().then(function(result) {
-	    //   alert(result);
-	    // }, function(err) {
-	    //   alert(err);
-	    // });
-
         var posOptions = {timeout: 10000, enableHighAccuracy: true};
         $cordovaGeolocation
 		    .getCurrentPosition(posOptions)
@@ -687,28 +694,13 @@ angular.module('starter.controllers', [])
 				alert("Turn on your device's location and go back this screen.");
 				$ionicLoading.hide();
 	        });
-        // $cordovaGeolocation.getCurrentPosition(function(pos) {
-        //   $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-
-        //   var myLatlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-        //   var image  = new google.maps.MarkerImage('images/marker-home.png' );
-        //   var marker = new google.maps.Marker({
-        //   	position: myLatlng,
-        //  	map: $scope.map,
-        //  	icon: image,
-        //   });
-
-        //   $ionicLoading.hide();
-        // }, function(error) {
-        //   alert('Unable to get location: ' + error.message);
-        // });
     };
 })
 /**
  * store detail Ctrl
  */
 .controller('storeDetailCtrl',
-	function ($scope, $rootScope, $location, $stateParams, $ionicPush, $localstorage, $ionicLoading, aRest, $uibModal, $log) {
+	function ($scope, $rootScope, $location, $stateParams, $ionicPush, $localstorage, $ionicLoading, aRest, $uibModal, $log, $compile, $sce) {
 	// active page
 	$scope.isActive = function (path) {
 		return $location.path() === '/' + path ? true : false;
@@ -718,7 +710,11 @@ angular.module('starter.controllers', [])
 	$scope.user      = $localstorage.getObject('user');
 	$scope.org 		 = $scope.user.company;
 	$scope.outlet_id = $stateParams.outlet_id;
-	console.log($scope.user.user);
+	$scope.detail_banner = [];
+	$scope.banner_detail = [];
+	$scope.detail_banner[0] = 'http://s3-ap-southeast-1.amazonaws.com/magenta-consulting.com/local//0001/01/4fb6094f7edaf778fc263f6638f6422689910c6e.jpeg';
+	$scope.detail_banner[1] = 'http://s3-ap-southeast-1.amazonaws.com/magenta-consulting.com/local//0001/01/1a03456137fe80a5652e0274b6756fe97793d393.jpeg';
+
 	var _URL_outlet = {
 			_links : config.path.baseURL + config.path.outlets
 		};
@@ -751,16 +747,13 @@ angular.module('starter.controllers', [])
 				$scope.detail_outlet = res_data.data._embedded.items[0];
 
 				// get outlet address
-				_getOutletDetailAddress($scope.detail_outlet, function(){
+				_getOutletDetailAddress($scope.detail_outlet, function () {
 					// maps
-					//$scope.addMaker($scope.detail_outlet);
+					//$scope.addMaker_outlet($scope.detail_outlet);
 				});
 
-				// get outlet bussiness
-				_getOutletBussiness($scope.detail_outlet);
 				// get promotions business
 				_getPromotionsBusiness($scope.detail_outlet);
-
 
 
 		}, function (err){
@@ -781,7 +774,24 @@ angular.module('starter.controllers', [])
 				// add address location
 				data_outlet['geo_location'] = res.data;
 
-				callback();
+				// get outlet bussiness
+				_getOutletBussiness($scope.detail_outlet, callback);
+
+				$scope.data_location = $scope.detail_outlet;
+
+				// get outlet address
+				aRest.get($scope.user.username
+						, $scope.user.password
+						, $scope.user.user.session_key
+						, res.data._links.addresses.href).then(function(res){
+					if(res.status != 200 || typeof res != 'object') { return; }
+
+					$scope.detail_outlet.outlet_address = res.data._embedded.items[0].value;
+
+				}, function (err){
+				  console.log('Connect API Sections fail!');
+				  $ionicLoading.hide();
+				});
 
 			}, function (err){
 			  console.log('Connect API Sections fail!');
@@ -790,7 +800,7 @@ angular.module('starter.controllers', [])
 		};
 
 		// get outlet bussiness
-		_getOutletBussiness = function (data_outlet) {
+		_getOutletBussiness = function (data_outlet, callback) {
 			if( data_outlet._links.business == undefined) { return; }
 
 			aRest.get($scope.user.username
@@ -802,10 +812,7 @@ angular.module('starter.controllers', [])
 				$scope.outlet_business = res.data;
 
 				// get owner business
-				_getOwnerBusiness($scope.outlet_business);
-
-				// get promotions business
-				//_getPromotionsBusiness($scope.outlet_business);
+				_getOwnerBusiness($scope.outlet_business, callback);
 
 			}, function (err){
 			  console.log('Connect API Sections fail!');
@@ -814,7 +821,7 @@ angular.module('starter.controllers', [])
 		};
 
 		// get owner business
-		_getOwnerBusiness = function (data_owner) {
+		_getOwnerBusiness = function (data_owner, callback) {
 			aRest.get($scope.user.username
 				, $scope.user.password
 				, $scope.user.user.session_key
@@ -836,6 +843,8 @@ angular.module('starter.controllers', [])
 						, res_owner.data._links.logo.href + '/url').then(function (res_logo) {
 						if (typeof res_logo == 'object' && res_logo.status == 200) {
 							$scope.detail_outlet['logo'] = res_logo.data.url;
+
+							callback();
 						}
 					}, function (err){
 					 	console.log('Connect API IMG fail!');
@@ -861,6 +870,10 @@ angular.module('starter.controllers', [])
 								, _URL_getBanner).then(function (res_banner) {
 									if (typeof res_banner == 'object' && res_banner.status == 200) {
 										$scope.detail_outlet['banner'].push(res_banner.data.url);
+
+										// declare data banner
+										$scope.banner_detail.push(res_banner.data.url);
+										$scope.$broadcast('dataloaded');
 									}
 								}, function (err){
 								 	console.log('Connect API BANNER ID '+  +' URL fail!');
@@ -918,64 +931,6 @@ angular.module('starter.controllers', [])
 		    }, function () {
 		      $log.info('Modal dismissed at: ' + new Date());
 		    });
-		};
-
-		// 2. INIT MAPs
-		$scope.init = function() {
-			var myLatlng = new google.maps.LatLng(1.308122, 103.818424);
-
-			var mapOptions = {
-			  center: myLatlng,
-			  zoom: 14,
-			  mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-			var map = new google.maps.Map(document.getElementById("map-1"),
-				mapOptions);
-
-			$scope.map = map;
-			$scope.bounds = new google.maps.LatLngBounds();
-			$('.blk-maps').height(window.screen.height);
-		};
-
-		// function add maker
-		$scope.addMaker = function (data_outlet) { console.log(data_outlet.geo_location);
-			if (!data_outlet.geo_location.geo_lat) {return;}
-			var myLatlng = new google.maps.LatLng(data_outlet.geo_location.geo_lat, data_outlet.geo_location.geo_lng);
-
-			$scope.bounds.extend(myLatlng);
-			//console.log(myLatlng);
-			var marker = new google.maps.Marker({
-			  position: myLatlng,
-			  map: $scope.map,
-			  title: data_outlet.geo_location.name,
-			});
-
-			//Marker + infowindow + angularjs compiled ng-click
-			var contentString = "<div class='pop-outlet'>"
-							  +		"<a href='#/app/store-detail/"+ data_outlet.id +"'>"
-							  +			"<figure><img ng-src='"+ data_outlet.logo +"'/></figure>"
-							  +			"<div class='out-info'><h3>"+ data_outlet.name +"</h3>"
-							  +				"<p>"+ data_outlet.geo_location.name +"</p>"
-							  +			"</div>"
-							  +		"</a>"
-							  +	"</div>";
-			var compiled = $compile(contentString)($scope);
-
-			var infowindow;
-			infowindow = null;
-
-			google.maps.event.addListener(marker, 'click', function() {
-				if(infowindow) {
-					infowindow.close();
-					infowindow = null;
-					return;
-				}
-				infowindow = new google.maps.InfoWindow({
-				  content: compiled[0]
-				});
-				infowindow.open($scope.map, marker);
-			});
-
 		};
 	}
 })
@@ -1253,6 +1208,7 @@ user_p_i_n: "1231"*/
 			};
 
 			// load more tab
+			$scope.isShwButton = false;
 			$scope.MoreTab = function () {
 				$scope.loadOfferTab();
 			};
@@ -1261,6 +1217,7 @@ user_p_i_n: "1231"*/
 			$scope.loadOfferTab = function () {
 
 				if($scope.tab_page > $scope.tab_pagination.pages) {
+					$scope.isShwButton = true;
 					return;
 				}
 				aRest.get($scope.user.username
@@ -1283,6 +1240,9 @@ user_p_i_n: "1231"*/
 							};
 							$scope.tab_page = res_data.data.page + 1;
 
+							if($scope.tab_page >= $scope.tab_pagination.pages) {
+								$scope.isShwButton = true;
+							}
 				}, function (err){
 				    console.log('Connect API Outlet fail!');
 				    $ionicLoading.hide();
@@ -1396,11 +1356,26 @@ user_p_i_n: "1231"*/
 						if(res.status != 200 || typeof res != 'object') { return; }
 
 						// add address location
-						data_outlet[i]['outlet_address'] = res.data.name;
+						//data_outlet[i]['outlet_address'] = res.data.name;
 
 						if (data_outlet.length-1 == i) {
 							callback(data_outlet);
 						}
+
+						// get outlet address
+						aRest.get($scope.user.username
+								, $scope.user.password
+								, $scope.user.session_key
+								, res.data._links.addresses.href).then(function(res){
+							if(res.status != 200 || typeof res != 'object') { return; }
+
+							// add address location
+							data_outlet[i]['outlet_address'] = res.data._embedded.items[0].value;
+
+						}, function (err){
+						  console.log('Connect API Locations fail!');
+						  $ionicLoading.hide();
+						});
 
 					}, function (err){
 					  console.log('Connect API Locations fail!');

@@ -171,17 +171,104 @@ angular.module('starter.services', [])
                 var $this           =   $(this),
                     data_link       =   $this.data('link'),
                     $this_parent    =   $this.closest('.menu-pagi'),
-                    $tab_content    =   $this_parent.siblings('.store-desc');
+                    $tab_content    =   $this_parent.siblings('.store-desc'),
+                    $map            =   $tab_content.find('.blk-maps-outlet');
 
                 if(!$this.hasClass('active')) {
                     $this.addClass('active');
                     $this.closest('li').siblings('li').find('.active').removeClass('active');
                     $tab_content.siblings('.store-desc').removeClass('active');
                     $('#' + data_link).addClass('active');
+
+                    // maps init
+                    if(data_link == 'location-tab') {
+                        $location = $map.data('location');
+                        var myLatlng = new google.maps.LatLng($location.geo_location.geo_lat, $location.geo_location.geo_lng);
+
+                        var mapOptions = {
+                          center: myLatlng,
+                          zoom: 14,
+                          mapTypeId: google.maps.MapTypeId.ROADMAP
+                        };
+                        var map = new google.maps.Map(document.getElementById("map-outlet"),
+                            mapOptions);
+
+                        //Marker + infowindow + angularjs compiled ng-click
+                        var marker = new google.maps.Marker({
+                          position: myLatlng,
+                          map: map,
+                        });
+
+                        var contentString = "<div class='pop-outlet'>"
+                              +   "<figure><img src='"+ $location.logo +"'/></figure>"
+                              +   "<div class='out-info'><h3>"+ $location.name +"</h3>"
+                              +       "<p>"+ $location.outlet_address +"</p>"
+                              +   "</div>"
+                              + "</div>";
+
+                        var infowindow;
+                        infowindow = null;
+
+                        google.maps.event.addListener(marker, 'click', function() {
+                            if(infowindow) {
+                                infowindow.close();
+                                infowindow = null;
+                                return;
+                            }
+                            infowindow = new google.maps.InfoWindow({
+                              content: contentString
+                            });
+                            infowindow.open(map, marker);
+                        });
+                    }
                 }
 
             });
         }
+    };
+}])
+
+// directive banner slider
+.directive('mainslider', ['$timeout',
+    function ($timeout) {
+    sliderLink = function (scope, ele, attrs) {
+
+        scope.$on('dataloaded', function () {
+            $timeout(function () {
+                $(ele).flexslider({
+                    animation: "fade",
+                    // Primary Controls
+                    controlNav: false,               //Boolean: Create navigation for paging control of each clide? Note: Leave true for manualControls usage
+                    directionNav: false,             //Boolean: Create navigation for previous/next navigation? (true/false)
+                    prevText: "",           //String: Set the text for the "previous" directionNav item
+                    nextText: "",
+                    slideshowSpeed: 4000,
+                    pauseOnHover: false
+                });
+            });
+        }, 0, false);
+
+
+    };
+    sliderCtrl = [
+        '$scope', '$http',
+        function($scope, $http) {
+
+          $scope.$watch('data', function(nv) {
+            if (nv) {
+              return $scope.detail_outlet == nv;
+            }
+          });
+        }
+    ];
+    return {
+        restrict: 'EA',
+        scope   : {
+            data   : '='
+        },
+        templateUrl : 'templates/directives/mainslider.html',
+        controller : sliderCtrl,
+        link: sliderLink
     };
 }])
 

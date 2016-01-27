@@ -11,21 +11,14 @@
     <!-- END: HEADER -->
     <ion-content>
         <div class="content has-header ionic-pseudo pb-50">
-            <figure class="store-img">
-                <img ng-src="{{detail_outlet.banner[1]}}" mg-alt="detail_outlet.name">
-            </figure>
-            <!-- <ion-slide-box>
-              <ion-slide ng-repeat="(key, banner) in detail_outlet.banner">
-                <figure class="store-img" style="background-image: url('{{banner}}')">
-                </figure>
-              </ion-slide>
-            </ion-slide-box> -->
-            <!-- END: IMG -->
+            <div class="store-banner flexslider" mainslider data="banner_detail">
+            </div>
+            <!-- END: SLIDER -->
             <div class="list store-info">
                 <a class="item item-nbd item-thumbnail-left" href="#">
                     <img ng-src="{{detail_outlet.logo}}">
                     <h2>{{detail_outlet.name}}</h2>
-                    <p class="direction">{{detail_outlet.geo_location.name}}</p>
+                    <p class="direction">{{detail_outlet.outlet_address}}</p>
                     <p class="address">Bistro, 300m</p>
                 </a>
                 <div class="area">
@@ -52,6 +45,7 @@
                     </li>
                     <li>
                         <a
+                        outlettab
                         data-link="location-tab"
                         title="Locations">Locations</a>
                     </li>
@@ -89,8 +83,8 @@
             <div
             id="location-tab"
             class="store-desc ">
-                <div class="blk-maps" ng-init="init()">
-                    <div id="map-1" data-tap-disabled="true" ></div>
+                <div class="blk-maps-outlet" data-location="{{data_location}}">
+                    <div id="map-outlet" data-tap-disabled="true" ></div>
                 </div>
             </div>
             <!-- END: DESC -->
