@@ -595,7 +595,9 @@ angular.module('starter.controllers', [])
 	} else {
 		$ionicLoading.show();
 		$scope.contacts = $localstorage.get('contacts');
-
+		if ($scope.contacts) {
+			$scope.contacts = $scope.contacts.data;
+		}
 
 		// GET IMG
 		if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
