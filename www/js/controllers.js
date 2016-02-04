@@ -961,7 +961,7 @@ angular.module('starter.controllers', [])
  * main course Ctrl
  */
 .controller('courseCtrl',
-	function ($scope, $uibModal, $location, $localstorage, aRest, $ionicLoading) {
+	function ($scope, $uibModal, $location, $localstorage, aRest, $ionicLoading, $timeout, $window) {
 		console.log($('.modal').length);
 		if ($('.modal').length) {
 			$('.modal').remove();
@@ -1009,6 +1009,10 @@ angular.module('starter.controllers', [])
 				if (redeem_code.trim() == $scope.outlets_promo.this_company.redemption_password.trim()) {
 					// POST REDEM
 					_postRedem(_openModalRedeem);
+					// $timeout(function(){
+					// 	$location.path('/app/myoffer');
+					// 	$window.location.reload();
+					// },3000);
 				} else {
 					$scope.msg_error  = 'Wrong 4-Digit password';
 				}
@@ -1104,7 +1108,7 @@ angular.module('starter.controllers', [])
  * redeem demo Ctrl
  */
 .controller('redeemCtrl'
-	, function ($scope, $uibModalInstance, $location, $ionicLoading, $localstorage, aRest, items) {
+	, function ($scope, $uibModalInstance, $location, $ionicLoading, $localstorage, aRest, items, $window) {
 	$scope.user = $localstorage.getObject('user');
 	$scope.outlets_promo = $localstorage.getObject('outlets_promo');
 	$ionicLoading.show();
@@ -1119,11 +1123,11 @@ angular.module('starter.controllers', [])
 		if (res_data.status == 200) {
 			console.log(res_data.data);
 			$scope.red = res_data.data;
-/*code: "K1MAQ6V"
-id: 8
-merchant_p_i_n: "4444"
-redeemed_at: "2016-01-14T18:58:54+0800"
-user_p_i_n: "1231"*/
+			/*code: "K1MAQ6V"
+			id: 8
+			merchant_p_i_n: "4444"
+			redeemed_at: "2016-01-14T18:58:54+0800"
+			user_p_i_n: "1231"*/
 		}
 		$ionicLoading.hide();
 	}, function (err){
@@ -1133,6 +1137,8 @@ user_p_i_n: "1231"*/
 	});
 	$scope.cancel = function () {
 		$uibModalInstance.dismiss('cancel');
+		$location.path('/app/myoffer');
+		$window.location.reload();
 	};
 
 })

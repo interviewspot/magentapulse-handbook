@@ -479,8 +479,12 @@ p.login-itm {
 .header-inner .h-back {
     font-size: 18px;
     display: block;
-    position: absolute;
-    top: 3px;
+    text-align: center;
+}
+.header-inner .h-back i {
+  position: absolute;
+  top: 3px;
+  left: 0;
 }
 .header-inner.head-ctent {
     line-height: 34px;
@@ -1274,7 +1278,7 @@ button.close {
 }
 .md-offer .close {
     color: #fff;
-    font-size: 18px;
+    font-size: 24px;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -1329,9 +1333,9 @@ button.close {
     color: rgb(64,64,64);
     text-decoration: underline;
 }
-.md-offer .md-purchase {
+/*.md-offer .md-purchase {
     padding-bottom: 30px;
-}
+}*/
 .md-offer .md-purchase p {
     margin-bottom: 5px;
 }
