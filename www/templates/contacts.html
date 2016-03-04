@@ -29,11 +29,11 @@
 	                <h3 ng-if="contact.user.first_name">{{contact.user.first_name}}  {{contact.user.last_name}}</h3>
 	                <p class="ctc-add l-tags">Singapore,
                         <span class="tag"
-                            ng-repeat="tag in contact.tags._embedded.items | filter:{employee_class:true} | filter:{enabled:true}">
+                            ng-repeat="tag in contact.position.employee_classes._embedded.items | filter:{enabled:true}">
                             {{tag.name}}
                         </span>
                         <span class="tag"
-                            ng-repeat="tag in contact.tags._embedded.items | filter:{employee_function:true} | filter:{enabled:true}">
+                            ng-repeat="tag in contact.position.employee_functions._embedded.items | filter:{employee_function:true} | filter:{enabled:true}">
                             {{tag.name}}
                         </span>
                     </p>
