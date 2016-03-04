@@ -689,13 +689,27 @@ angular.module('starter.controllers', [])
 							});
 
 
-							// GET TAGS
-							if (item._links.tags) {
+							// GET employee_classes
+							if (item._links.employee_classes) {
 								ContactService.fetch($scope.user.username
 											   , $scope.user.password
 											   , $scope.user.session_key
-											   , item._links.tags.href).then(function (res){
-		                            $scope.contacts[i]['tags'] = res.data
+											   , item._links.employee_classes.href).then(function (res){
+		                            $scope.contacts[i]['position']['employee_classes'] = res.data
+									// STORE in LOCAL
+									$localstorage.setObject('contacts', {
+										"data" : $scope.contacts
+									});
+								});
+							}
+
+							// GET employee_functions
+							if (item._links.employee_classes) {
+								ContactService.fetch($scope.user.username
+											   , $scope.user.password
+											   , $scope.user.session_key
+											   , item._links.employee_functions.href).then(function (res){
+		                            $scope.contacts[i]['position']['employee_functions'] = res.data
 									// STORE in LOCAL
 									$localstorage.setObject('contacts', {
 										"data" : $scope.contacts
