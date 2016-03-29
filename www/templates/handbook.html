@@ -47,13 +47,17 @@
                         ng-show="section.lang['en_us'].description || section.description"
                         ng-class="(section.children._embedded) ? '' : 'no-child'"
                         ng-bind-html="section.lang['en_us'].description ? section.lang['en_us'].description : section.description"
+                        zooming="true"
                         ></div>
                     <div class="sub-section"
                         ng-if="section.children._embedded.items.length > 0"
                         ng-repeat="(k, child) in section.children._embedded.items | orderBy:'version'"
                         >
                         <h4 ng-click="toggleSubGroup(child)">{{section.version}}.{{child.version}} - {{child.lang['en_us'].title ? child.lang['en_us'].title : child.title }}</h4>
-                        <div class="sub-section-ct" ng-bind-html="child.lang['en_us'].description ? child.lang['en_us'].description : child.description" ng-show="isSubGroupShown(child)"></div>
+                        <div class="sub-section-ct"
+                            ng-bind-html="child.lang['en_us'].description ? child.lang['en_us'].description : child.description"
+                            zooming="true"
+                            ng-show="isSubGroupShown(child)"></div>
                     </div><!-- SUB SECTIONS -->
                 </div>
         	</div>

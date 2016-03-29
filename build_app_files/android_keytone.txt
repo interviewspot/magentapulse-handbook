@@ -10,3 +10,10 @@ Alias = alias_name
 /Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.6.apk
 
 /Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.7.apk
+
+
+BUILD release
+. ionic build --release android
+. copy file at root
+. jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore android-release-unsigned.apk alias_name
+. /Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.x.apk
