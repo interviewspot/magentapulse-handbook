@@ -8,3 +8,5 @@ Alias = alias_name
 /Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.2b.apk
 
 /Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.6.apk
+
+/Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.7.apk

@@ -34,8 +34,25 @@ angular.module('starter.controllers', [])
 	$scope.user = $localstorage.getObject('user');
 	$scope.noCompayCode = false;
 	$scope.noUserCode   = false;
-
-	//console.log("sss : " + $scope.$$parent.isSigned);
+	// //console.log($state.current.name);
+	// //console.log("sss : " + $scope.$$parent.isSigned);
+	// $ionicPlatform.onHardwareBackButton(function() {
+	// 	if ($state.current.name == 'app.login') {
+	// 		$ionicPopup.confirm({
+	// 	        title: 'System warning',
+	// 	        template: 'are you sure you want to exit?'
+	// 	    }).then(function(res) {
+	// 	        if (res) {
+	// 	          ionic.Platform.exitApp();
+	// 	        }
+	// 	    });
+	// 	    return;
+	// 	}
+		    
+		
+	// 	//console.log($state.current.name);
+ 		
+	// });
 
 	if ($scope.user &&  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$location.path('/app/handbooks');
@@ -351,6 +368,7 @@ angular.module('starter.controllers', [])
 		$scope.sections = $local_handbook.data;
 		//var updateCache = $localstorage.getObject('updateCache');
 		console.log($local_handbook);
+		
 		// GET HANDBOOK
 		HandbookService.get($scope.user.username
 							, $scope.user.password
@@ -413,9 +431,11 @@ angular.module('starter.controllers', [])
 								 , $scope.handbook._links.sections.href + "?search=section.parent{null}1&limit=500").then(function (return_data){
 					$ionicLoading.hide();
 					$scope.sections = return_data.data._embedded.items;
-
+					console.log($scope.sections);
 					// TRANSLATE SECTION lvel 1
 					angular.forEach(return_data.data._embedded.items, function(item, i) {
+						console.log(i +" =  "+$scope.sections[i].version);
+						$scope.sections[i].version = parseInt($scope.sections[i].version);
 						(function(itemInstance) {
 							// Find child for section
 							if (item._links.children) {
@@ -429,7 +449,6 @@ angular.module('starter.controllers', [])
 
 						 			$scope.sections[i]['lang'] = res.data;
 						 			// STORE in LOCAL
-						 			$scope.sections[i].version = parseInt($scope.sections[i].version);
 									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
 										version : $scope.handbook.version,
 										data    : $scope.sections
@@ -501,7 +520,7 @@ angular.module('starter.controllers', [])
 				$ionicLoading.hide();
 				$scope.sections[j].children = res.data;
 
-				angular.forEach(res.data._embedded.items, function(item, i) {
+				angular.forEach(res.data._embedded.items, function(item, k) {
 						(function(itemInstance) {
 							HandbookService.get($scope.user.username
 											  , $scope.user.password
@@ -511,8 +530,8 @@ angular.module('starter.controllers', [])
 
 						 			//res.data._embedded.items[i]['lang'] = res.data;
 						 			// STORE in LOCAL
-						 			$scope.sections[j].children._embedded.items[i]['lang'] = res.data;
-						 			$scope.sections[j].children._embedded.items[i].version = parseInt($scope.sections[j].children._embedded.items[i].version);
+						 			$scope.sections[j].children._embedded.items[k]['lang'] = res.data;
+						 			$scope.sections[j].children._embedded.items[k].version = parseInt($scope.sections[j].children._embedded.items[k].version);
 									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
 										version : $scope.handbook.version,
 										data    : $scope.sections

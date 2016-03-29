@@ -36,7 +36,6 @@
                     ng-class="{active: isGroupShown(section)}">
 					<h4 class="sec-title">
                         {{section.version}}. {{section.lang['en_us'].title ? section.lang['en_us'].title : section.title}}
-
 					    <i class="icon"
                         ng-class="isGroupShown(section) ? 'ion-ios-minus-outline' : 'ion-ios-plus-outline'"
                         ></i>
@@ -51,9 +50,9 @@
                         ></div>
                     <div class="sub-section"
                         ng-if="section.children._embedded.items.length > 0"
-                        ng-repeat="(k, child) in section.children._embedded.items"
+                        ng-repeat="(k, child) in section.children._embedded.items | orderBy:'version'"
                         >
-                        <h4 ng-click="toggleSubGroup(child)">{{key + 1}}.{{k + 1}} - {{child.lang['en_us'].title ? child.lang['en_us'].title : child.title }}</h4>
+                        <h4 ng-click="toggleSubGroup(child)">{{section.version}}.{{child.version}} - {{child.lang['en_us'].title ? child.lang['en_us'].title : child.title }}</h4>
                         <div class="sub-section-ct" ng-bind-html="child.lang['en_us'].description ? child.lang['en_us'].description : child.description" ng-show="isSubGroupShown(child)"></div>
                     </div><!-- SUB SECTIONS -->
                 </div>

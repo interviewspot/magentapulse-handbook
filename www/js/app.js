@@ -32,7 +32,28 @@ angular.module('starter', [
   'ionic.service.push'
 ])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $ionicPopup, $state) {
+  // Disable BACK button on home
+  $ionicPlatform.registerBackButtonAction(function(event) {
+    // $ionicPopup.alert({
+    //   title : 'state',
+    //   template: $state.current.name
+    // });
+
+    if ($state.current.name == "app.login" || $state.current.name == "app.handbooks" ) { // your check here
+      $ionicPopup.confirm({
+        title: 'Hi there!',
+        template: 'Are you sure you want to exit?'
+      }).then(function(res) {
+        if (res) {
+          ionic.Platform.exitApp();
+        }
+      });
+    } else {
+      navigator.app.backHistory();
+    }
+  }, 100);
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -83,16 +104,16 @@ angular.module('starter', [
 .config(function($stateProvider, $urlRouterProvider, $sceDelegateProvider, $httpProvider) {
   $stateProvider
     .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
+      url: '/app',
+      abstract: true,
+      templateUrl: 'templates/menu.html',
+      controller: 'AppCtrl'
   })
 
   .state('app.search', {
     url: '/search',
     views: {
-      'menuContent': {
+      menuContent: {
         templateUrl: 'templates/search.html'
       }
     }
