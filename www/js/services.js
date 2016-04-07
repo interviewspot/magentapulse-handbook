@@ -182,6 +182,7 @@ angular.module('starter.services', [])
         $http({
             method: 'GET',
             url: config.path.baseURL + '/organisations?search=organisation.code:' + username.trim(),
+            //url: config.path.baseURL + '/system',
             headers: {
                 "x-username": username.trim(),
                 "x-mode"    : "org_code",

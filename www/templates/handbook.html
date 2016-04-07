@@ -46,20 +46,59 @@
                     <div class="section-ct"
                         ng-show="section.lang['en_us'].description || section.description"
                         ng-class="(section.children._embedded) ? '' : 'no-child'"
-                        ng-bind-html="section.lang['en_us'].description ? section.lang['en_us'].description : section.description"
+
                         zooming="true"
-                        ></div>
+                        >
+                        <div clas="sec-desc"
+                             ng-bind-html="section.lang['en_us'].description ? section.lang['en_us'].description : section.description">
+                        </div>
+                        <div class="sub-section-img"
+                             ng-if="section.blk_img">
+                            <div class="sec-img-itm"
+                                 ng-repeat="imgitm in section.blk_img">
+                                <img ng-src="{{imgitm}}" alt="sec-img"
+                                     ng-click="openModalZImg(imgitm)"/>
+                            </div>
+                        </div>
+                    </div>
                     <div class="sub-section"
                         ng-if="section.children._embedded.items.length > 0"
                         ng-repeat="(k, child) in section.children._embedded.items | orderBy:'version'"
                         >
                         <h4 ng-click="toggleSubGroup(child)">{{section.version}}.{{child.version}} - {{child.lang['en_us'].title ? child.lang['en_us'].title : child.title }}</h4>
                         <div class="sub-section-ct"
-                            ng-bind-html="child.lang['en_us'].description ? child.lang['en_us'].description : child.description"
                             zooming="true"
-                            ng-show="isSubGroupShown(child)"></div>
+                            ng-show="isSubGroupShown(child)">
+                            <div clas="sec-desc"
+                                 ng-bind-html="child.lang['en_us'].description ? child.lang['en_us'].description : child.description">
+                            </div>
+                            <div class="sub-section-img"
+                                 ng-if="child.blk_img">
+                                <div class="sec-img-itm"
+                                     ng-repeat="imgitm in child.blk_img">
+                                    <img ng-src="{{imgitm}}" alt="sec-img"
+                                         ng-click="openModalZImg(imgitm)"/>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
                     </div><!-- SUB SECTIONS -->
                 </div>
+                <!-- MODAL ZOOM IMG -->
+                <script id="templates/modal-zoom-img.html" type="text/ng-template">
+                    <ion-modal-view>
+                        <ion-header-bar class="bar bar-header bar-stable">
+                            <h1 class="title">View Image</h1>
+                            <button class="button button-clear button-primary" ng-click="modal.hide()">Close</button>
+                        </ion-header-bar>
+                    <ion-content class="padding" scroll="false">
+                        <ion-scroll zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" scrollbar-x="false" scrollbar-y="false">
+                            <img ng-src="{{imgUrl}}">
+                        </ion-scroll>
+                    </ion-content>
+                    </ion-modal-view>
+                </script>
         	</div>
 		</div>
 	</div>

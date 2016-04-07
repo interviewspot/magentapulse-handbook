@@ -85,7 +85,22 @@ angular.module('starter.controllers', [])
 		$ionicLoading.show();
 		LoginService.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim()).then(function (res){
 			$ionicLoading.hide();
+            //console.log(res.data);
+            //return;
+
+//            if (typeof res == 'object' && res.status == 200) {
+//                OrgService.get($scope.loginData.company_code.trim()
+//							 , $scope.loginData.user_code.trim()
+//							 , config.path.baseURL + res.data._links.logged_in_user.href).then(function (res_user) {
+//                    console.log(res_user);
+//                }, function (err) {
+//					$ionicLoading.hide();
+//					console.log('ERROR : Not connect API User, try later!');
+//				});
+//            }
+//            return;
 			if (typeof res == 'object' && res.status == 200 && res.data._embedded.items.length == 1) {
+            //if (typeof res == 'object' && res.status == 200) {
 
 				company_data = res.data._embedded.items[0];
 				user_url = config.path.baseURL + config.path.users + '?search=user.code:' + $scope.loginData.user_code.trim();
@@ -95,7 +110,7 @@ angular.module('starter.controllers', [])
 
 					// LOGIN OK
 					if (typeof res == 'object' && res.data._embedded.items.length == 1) {
-
+                    //if (typeof res == 'object') {
 						// STORE in LOCAL
 						$localstorage.setObject('user', {
 							username : $scope.loginData.company_code.trim(),
@@ -274,7 +289,7 @@ angular.module('starter.controllers', [])
 .controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams,
 									$ionicPush, HandbookService, SectionService,
 									$localstorage, $ionicLoading, OrgService, ImgService,
-									$tool_fn) {
+									$tool_fn, $ionicModal) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.handbook_id = $stateParams.handbook_id
@@ -285,6 +300,18 @@ angular.module('starter.controllers', [])
 		$localstorage.setObject('hdsections_' + $scope.handbook_id, {});
 		location.reload();
 	};
+
+
+    // REgis MOdal box
+    $ionicModal.fromTemplateUrl('templates/modal-zoom-img.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
+    $scope.openModalZImg = function(imgurl) {
+        $scope.modal.show();
+        $scope.imgUrl = imgurl;
+    };
 
 	// menu active
     $scope.isActive = function(path) {
@@ -367,7 +394,7 @@ angular.module('starter.controllers', [])
 		var $local_handbook = $localstorage.getObject('hdsections_' + $scope.handbook_id);
 		$scope.sections = $local_handbook.data;
 		//var updateCache = $localstorage.getObject('updateCache');
-		console.log($local_handbook);
+		// console.log($local_handbook);
 		
 		// GET HANDBOOK
 		HandbookService.get($scope.user.username
@@ -431,16 +458,19 @@ angular.module('starter.controllers', [])
 								 , $scope.handbook._links.sections.href + "?search=section.parent{null}1&limit=500").then(function (return_data){
 					$ionicLoading.hide();
 					$scope.sections = return_data.data._embedded.items;
-					console.log($scope.sections);
+					// console.log($scope.sections);
 					// TRANSLATE SECTION lvel 1
 					angular.forEach(return_data.data._embedded.items, function(item, i) {
-						console.log(i +" =  "+$scope.sections[i].version);
+						// console.log(i +" =  "+$scope.sections[i].version);
 						$scope.sections[i].version = parseInt($scope.sections[i].version);
 						(function(itemInstance) {
 							// Find child for section
 							if (item._links.children) {
 								_loadChildSection(item);
 							}
+                            // console.log(item);
+
+                            // LOAD LANG
 							HandbookService.get($scope.user.username
 											  , $scope.user.password
 											  , $scope.user.session_key
@@ -456,6 +486,37 @@ angular.module('starter.controllers', [])
 						 		}
 						 	}, function (err){
 							 	console.log('Connect API Sections language fail!');
+							 	$ionicLoading.hide();
+							});
+
+                            // LOAD CONTENT (IMG)
+                            HandbookService.get($scope.user.username
+											  , $scope.user.password
+											  , $scope.user.session_key
+											  , itemInstance._links.contents.href ).then(function (res){
+						 		if (typeof res == 'object' && res.status == 200 && res.data.total != 0) {
+                                    $scope.sections[i]['blk_img'] = new Array();
+                                    // GET IMAGE URL
+                                    angular.forEach(res.data._embedded.items, function(item, key) {
+                                    //    console.log(key);
+                                    // console.log(item._links.image_url.href);
+                                        HandbookService.get($scope.user.username
+											  , $scope.user.password
+											  , $scope.user.session_key
+											  , item._links.image_url.href + '?locale=en_us' ).then(function (res){
+                                            // console.log('IMG_URL', res.data.image_url);
+                                            if (res.data.image_url) {
+                                               $scope.sections[i]['blk_img'][key] = res.data.image_url;
+                                            }
+                                        }, function (err){
+                                           // console.log('Connect API IMAGE URL fail!');
+                                            $ionicLoading.hide();
+                                        });
+
+                                    });
+                                }
+						 	}, function (err){
+							 	console.log('Connect API Sections IMG fail!');
 							 	$ionicLoading.hide();
 							});
 						})(item);
@@ -510,8 +571,8 @@ angular.module('starter.controllers', [])
 		if ($section._links.children) {
 			//console.log($section.id);
 			var j = _findKeyArrayByValue($scope.sections, 'id', $section.id);
-			console.log(j);
-			console.log($scope.sections[j]);
+			//console.log(j);
+
 			$ionicLoading.show();
 			HandbookService.get($scope.user.username
 				  , $scope.user.password
@@ -520,8 +581,41 @@ angular.module('starter.controllers', [])
 				$ionicLoading.hide();
 				$scope.sections[j].children = res.data;
 
+                // Scan each and get LANG & IMAGE
 				angular.forEach(res.data._embedded.items, function(item, k) {
 						(function(itemInstance) {
+                            // GET CONTENTS
+                            HandbookService.get($scope.user.username
+                                              , $scope.user.password
+                                              , $scope.user.session_key
+                                              , itemInstance._links.contents.href ).then(function (res){
+                                if (typeof res == 'object' && res.status == 200 && res.data.total != 0) {
+                                    $scope.sections[j].children._embedded.items[k]['blk_img'] = new Array();
+                                    // GET IMAGE URL
+                                    angular.forEach(res.data._embedded.items, function(item, key) {
+                                        console.log(key);
+                                    // console.log(item._links.image_url.href);
+                                        HandbookService.get($scope.user.username
+											  , $scope.user.password
+											  , $scope.user.session_key
+											  , item._links.image_url.href + '?locale=en_us' ).then(function (res){
+                                            console.log('IMG_URL', res.data.image_url);
+                                            if (res.data.image_url) {
+                                               $scope.sections[j].children._embedded.items[k]['blk_img'][key] = res.data.image_url;
+                                            }
+                                        }, function (err){
+                                            console.log('Connect API IMAGE URL fail!');
+                                            $ionicLoading.hide();
+                                        });
+
+                                    });
+                                }
+                            }, function (err){
+                                console.log('Connect API Sections contents fail!');
+                                $ionicLoading.hide();
+                            });
+
+                            // Translate child section
 							HandbookService.get($scope.user.username
 											  , $scope.user.password
 											  , $scope.user.session_key
