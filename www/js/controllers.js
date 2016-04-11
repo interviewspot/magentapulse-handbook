@@ -325,9 +325,9 @@ angular.module('starter.controllers', [])
 	}
 
 	var sectionCompare = function (a,b) {
-		if (a.version < b.version)
+		if (a.ordering < b.ordering)
       		return -1;
-    	if (a.version > b.version)
+    	if (a.ordering > b.ordering)
       		return 1;
     	return 0;
 	}
@@ -406,12 +406,12 @@ angular.module('starter.controllers', [])
 			$ionicLoading.hide();
 
 			if (($_handbook
-				&& $_handbook.version == $scope.handbook.version
+				&& $_handbook.ordering == $scope.handbook.ordering
 				&& $_handbook.lang
 				&& $local_handbook.total)
 				|| (typeof $_handbook == "object"
-					&& $_handbook.version
-					&& $_handbook.version == $scope.handbook.version
+					&& $_handbook.ordering
+					&& $_handbook.ordering == $scope.handbook.ordering
 					&& $local_handbook.total)) {
 				$localstorage.setObject('updateCache', false);
 				return;
@@ -439,11 +439,11 @@ angular.module('starter.controllers', [])
 			});
 
 			if (($local_handbook
-				&& $local_handbook.version == $scope.handbook.version
+				&& $local_handbook.ordering == $scope.handbook.ordering
 				&& $local_handbook.total)
 				|| (typeof $local_handbook == "object"
-					&& $local_handbook.version
-					&& $local_handbook.version == $scope.handbook.version
+					&& $local_handbook.ordering
+					&& $local_handbook.ordering == $scope.handbook.ordering
 					&& $local_handbook.total)) {
 
 				$ionicLoading.hide();
@@ -461,8 +461,8 @@ angular.module('starter.controllers', [])
 					// console.log($scope.sections);
 					// TRANSLATE SECTION lvel 1
 					angular.forEach(return_data.data._embedded.items, function(item, i) {
-						// console.log(i +" =  "+$scope.sections[i].version);
-						$scope.sections[i].version = parseInt($scope.sections[i].version);
+						// console.log(i +" =  "+$scope.sections[i].ordering);
+						$scope.sections[i].ordering = parseInt($scope.sections[i].ordering);
 						(function(itemInstance) {
 							// Find child for section
 							if (item._links.children) {
@@ -480,7 +480,7 @@ angular.module('starter.controllers', [])
 						 			$scope.sections[i]['lang'] = res.data;
 						 			// STORE in LOCAL
 									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
-										version : $scope.handbook.version,
+										ordering : $scope.handbook.ordering,
 										data    : $scope.sections
 									});
 						 		}
@@ -526,14 +526,14 @@ angular.module('starter.controllers', [])
 
 					// STORE in LOCAL
 					$localstorage.setObject('hdsections_' + $scope.handbook_id, {
-						version : $scope.handbook.version,
+						ordering : $scope.handbook.ordering,
 						data    : $scope.sections
 					});
 
 				}, function (err){
 				  console.log('Connect API Sections fail!');
 				  $ionicLoading.hide();
-				  if (!$scope.handbook.version) {
+				  if (!$scope.handbook.ordering) {
 			  		alert("Connect the internet to get data!");
 			  		$location.path('/app/handbooks');
 			  	  }
@@ -544,7 +544,7 @@ angular.module('starter.controllers', [])
 		 	console.log('Connect API Handbook fail!');
 		 	//console.log($_handbook);
 		 	$ionicLoading.hide();
-		 	if (!$scope.handbook.version) {
+		 	if (!$scope.handbook.ordering) {
 		  		alert("Connect the internet to get data!");
 		  		$location.path('/app/handbooks');
 		  	}
@@ -625,9 +625,9 @@ angular.module('starter.controllers', [])
 						 			//res.data._embedded.items[i]['lang'] = res.data;
 						 			// STORE in LOCAL
 						 			$scope.sections[j].children._embedded.items[k]['lang'] = res.data;
-						 			$scope.sections[j].children._embedded.items[k].version = parseInt($scope.sections[j].children._embedded.items[k].version);
+						 			$scope.sections[j].children._embedded.items[k].ordering = parseInt($scope.sections[j].children._embedded.items[k].ordering);
 									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
-										version : $scope.handbook.version,
+										ordering : $scope.handbook.ordering,
 										data    : $scope.sections
 									});
 						 		}
