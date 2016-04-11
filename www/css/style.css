@@ -245,6 +245,16 @@ hr.line {
 .fz-18 .item .small-txt { font-size:17px; }
 .fz-18 .sec-title { font-size:18px; }
 .fz-18 .item * { font-size:18px; line-height: 1.4;}
+
+.button.button-energized {
+  border-color: #a87e36;
+  background-color: #a87e36;
+}
+.button.button-energized.active,
+.button.button-energized.activated {
+  border-color: #926b28;
+  background-color: #926b28;
+}
 /* PLATFORM */
 .platform-ios .content-page {
     padding-top: 20px;

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.magentapulse.magentacloudbook"
-        version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.magentapulse.magentacloudbook" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>FHG Handbook</name>
   <description>
      FHG Handbook
@@ -9,12 +8,11 @@
       FHG Handbook
   </author>
   <content src="index.html"/>
-
   <access origin="*"/>
-  <allow-intent href="*" />
-  <allow-navigation href="*" />
   <access origin="tel:*" launch-external="yes"/>
   <access origin="mailto:*" launch-external="yes"/>
+  <allow-intent href="*"/>
+  <allow-navigation href="*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
