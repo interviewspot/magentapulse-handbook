@@ -1,6 +1,6 @@
 <ion-view view-title="Handbook" >
     <div class="visual-header"></div>
-	<div class="content-page"
+	<div class="content-page selectable"
         ng-class="settings.fontsize">
 		<div class="logo">
 	        <a ng-if="org.logo"><img alt="{{org.name}}" ng-src="{{org.logo}}"></a>
@@ -22,7 +22,7 @@
 		<div class="row" ng-if="handbook" ng-hide="searchText">
 			<div class="col">
                 <h2>{{handbook.lang['en-us'].title ? handbook.lang['en-us'].title : handbook.title}}</h2>
-                <p>Version {{handbook.ordering}},  {{handbook.year}}</p>
+                <p>Version {{handbook.version}},  {{handbook.year}}</p>
                 <p>Language: English</p>
             </div>
 		</div>
@@ -54,9 +54,10 @@
                         </div>
                         <div class="sub-section-img"
                              ng-if="section.blk_img">
+                            <span class="load-img-bg">Loading Image</span>
                             <div class="sec-img-itm"
                                  ng-repeat="imgitm in section.blk_img">
-                                <img ng-src="{{imgitm}}" alt="sec-img"
+                                <img cache-src="{{imgitm}}" alt=""
                                      ng-click="openModalZImg(imgitm)"/>
                             </div>
                         </div>
@@ -74,9 +75,10 @@
                             </div>
                             <div class="sub-section-img"
                                  ng-if="child.blk_img">
+                                <span class="load-img-bg">Loading Image</span>
                                 <div class="sec-img-itm"
                                      ng-repeat="imgitm in child.blk_img">
-                                    <img ng-src="{{imgitm}}" alt="sec-img"
+                                    <img cache-src="{{imgitm}}" alt=""
                                          ng-click="openModalZImg(imgitm)"/>
                                 </div>
                             </div>
@@ -93,8 +95,11 @@
                             <button class="button button-clear button-primary" ng-click="modal.hide()">Close</button>
                         </ion-header-bar>
                     <ion-content class="padding" scroll="false">
-                        <ion-scroll zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" scrollbar-x="false" scrollbar-y="false">
-                            <img ng-src="{{imgUrl}}">
+                        <ion-scroll zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1"
+                            overflow-scroll="false"
+                            scrollbar-x="false"
+                            scrollbar-y="false">
+                            <img cache-src="{{imgUrl}}" />
                         </ion-scroll>
                     </ion-content>
                     </ion-modal-view>
