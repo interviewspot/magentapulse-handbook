@@ -348,3 +348,8 @@ hr.line {
   -ms-user-select: auto;
   user-select: auto;
 }
+
+.item-radio input:checked + .radio-content .radio-icon {
+    visibility: visible;
+}
+
