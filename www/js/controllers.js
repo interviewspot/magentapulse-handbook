@@ -25,6 +25,29 @@ angular.module('starter.controllers', [])
 		// GET SETTINS
 		$scope.settings = $localstorage.getObject('settings');
 	});
+
+	stop_browser_behavior: false
+
+	self.touchStart = function(e) {
+	  self.startCoordinates = getPointerCoordinates(e);
+
+	  if ( ionic.tap.ignoreScrollStart(e) ) {
+	    return;
+	  }
+
+	  if( ionic.tap.containsOrIsTextInput(e.target) ) {
+	    // do not start if the target is a text input
+	    // if there is a touchmove on this input, then we can start the scroll
+	    self.__hasStarted = false;
+	    return;
+	  }
+
+	  self.__isSelectable = true;
+	  self.__enableScrollY = true;
+	  self.__hasStarted = true;
+	  self.doTouchStart(e.touches, e.timeStamp);
+	  // e.preventDefault();
+	};
 })
 /**
  * LoginCtrl
@@ -325,9 +348,9 @@ angular.module('starter.controllers', [])
 	}
 
 	var sectionCompare = function (a,b) {
-		if (a.version < b.version)
+		if (a.ordering < b.ordering)
       		return -1;
-    	if (a.version > b.version)
+    	if (a.ordering > b.ordering)
       		return 1;
     	return 0;
 	}
@@ -404,15 +427,13 @@ angular.module('starter.controllers', [])
 			$scope.handbook = return_data.data;
 			$scope.ch_color = '#' + 'cfae79';
 			$ionicLoading.hide();
-
+			//console.log($_handbook);
 			if (($_handbook
 				&& $_handbook.version == $scope.handbook.version
-				&& $_handbook.lang
-				&& $local_handbook.total)
+				&& $_handbook.lang)
 				|| (typeof $_handbook == "object"
 					&& $_handbook.version
-					&& $_handbook.version == $scope.handbook.version
-					&& $local_handbook.total)) {
+					&& $_handbook.version == $scope.handbook.version)) {
 				$localstorage.setObject('updateCache', false);
 				return;
 			} else {
@@ -438,16 +459,19 @@ angular.module('starter.controllers', [])
 			  	}
 			});
 
+			// LOCAL HANDBOOK OR NOT [sections]
+			//console.log('Local sections', $local_handbook);
+			//console.log('version hb', $scope.handbook.version);
 			if (($local_handbook
-				&& $local_handbook.version == $scope.handbook.version
-				&& $local_handbook.total)
+				&& $local_handbook.version == $scope.handbook.version)
 				|| (typeof $local_handbook == "object"
 					&& $local_handbook.version
 					&& $local_handbook.version == $scope.handbook.version
-					&& $local_handbook.total)) {
-
+					)
+				) {
 				$ionicLoading.hide();
 				$scope.sections = $local_handbook.data;
+				console.log('sections', $scope.sections);
 			} else {
 
 				// GET SECTIONS of A HANDBOOK
@@ -461,8 +485,8 @@ angular.module('starter.controllers', [])
 					// console.log($scope.sections);
 					// TRANSLATE SECTION lvel 1
 					angular.forEach(return_data.data._embedded.items, function(item, i) {
-						// console.log(i +" =  "+$scope.sections[i].version);
-						$scope.sections[i].version = parseInt($scope.sections[i].version);
+						// console.log(i +" =  "+$scope.sections[i].ordering);
+						$scope.sections[i].ordering = parseInt($scope.sections[i].ordering);
 						(function(itemInstance) {
 							// Find child for section
 							if (item._links.children) {
@@ -507,6 +531,11 @@ angular.module('starter.controllers', [])
                                             // console.log('IMG_URL', res.data.image_url);
                                             if (res.data.image_url) {
                                                $scope.sections[i]['blk_img'][key] = res.data.image_url;
+                                                // STORE in LOCAL
+												$localstorage.setObject('hdsections_' + $scope.handbook_id, {
+													version : $scope.handbook.version,
+													data    : $scope.sections
+												});
                                             }
                                         }, function (err){
                                            // console.log('Connect API IMAGE URL fail!');
@@ -601,7 +630,11 @@ angular.module('starter.controllers', [])
 											  , item._links.image_url.href + '?locale=en_us' ).then(function (res){
                                             console.log('IMG_URL', res.data.image_url);
                                             if (res.data.image_url) {
-                                               $scope.sections[j].children._embedded.items[k]['blk_img'][key] = res.data.image_url;
+                                                $scope.sections[j].children._embedded.items[k]['blk_img'][key] = res.data.image_url;
+                                                $localstorage.setObject('hdsections_' + $scope.handbook_id, {
+													version : $scope.handbook.version,
+													data    : $scope.sections
+												});
                                             }
                                         }, function (err){
                                             console.log('Connect API IMAGE URL fail!');
@@ -625,7 +658,7 @@ angular.module('starter.controllers', [])
 						 			//res.data._embedded.items[i]['lang'] = res.data;
 						 			// STORE in LOCAL
 						 			$scope.sections[j].children._embedded.items[k]['lang'] = res.data;
-						 			$scope.sections[j].children._embedded.items[k].version = parseInt($scope.sections[j].children._embedded.items[k].version);
+						 			$scope.sections[j].children._embedded.items[k].ordering = parseInt($scope.sections[j].children._embedded.items[k].ordering);
 									$localstorage.setObject('hdsections_' + $scope.handbook_id, {
 										version : $scope.handbook.version,
 										data    : $scope.sections

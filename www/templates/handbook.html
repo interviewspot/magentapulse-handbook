@@ -1,6 +1,6 @@
 <ion-view view-title="Handbook" >
     <div class="visual-header"></div>
-	<div class="content-page"
+	<div class="content-page selectable"
         ng-class="settings.fontsize">
 		<div class="logo">
 	        <a ng-if="org.logo"><img alt="{{org.name}}" ng-src="{{org.logo}}"></a>
@@ -30,12 +30,12 @@
 			<div class="col" ng-bind-html="handbook.lang['en_us'].description"></div>
 		</div>
         <div class="list menu-tab-page">
-        	<div ng-repeat="(key, section) in sections | filter:searchText | orderBy:'version'">
+        	<div ng-repeat="(key, section) in sections | filter:searchText | orderBy:'ordering'">
         		<div class="item item-divider item-icon-left"
                     ng-click="toggleGroup(section)"
                     ng-class="{active: isGroupShown(section)}">
 					<h4 class="sec-title">
-                        {{section.version}}. {{section.lang['en_us'].title ? section.lang['en_us'].title : section.title}}
+                        {{section.ordering}}. {{section.lang['en_us'].title ? section.lang['en_us'].title : section.title}}
 					    <i class="icon"
                         ng-class="isGroupShown(section) ? 'ion-ios-minus-outline' : 'ion-ios-plus-outline'"
                         ></i>
@@ -54,18 +54,19 @@
                         </div>
                         <div class="sub-section-img"
                              ng-if="section.blk_img">
+                            <span class="load-img-bg">Loading Image</span>
                             <div class="sec-img-itm"
                                  ng-repeat="imgitm in section.blk_img">
-                                <img ng-src="{{imgitm}}" alt="sec-img"
+                                <img cache-src="{{imgitm}}" alt=""
                                      ng-click="openModalZImg(imgitm)"/>
                             </div>
                         </div>
                     </div>
                     <div class="sub-section"
                         ng-if="section.children._embedded.items.length > 0"
-                        ng-repeat="(k, child) in section.children._embedded.items | orderBy:'version'"
+                        ng-repeat="(k, child) in section.children._embedded.items | orderBy:'ordering'"
                         >
-                        <h4 ng-click="toggleSubGroup(child)">{{section.version}}.{{child.version}} - {{child.lang['en_us'].title ? child.lang['en_us'].title : child.title }}</h4>
+                        <h4 ng-click="toggleSubGroup(child)">{{section.ordering}}.{{child.ordering}} - {{child.lang['en_us'].title ? child.lang['en_us'].title : child.title }}</h4>
                         <div class="sub-section-ct"
                             zooming="true"
                             ng-show="isSubGroupShown(child)">
@@ -74,9 +75,10 @@
                             </div>
                             <div class="sub-section-img"
                                  ng-if="child.blk_img">
+                                <span class="load-img-bg">Loading Image</span>
                                 <div class="sec-img-itm"
                                      ng-repeat="imgitm in child.blk_img">
-                                    <img ng-src="{{imgitm}}" alt="sec-img"
+                                    <img cache-src="{{imgitm}}" alt=""
                                          ng-click="openModalZImg(imgitm)"/>
                                 </div>
                             </div>
@@ -93,8 +95,11 @@
                             <button class="button button-clear button-primary" ng-click="modal.hide()">Close</button>
                         </ion-header-bar>
                     <ion-content class="padding" scroll="false">
-                        <ion-scroll zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" scrollbar-x="false" scrollbar-y="false">
-                            <img ng-src="{{imgUrl}}">
+                        <ion-scroll zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1"
+                            overflow-scroll="false"
+                            scrollbar-x="false"
+                            scrollbar-y="false">
+                            <img cache-src="{{imgUrl}}" />
                         </ion-scroll>
                     </ion-content>
                     </ion-modal-view>
