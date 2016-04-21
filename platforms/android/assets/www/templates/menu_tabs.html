@@ -1,0 +1,22 @@
+<!-- <div class="tabs tabs-energized">
+	<a class="tab-item" href="#/app/handbook" ng-class="{'active' : cur_path == '/app/handbook'}">
+		Employee Handbook
+	</a>
+	<a class="tab-item" href="#/app/contacts" ng-class="{'active' : cur_path == '/app/contacts'}">
+		Contacts
+	</a>
+</div> -->
+<div class="in-page">
+    <div class="p-tabs" style="border-color: {{ch_color}}; background-color: {{ch_color}};">
+        <a class="t-item"
+            href="#/app/handbooks"
+            ng-class="{'active' : isActive('/app/handbook') }">
+            Handbooks
+        </a>
+        <a class="t-item"
+            href="#/app/contacts"
+            ng-class="{'active' : isActive('/app/contacts') }">
+            Contacts
+        </a>
+    </div>
+</div>
