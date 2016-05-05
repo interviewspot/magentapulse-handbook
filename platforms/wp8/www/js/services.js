@@ -17,7 +17,7 @@ angular.module('starter.services', [])
         })
         .then(function success(res){
             d.resolve(res);
-            return;
+            return;  
         }, function error(error) {
             d.reject(error);
             return;
@@ -38,7 +38,7 @@ angular.module('starter.services', [])
         })
         .then(function success(res){
             d.resolve(res);
-            return;
+            return;  
         }, function error(error) {
             d.reject(error);
             return;
@@ -66,7 +66,7 @@ angular.module('starter.services', [])
         })
         .then(function success(res){
             d.resolve(res);
-            return;
+            return;  
         }, function error(error) {
             d.reject(error);
             return;
@@ -92,7 +92,7 @@ angular.module('starter.services', [])
         })
         .then(function success(res){
             d.resolve(res);
-            return;
+            return;  
         }, function error(error) {
             d.reject(error);
             return;
@@ -177,7 +177,7 @@ angular.module('starter.services', [])
 })
 .factory('LoginService', function ($q, $http) {
     var services = {};
-    services.get = function (username, password) {
+    services.get = function (username, password) { 
         var d = $q.defer();
         $http({
             method: 'GET',
@@ -191,7 +191,7 @@ angular.module('starter.services', [])
         })
         .then(function success(res){
             d.resolve(res);
-            return;
+            return;  
         }, function error(error) {
             d.reject(error);
             return;

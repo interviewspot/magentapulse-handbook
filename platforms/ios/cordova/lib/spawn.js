@@ -23,7 +23,7 @@ var Q    = require('q'),
     proc = require('child_process');
 
 /**
- * Run specified command with arguments
+ * Run specified command with arguments 
  * @param  {String} cmd           Command
  * @param  {Array} args           Array of arguments that should be passed to command
  * @param  {String} opt_cwd       Working directory for command
@@ -43,7 +43,6 @@ module.exports = function(cmd, args, opt_cwd) {
             }
         });
     } catch(e) {
-        console.error('error caught: ' + e);
         d.reject(e);
     }
     return d.promise;

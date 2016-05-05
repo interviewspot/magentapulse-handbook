@@ -254,7 +254,7 @@ namespace WPCordovaClassLib
 
         void CordovaBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-
+          
             PhoneApplicationService service = PhoneApplicationService.Current;
             service.Activated += new EventHandler<Microsoft.Phone.Shell.ActivatedEventArgs>(AppActivated);
             service.Launching += new EventHandler<LaunchingEventArgs>(AppLaunching);
@@ -428,7 +428,7 @@ namespace WPCordovaClassLib
             {
                 Debug.WriteLine("Error calling js to fire nativeReady event. Did you include cordova.js in your html script tag?");
             }
-            // attach js code to dispatch exitApp
+            // attach js code to dispatch exitApp 
             string appExitHandler = "(function(){navigator.app = navigator.app || {}; navigator.app.exitApp= function(){cordova.exec(null,null,'CoreEvents','__exitApp',[]); }})();";
             try
             {
@@ -503,7 +503,7 @@ namespace WPCordovaClassLib
                     case "__finalexit":
                         IsExiting = true;
                         // hide the browser to prevent white flashes, since about:blank seems to always be white
-                        CordovaBrowser.Opacity = 0d;
+                        CordovaBrowser.Opacity = 0d; 
                         CordovaBrowser.Navigate(new Uri("about:blank", UriKind.Absolute));
                         break;
                 }

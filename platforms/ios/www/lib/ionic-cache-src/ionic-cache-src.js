@@ -17,7 +17,7 @@
         ctx.drawImage(img, 0, 0);
         return canvas.toDataURL();
     }
-    
+
     // For the Default Progress Circle
     //****************************************************************************************************//
     var default_circle_style = {
@@ -198,7 +198,7 @@
                     'onFinish': '=?',
                     'onError': '=?',
                     'onStart': '=?',
-                    // 
+                    //
                     'uiOnStart': '=?',
                     'uiOnProgress': '=?',
                     'uiOnFinish': '=?'
@@ -230,7 +230,7 @@
                     scope.uiOnStart = ensureFunction(scope.uiOnStart, angular.noop);
 
 
-                    
+
 
                     function addSrcWithoutFinish(result) {
                         if (scope.srcIs == 'background') {
@@ -261,8 +261,8 @@
                             else
                                 throw new Error("window.device is not defined! Maybe you should install cordova-plugin-device first!");
                             return '';
-                        };                        
-                        
+                        };
+
                         var cache = $localStorage.cache_src = $localStorage.cache_src || {};
                         var create_time = $localStorage.cache_src_create_time = $localStorage.cache_src_create_time || {};
                         function scopeOnError(fileName,uiData) {
@@ -271,7 +271,7 @@
                                     console.log('Error Occurs: ' + E.exception + "\nCode:" + E.code + "\nSrc:" + E.source);
                                     if(uiData)
                                         scope.uiOnFinish(scope, element, $compile, uiData);
-                                    addSrcWithoutFinish(E.source);                                    
+                                    addSrcWithoutFinish(E.source);
                                     // var b64 = getBase64Image(getElement(element));
                                     // if(b64.length > 200)
                                     //     $cordovaFile
@@ -280,9 +280,9 @@
                                     //         cache[attrs.cacheSrc] = fileName;
                                     //         if (scope.expire !== Infinity) {
                                     //             create_time[attrs.cacheSrc] = Date.now();
-                                    //         }                                        
+                                    //         }
                                     //         addSrc(getCacheDir() + fileName);
-                                    //     },scope.onError);                                                       
+                                    //     },scope.onError);
                                 } else {
                                     scope.onError(E);
                                 }
@@ -375,7 +375,7 @@
                                     });
                             });
                     } else {
-                        // in browser                        
+                        // in browser
                         attrs.$observe('cacheSrc', function() {
                             if (attrs.cacheSrc) {
                                 if (needDownload(attrs.cacheSrc)) {

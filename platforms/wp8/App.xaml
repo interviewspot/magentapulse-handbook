@@ -1,4 +1,4 @@
-<!--
+﻿<!--
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
  distributed with this work for additional information
@@ -14,11 +14,11 @@
  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  KIND, either express or implied.  See the License for the
  specific language governing permissions and limitations
- under the License.
+ under the License. 
 -->
-<Application
-    x:Class="com.fhg.handbook.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Application 
+    x:Class="com.magentapulse.magentacloudbook.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone">
@@ -29,8 +29,8 @@
 
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->
-        <shell:PhoneApplicationService
-            Launching="Application_Launching" Closing="Application_Closing"
+        <shell:PhoneApplicationService 
+            Launching="Application_Launching" Closing="Application_Closing" 
             Activated="Application_Activated" Deactivated="Application_Deactivated"/>
     </Application.ApplicationLifetimeObjects>
 

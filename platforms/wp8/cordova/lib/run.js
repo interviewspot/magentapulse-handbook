@@ -57,7 +57,7 @@ module.exports.run = function (argv) {
         })
         .then(function (builtPackage) {
             // Get deploy options
-            var deployTarget = args.target ? args.target : args.device ? 'device' :
+            var deployTarget = args.target ? args.target : args.device ? 'device' : 
                 args.emulator ? 'emulator' : null;
 
             if (deployTarget) {

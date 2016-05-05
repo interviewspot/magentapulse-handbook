@@ -1,10 +1,10 @@
-/*
+﻿/*  
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
-
+	
 	http://www.apache.org/licenses/LICENSE-2.0
-
+	
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,15 +32,15 @@ namespace WPCordovaClassLib.Cordova.Commands
         /// Stores mime type for all necessary extension
         /// </summary>
         private static readonly Dictionary<string, string> MIMETypesDictionary = new Dictionary<string, string>
-                                                                             {
+                                                                             {                                                                                
                                                                                  {"avi", "video/x-msvideo"},
-                                                                                 {"bmp", "image/bmp"},
+                                                                                 {"bmp", "image/bmp"},                                                                                                                                                                
                                                                                  {"gif", "image/gif"},
-                                                                                 {"html","text/html"},
+                                                                                 {"html","text/html"},                                                                              
                                                                                  {"jpe", "image/jpeg"},
                                                                                  {"jpeg", "image/jpeg"},
-                                                                                 {"jpg", "image/jpeg"},
-                                                                                 {"js","text/javascript"},
+                                                                                 {"jpg", "image/jpeg"},     
+                                                                                 {"js","text/javascript"},                                                                         
                                                                                  {"mov", "video/quicktime"},
                                                                                  {"mp2", "audio/mpeg"},
                                                                                  {"mp3", "audio/mpeg"},
@@ -48,7 +48,7 @@ namespace WPCordovaClassLib.Cordova.Commands
                                                                                  {"mpe", "video/mpeg"},
                                                                                  {"mpeg", "video/mpeg"},
                                                                                  {"mpg", "video/mpeg"},
-                                                                                 {"mpga", "audio/mpeg"},
+                                                                                 {"mpga", "audio/mpeg"},                                                                                
                                                                                  {"pbm", "image/x-portable-bitmap"},
                                                                                  {"pcm", "audio/x-pcm"},
                                                                                  {"pct", "image/pict"},

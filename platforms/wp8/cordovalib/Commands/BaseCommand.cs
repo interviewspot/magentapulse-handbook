@@ -1,10 +1,10 @@
-/*
+﻿/*  
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
-
+	
 	http://www.apache.org/licenses/LICENSE-2.0
-
+	
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,7 @@ namespace WPCordovaClassLib.Cordova.Commands
     {
         /*
          *  All commands + plugins must extend BaseCommand, because they are dealt with as BaseCommands in CordovaView.xaml.cs
-         *
+         *  
          **/
 
         public event EventHandler<PluginResult> OnCommandResult;
@@ -112,7 +112,7 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         public void DispatchCommandResult(PluginResult result,string callbackId="")
         {
-            if (!string.IsNullOrEmpty(callbackId))
+            if (!string.IsNullOrEmpty(callbackId)) 
             {
                 result.CallbackId = callbackId;
             }
@@ -144,24 +144,24 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         /// <summary>
         /// Occurs when the application is being deactivated.
-        /// </summary>
+        /// </summary>        
         public virtual void OnReset() {}
 
         /// <summary>
         /// Occurs when the application is being loaded, and the config.xml has an autoload entry
-        /// </summary>
+        /// </summary>    
         public virtual void OnInit() {}
 
 
         /// <summary>
         /// Occurs when the application is being deactivated.
-        /// </summary>
+        /// </summary>        
         public virtual void OnPause(object sender, DeactivatedEventArgs e) {}
 
         /// <summary>
         /// Occurs when the application is being made active after previously being put
         /// into a dormant state or tombstoned.
-        /// </summary>
+        /// </summary>        
         public virtual void OnResume(object sender, Microsoft.Phone.Shell.ActivatedEventArgs e) {}
 
         public void Dispose()

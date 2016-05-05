@@ -1,4 +1,4 @@
-/*
+﻿/*
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
  distributed with this work for additional information
@@ -14,7 +14,7 @@
  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  KIND, either express or implied.  See the License for the
  specific language governing permissions and limitations
- under the License.
+ under the License. 
  */
 using System.Linq;
 using System.Windows;
@@ -66,10 +66,10 @@ namespace WPCordovaClassLib
             var border0 = VisualTreeHelper.GetChild(_browser, 0);
             var border1 = VisualTreeHelper.GetChild(border0, 0);
             var panZoom = VisualTreeHelper.GetChild(border1, 0);
-            var grid = VisualTreeHelper.GetChild(panZoom, 0);
+            var grid = VisualTreeHelper.GetChild(panZoom, 0);             
             var grid2 = VisualTreeHelper.GetChild(grid, 0);
             border = VisualTreeHelper.GetChild(grid2, 0) as Border;
-
+            
             if (border != null)
             {
                 border.ManipulationDelta += Border_ManipulationDelta;

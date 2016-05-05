@@ -20,20 +20,22 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "com.ionic.keyboard",
-    "phonegap-plugin-push",
     "cordova-plugin-file",
-    "cordova-plugin-file-transfer"
+    "cordova-plugin-file-transfer",
+    {
+      "variables": {
+        "SENDER_ID": "XXXXXXX"
+      },
+      "locator": "phonegap-plugin-push"
+    }
   ],
   "cordovaPlatforms": [
     "android",
     {
-      "platform": "ios",
-      "locator": "ios"
-    },
-    {
       "platform": "wp8",
       "version": "",
       "locator": "wp8"
-    }
+    },
+    "ios"
   ]
 }

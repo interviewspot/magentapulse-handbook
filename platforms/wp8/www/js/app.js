@@ -26,11 +26,12 @@ var config = {
 angular.module('starter', [
   'ionic','ionic.service.core',
   'ngResource',
-  'starter.controllers',
+  'starter.controllers', 
   'starter.services',
   'angular.filter',
   'ngCordova',
-  'ionic.service.push'
+  'ionic.service.push',
+  'ionic-cache-src'
 ])
 
 .run(function($ionicPlatform, $ionicPopup, $state) {

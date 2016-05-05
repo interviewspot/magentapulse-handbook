@@ -1,4 +1,4 @@
-/*
+﻿/*
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
  distributed with this work for additional information
@@ -32,7 +32,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace com.fhg.handbook
+namespace com.magentapulse.magentacloudbook
 {
     public partial class App : Application
     {

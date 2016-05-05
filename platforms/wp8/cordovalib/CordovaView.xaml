@@ -1,4 +1,4 @@
-<!--
+﻿<!--
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
  distributed with this work for additional information
@@ -14,7 +14,7 @@
  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  KIND, either express or implied.  See the License for the
  specific language governing permissions and limitations
- under the License.
+ under the License.  
 -->
 <UserControl x:Class="WPCordovaClassLib.CordovaView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -25,39 +25,39 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480"
+    d:DesignHeight="480" d:DesignWidth="480" 
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone">
-
+    
     <Grid x:Name="LayoutRoot" Background="Transparent">
-
-        <phone:WebBrowser x:Name="CordovaBrowser"
+        
+        <phone:WebBrowser x:Name="CordovaBrowser" 
                           Opacity="0.0"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          IsScriptEnabled="True"
+                          HorizontalAlignment="Stretch"  
+                          VerticalAlignment="Stretch" 
+                          IsScriptEnabled="True" 
                           Foreground="White"
                           Background="Black"
-                          Navigated="CordovaBrowser_Navigated"
-                          Loaded="CordovaBrowser_Loaded"
-                          Unloaded="CordovaBrowser_Unloaded"
-                          ScriptNotify="CordovaBrowser_ScriptNotify"
-                          LoadCompleted="CordovaBrowser_LoadCompleted"
-                          Navigating="CordovaBrowser_Navigating"
-                          NavigationFailed="CordovaBrowser_NavigationFailed"
+                          Navigated="CordovaBrowser_Navigated" 
+                          Loaded="CordovaBrowser_Loaded" 
+                          Unloaded="CordovaBrowser_Unloaded" 
+                          ScriptNotify="CordovaBrowser_ScriptNotify" 
+                          LoadCompleted="CordovaBrowser_LoadCompleted" 
+                          Navigating="CordovaBrowser_Navigating" 
+                          NavigationFailed="CordovaBrowser_NavigationFailed" 
                           IsGeolocationEnabled="True">
 
-            <phone:WebBrowser.Resources>
+            <phone:WebBrowser.Resources>      
                 <Storyboard x:Name="FadeIn">
-                    <DoubleAnimation Duration="0:0:0.6"
+                    <DoubleAnimation Duration="0:0:0.6" 
                             To="1.0"
-                            Storyboard.TargetName="CordovaBrowser"
+                            Storyboard.TargetName="CordovaBrowser" 
                             Storyboard.TargetProperty="Opacity"/>
                 </Storyboard>
             </phone:WebBrowser.Resources>
 
         </phone:WebBrowser>
-
+        
     </Grid>
 </UserControl>
 
-
+    
