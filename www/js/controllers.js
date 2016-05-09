@@ -331,9 +331,26 @@ angular.module('starter.controllers', [])
     }).then(function(modal) {
         $scope.modal = modal;
     });
-    $scope.openModalZImg = function(imgurl) {
+
+    // Open Modal Zimg
+    $scope.openModalZImg = function(afile) {
         $scope.modal.show();
-        $scope.imgUrl = imgurl;
+        $scope.fileUrl = afile;
+        $scope.tmodal  = {
+        	"type"  : "zimg",
+        	"title" : "View Image"
+        };
+    };
+
+    // Open Modal PDF
+    $scope.openModalPDF = function(afile) {
+        $scope.modal.show();
+        $scope.fileUrl = afile;
+        $scope.pdfUrl  = '/pdf/lesson2.pdf';
+        $scope.tmodal  = {
+        	"type"  : "pdf",
+        	"title" : "View pdf"
+        };
     };
 
 	// menu active

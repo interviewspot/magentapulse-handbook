@@ -53,6 +53,10 @@
                         <div clas="sec-desc"
                              ng-bind-html="section.lang['en_us'].description ? section.lang['en_us'].description : section.description">
                         </div>
+                        <!-- PDF VIEWR -->
+                        <div class="s-pdf">
+                            <p ng-click="openModalPDF('filepdf')">View PDF: "abc.pdf"</p>
+                        </div>
                         <div class="sub-section-img"
                              ng-if="section.blk_img">
                             <span class="load-img-bg">Loading Image</span>
@@ -62,6 +66,7 @@
                                      ng-click="openModalZImg(imgitm)"/>
                             </div>
                         </div>
+
                     </div>
                     <div class="sub-section"
                         ng-if="section.children._embedded.items.length > 0"
@@ -92,17 +97,26 @@
                 <script id="templates/modal-zoom-img.html" type="text/ng-template">
                     <ion-modal-view>
                         <ion-header-bar class="bar bar-header bar-stable">
-                            <h1 class="title">View Image</h1>
+                            <h1 class="title">{{tmodal.title}}</h1>
                             <button class="button button-clear button-primary" ng-click="modal.hide()">Close</button>
                         </ion-header-bar>
-                    <ion-content class="padding" scroll="false">
-                        <ion-scroll zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1"
-                            overflow-scroll="false"
-                            scrollbar-x="false"
-                            scrollbar-y="false">
-                            <img cache-src="{{imgUrl}}" />
-                        </ion-scroll>
-                    </ion-content>
+                        <ion-content class="padding" scroll="false">
+                            <ion-scroll ng-if="tmodal.type == 'zimg'" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1"
+                                overflow-scroll="false"
+                                scrollbar-x="false"
+                                scrollbar-y="false">
+                                <img cache-src="{{fileUrl}}" />
+                            </ion-scroll>
+                            <ng-pdf
+                                zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1"
+                                overflow-scroll="false"
+                                scrollbar-x="false"
+                                scrollbar-y="false"
+                                ng-if="tmodal.type == 'pdf'"
+                                template-url="/partials/pdf-viewer.html"
+                                debug="true"
+                                scale="page-fit" ></ng-pdf>
+                        </ion-content>
                     </ion-modal-view>
                 </script>
         	</div>
