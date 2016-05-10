@@ -312,7 +312,7 @@ angular.module('starter.controllers', [])
 .controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams,
 									$ionicPush, HandbookService, SectionService,
 									$localstorage, $ionicLoading, OrgService, ImgService,
-									$tool_fn, $ionicModal) {
+									$tool_fn, $ionicModal, $cordovaFileTransfer) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.handbook_id = $stateParams.handbook_id
@@ -349,7 +349,7 @@ angular.module('starter.controllers', [])
         $scope.pdfUrl  = '/pdf/lesson2.pdf';
         $scope.tmodal  = {
         	"type"  : "pdf",
-        	"title" : "View pdf"
+        	"title" : "View PDF"
         };
     };
 

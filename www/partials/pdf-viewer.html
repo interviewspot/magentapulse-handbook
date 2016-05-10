@@ -3,7 +3,7 @@
 <button ng-click="zoomIn()">+</span></button>
 <button ng-click="fit()">100%</span></button>
 <button ng-click="zoomOut()">-</span></button>
-<nav ng-class="{'pdf-controls fixed': scroll > 100, 'pdf-controls': scroll <= 100}">
+<nav ng-class="{'pdf-controls fixed': scroll > 100, 'pdf-controls': scroll <= 100}" delegate-handle="zoom-pane" class="zoom-pane">
 <canvas id="pdf-canvas" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1"
                                 overflow-scroll="false"
                                 scrollbar-x="false"

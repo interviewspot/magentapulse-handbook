@@ -55,7 +55,22 @@
                         </div>
                         <!-- PDF VIEWR -->
                         <div class="s-pdf">
-                            <p ng-click="openModalPDF('filepdf')">View PDF: "abc.pdf"</p>
+                            <div class="pdf-f-ct">
+                                <span ng-click="openModalPDF('filepdf')">
+                                    <span class="ion-android-clipboard"></span>
+                                    Click to view
+                                    <span class="pdf-small">File Name.pdf</span>
+                                </span>
+                            </div>
+                            <div class="pdf-offline-option">
+                                Download & View Offline
+                                <label style="float:right;" class="toggle toggle-dark">
+                                   <input type="checkbox">
+                                   <div class="track">
+                                     <div class="handle"></div>
+                                   </div>
+                                </label>
+                            </div>
                         </div>
                         <div class="sub-section-img"
                              ng-if="section.blk_img">
