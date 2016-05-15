@@ -312,11 +312,11 @@ angular.module('starter.controllers', [])
 .controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams,
 									$ionicPush, HandbookService, SectionService,
 									$localstorage, $ionicLoading, OrgService, ImgService,
-									$tool_fn, $ionicModal) {
+									$tool_fn, $ionicModal, $cordovaFileTransfer, $cordovaFile, $ionicPlatform, $window) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.handbook_id = $stateParams.handbook_id
-
+	//console.log($scope.user );
 	$scope.refreshCached = function () {
 		$localstorage.setObject('handbook_' + $scope.handbook_id, {});
 		$localstorage.setObject('handbook_' + $scope.handbook_id, {});
@@ -327,14 +327,117 @@ angular.module('starter.controllers', [])
 
     // REgis MOdal box
     $ionicModal.fromTemplateUrl('templates/modal-zoom-img.html', {
-        scope: $scope
+        scope: $scope,
+        cordovaFileTransfer : $cordovaFileTransfer
     }).then(function(modal) {
         $scope.modal = modal;
     });
-    $scope.openModalZImg = function(imgurl) {
+
+    // Open Modal Zimg
+    $scope.openModalZImg = function(afile) {
         $scope.modal.show();
-        $scope.imgUrl = imgurl;
+        $scope.fileUrl = afile;
+        $scope.tmodal  = {
+        	"type"  : "zimg",
+        	"title" : "View Image"
+        };
     };
+
+    // Open Modal PDF
+    $scope.openModalPDF = function(afile) {
+
+    	var fileTransfer = new FileTransfer();
+		var uri = encodeURI(afile.pdf_file.url);
+
+		fileTransfer.download(
+		    uri,
+		    fileURL,
+		    function(entry) {
+		        console.log("download complete: " + entry.toURL());
+		    },
+		    function(error) {
+		        console.log("download error source " + error.source);
+		        console.log("download error target " + error.target);
+		        console.log("upload error code" + error.code);
+		    },
+		    false,
+		    {
+		        headers: {
+		            "Authorization": "Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=="
+		        }
+		    }
+		);
+
+
+		$scope.pdfUrl   = afile.pdf_file.url;
+		$scope.modal.show();
+		$scope.tmodal  = {
+			"type"  : "pdf",
+			"title" : "View PDF"
+		};
+
+  //       if ($window.cordova) {
+  //           var getCacheDir = function() {
+  //               if (window.device)
+  //                   if (window.cordova.file) {
+  //                       switch (device.platform) {
+  //                           case 'iOS':
+  //                               return $window.cordova.file.documentsDirectory;
+  //                           case 'Android':
+  //                               return $window.cordova.file.dataDirectory;
+  //                           case 'windows':
+  //                               return $window.cordova.file.dataDirectory;
+  //                       }
+  //                   } else
+  //                       throw new Error("window.cordova.file is not defined! Maybe you should install cordova-plugin-file first!");
+  //               else
+  //                   throw new Error("window.device is not defined! Maybe you should install cordova-plugin-device first!");
+  //               return '';
+  //           };
+  //       	//var url = "http://cdn.wall-pix.net/albums/art-space/00030109.jpg";
+  //       	// console.log($cordovaFileTransfer);
+		//     //var targetPath = 'pdf/' + afile.pdf_info.name;
+		//     //var targetPath = 'pdf/a-pdf.jpg';
+		//     //console.log(targetPath);
+		//     var trustHosts = true;
+		//     var options = {};
+
+
+
+		//     // DOWNLOAD FILE
+  //      		$cordovaFileTransfer.download(afile.pdf_file.url, getCacheDir() + afile.pdf_info.name, {
+  //                                   encodeURI: false,
+  //                                   chunkedMode: false,
+  //                                   headers: {
+  //                                       Connection: "close"
+  //                                   }
+  //                               }, true)
+		// 		.then(function(result) {
+		// 			console.log(result);
+		// 		}, function(err) {
+		// 			console.log(err);
+		// 			// Error
+		// 		}, function (progress) {
+		// 			$timeout(function () {
+		// 				$scope.downloadProgress = (progress.loaded / progress.total) * 100;
+		// 			});
+		// 		});
+
+		// 	// ACTION PDF
+		// 	$scope.pdfUrl  = afile.pdf_file.url;
+	 //        $scope.modal.show();
+	 //        $scope.tmodal  = {
+	 //        	"type"  : "pdf",
+	 //        	"title" : "View PDF"
+	 //        };
+	 //    } else {
+	 //    	// Browser
+	 //    	//
+	 //    }
+
+		//     return;
+		// //});
+    }; // END:
 
 	// menu active
     $scope.isActive = function(path) {
@@ -417,7 +520,7 @@ angular.module('starter.controllers', [])
 		var $local_handbook = $localstorage.getObject('hdsections_' + $scope.handbook_id);
 		$scope.sections = $local_handbook.data;
 		//var updateCache = $localstorage.getObject('updateCache');
-		console.log($local_handbook);
+		console.log('local_handbook', $local_handbook);
 
 		// GET HANDBOOK
 		HandbookService.get($scope.user.username
@@ -520,21 +623,58 @@ angular.module('starter.controllers', [])
 											  , itemInstance._links.contents.href ).then(function (res){
 						 		if (typeof res == 'object' && res.status == 200 && res.data.total != 0) {
                                     $scope.sections[i]['blk_img'] = new Array();
+                                    $scope.sections[i]['blk_pdf'] = new Array();
                                     // GET IMAGE URL
+                                    console.log('content_', res.data);
                                     angular.forEach(res.data._embedded.items, function(item, key) {
                                     //    console.log(key);
                                     // console.log(item._links.image_url.href);
+
                                         HandbookService.get($scope.user.username
 											  , $scope.user.password
 											  , $scope.user.session_key
 											  , item._links.image_url.href + '?locale=en_us' ).then(function (res){
-                                            // console.log('IMG_URL', res.data.image_url);
+                                            //console.log('IMG_URL', res.data.image_url);
                                             if (res.data.image_url) {
-                                               $scope.sections[i]['blk_img'][key] = res.data.image_url;
+                                                $scope.sections[i]['blk_img'].push(res.data.image_url);
                                                 // STORE in LOCAL
 												$localstorage.setObject('hdsections_' + $scope.handbook_id, {
 													version : $scope.handbook.version,
 													data    : $scope.sections
+												});
+                                            } else {
+                                            // GET PDF
+
+                                            	HandbookService.get($scope.user.username
+												  , $scope.user.password
+												  , $scope.user.session_key
+												  , item._links.pdf.href + '?locale=en_us&x-session='+ $scope.user.user.session_key ).then(function (res){
+												  	console.log("o1: ",res.data);
+												  	if (!res.data) {return;}
+
+												  	// GET PDF URL
+												  	HandbookService.get($scope.user.username
+													  , $scope.user.password
+													  , $scope.user.session_key
+													  , config.path.baseURL + res.data._links.url.href  ).then(function (res2){
+													  	var pdf_data = {
+													  		pdf_info : res.data,
+													  		pdf_file : res2.data
+													  	};
+													  	$scope.sections[i]['blk_pdf'].push(pdf_data);
+		                                                // STORE in LOCAL
+														$localstorage.setObject('hdsections_' + $scope.handbook_id, {
+															version : $scope.handbook.version,
+															data    : $scope.sections
+														});
+													}, function(err) {
+														console.log('Connect API PDF URL fail!');
+														$ionicLoading.hide();
+													});
+
+												}, function(err) {
+													console.log('Connect API PDF URL fail!');
+													$ionicLoading.hide();
 												});
                                             }
                                         }, function (err){
@@ -628,7 +768,7 @@ angular.module('starter.controllers', [])
 											  , $scope.user.password
 											  , $scope.user.session_key
 											  , item._links.image_url.href + '?locale=en_us' ).then(function (res){
-                                            console.log('IMG_URL', res.data.image_url);
+                                            //console.log('IMG_URL', res.data.image_url);
                                             if (res.data.image_url) {
                                                 $scope.sections[j].children._embedded.items[k]['blk_img'][key] = res.data.image_url;
                                                 $localstorage.setObject('hdsections_' + $scope.handbook_id, {

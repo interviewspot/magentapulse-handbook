@@ -343,3 +343,50 @@ hr.line {
 .item-radio input:checked + .radio-content .radio-icon {
     visibility: visible;
 }
+
+/* PDF */
+.pdf-controls { width: 100%; display: block; background: #eee; padding: 1em;}
+.fixed { position: fixed; top: 0; left: calc(50% - 480px); z-index: 100; width: 100%; padding: 1em; background: rgba(238, 238, 238,.9); width: 960px; }
+.toggle.toggle-dark input:checked + .track {
+  border-color: #cfae79;
+  background-color: #cfae79;
+}
+.pdf-f-ct .ion-android-clipboard {
+  color : #bb1c1c;
+}
+.pdf-small {
+  color: #999;
+  font-size: 11px;
+}
+.pdf-f-ct {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.pdf-blk {
+  margin-top: 15px;
+  position: relative;
+  border-radius: 4px;
+  overflow:hidden;
+}
+.s-pdf {
+  border: 1px solid #eee;
+  padding: 10px;
+  font-size: 11px;
+  border-radius: 4px;
+  background-color: #fff;
+  position:relative;
+  z-index: 1;
+}
+.s-pdf .toggle .track {
+  width: 40px;
+  height: 20px;
+}
+.s-pdf .toggle .handle {
+    width: 14px;
+    height: 14px;
+    border-radius: 9px;
+    background-color: #fff;
+    top: 8px;
+    left: 8px;
+}

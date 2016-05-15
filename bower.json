@@ -10,6 +10,6 @@
     "jquery": "~2.1.0",
     "ionic-platform-web-client": "~0.2.1",
     "ionic-cache-src" : "~0.7.2",
-    "angular-pdf" : "~1.3.0"
+    "angular-pdf-viewer": "~0.2.9"
   }
 }

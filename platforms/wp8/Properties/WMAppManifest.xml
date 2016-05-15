@@ -4,7 +4,7 @@
     <Languages xmlns="">
         <Language code="en-US" />
     </Languages>
-    <App Author="Magenta ltd" BitsPerPixel="32" Description="Magenta ltd" Genre="apps.normal" ProductID="{47c6d8b0-0c5b-11e6-bd39-1dae9b632823}" Publisher="Magenta ltd" PublisherID="{db093ed5-53b1-45f7-af72-751e8f36ab80}" RuntimeType="Silverlight" Title="Handbook" Version="0.0.12" xmlns="">
+    <App Author="Magenta ltd" BitsPerPixel="32" Description="Magenta ltd" Genre="apps.normal" ProductID="{47c6d8b0-0c5b-11e6-bd39-1dae9b632823}" Publisher="Magenta ltd" PublisherID="{db093ed5-53b1-45f7-af72-751e8f36ab80}" RuntimeType="Silverlight" Title="Handbook" Version="0.0.13" xmlns="">
         <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
         <Capabilities>
             <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />

@@ -53,25 +53,7 @@
                         <div clas="sec-desc"
                              ng-bind-html="section.lang['en_us'].description ? section.lang['en_us'].description : section.description">
                         </div>
-                        <!-- PDF VIEWR -->
-                        <div class="s-pdf">
-                            <div class="pdf-f-ct">
-                                <span ng-click="openModalPDF('filepdf')">
-                                    <span class="ion-android-clipboard"></span>
-                                    Click to view
-                                    <span class="pdf-small">File Name.pdf</span>
-                                </span>
-                            </div>
-                            <div class="pdf-offline-option">
-                                Download & View Offline
-                                <label style="float:right;" class="toggle toggle-dark">
-                                   <input type="checkbox">
-                                   <div class="track">
-                                     <div class="handle"></div>
-                                   </div>
-                                </label>
-                            </div>
-                        </div>
+                        
                         <div class="sub-section-img"
                              ng-if="section.blk_img">
                             <span class="load-img-bg">Loading Image</span>
@@ -79,6 +61,29 @@
                                  ng-repeat="imgitm in section.blk_img">
                                 <img cache-src="{{imgitm}}" alt=""
                                      ng-click="openModalZImg(imgitm)"/>
+                            </div>
+                        </div>
+
+                        <!-- PDF VIEWR -->
+                        <div class="pdf-blk" ng-if="section.blk_pdf" >
+                            <span class="load-img-bg">Loading PDF</span>
+                            <div class="s-pdf"  ng-repeat="pdfitm in section.blk_pdf">
+                                <div class="pdf-f-ct">
+                                    <span ng-click="openModalPDF(pdfitm)">
+                                        <span class="ion-android-clipboard"></span>
+                                        Click to view
+                                        <span class="pdf-small">{{pdfitm.pdf_info.name}}</span>
+                                    </span>
+                                </div>
+                                <div class="pdf-offline-option">
+                                    Download & View Offline
+                                    <label style="float:right;" class="toggle toggle-dark">
+                                       <input type="checkbox">
+                                       <div class="track">
+                                         <div class="handle"></div>
+                                       </div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
@@ -122,15 +127,15 @@
                                 scrollbar-y="false">
                                 <img cache-src="{{fileUrl}}" />
                             </ion-scroll>
-                            <ng-pdf
-                                zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1"
-                                overflow-scroll="false"
-                                scrollbar-x="false"
-                                scrollbar-y="false"
-                                ng-if="tmodal.type == 'pdf'"
-                                template-url="/partials/pdf-viewer.html"
-                                debug="true"
-                                scale="page-fit" ></ng-pdf>
+                            <ion-scroll ng-if="tmodal.type == 'pdf'" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" overflow-scroll="false" scrollbar-x="false" scrollbar-y="false">
+                                <pdf-viewer
+                                    delegate-handle="my-pdf-container"
+                                    class="pdf-viewer-b"
+                                    url="pdfUrl"
+                                    scale="1"
+                                    show-toolbar="true"
+                                    headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }"></pdf-viewer>
+                            </ion-scroll> 
                         </ion-content>
                     </ion-modal-view>
                 </script>
