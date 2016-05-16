@@ -27,7 +27,7 @@ var config = {
 angular.module('starter', [
   'ionic','ionic.service.core',
   'ngResource',
-  'starter.controllers',
+  'starter.controllers', 
   'starter.services',
   'angular.filter',
   'ngCordova',

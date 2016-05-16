@@ -345,12 +345,15 @@ angular.module('starter.controllers', [])
 
     // Open Modal PDF
     $scope.openModalPDF = function(afile) {
-    	document.addEventListener("deviceready", onDeviceReady, false);
-
-		function onDeviceReady() {
-		   // as soon as this function is called FileTransfer "should" be defined
-		   console.log(FileTransfer);
-		}
+    	
+    	function showModal() {
+    		$scope.pdfUrl   = getCacheDir() + afile.pdf_info.name;
+			$scope.modal.show();
+			$scope.tmodal  = {
+				"type"  : "pdf",
+				"title" : "View PDF"
+			};
+    	}
 
 		var getCacheDir = function() {};
 		if ($window.cordova) {
@@ -374,27 +377,33 @@ angular.module('starter.controllers', [])
 
 	        $ionicPlatform
 	            .ready(function() {
-	            //console.log();
 
-	            //  DOWNLOAD FILE
-				$cordovaFileTransfer.download(afile.pdf_file.url, getCacheDir() + afile.pdf_info.name, {}, true)
-				.then(function(result) {
-					console.log('ok', result);
-					$scope.pdfUrl   = getCacheDir() + afile.pdf_info.name;
-					$scope.modal.show();
-					$scope.tmodal  = {
-						"type"  : "pdf",
-						"title" : "View PDF"
-					};
-				}, function(err) {
-					console.log('err', err);
-				// Error
-				}, function (progress) {
-					$timeout(function () {
-						$scope.downloadProgress = (progress.loaded / progress.total) * 100;
-					});
-				});
-			});
+	            $cordovaFile.checkFile(getCacheDir(), afile.pdf_info.name)
+				.then(function (success) {
+				// success
+					console.log('cache ok, load ' + getCacheDir());	
+					showModal();
+					return;
+				}, function (error) {
+				// error
+					console.log('cache Failed, load ' + getCacheDir());	
+					//  DOWNLOAD FILE
+					$cordovaFileTransfer.download(afile.pdf_file.url, getCacheDir() + afile.pdf_info.name, {}, true)
+					.then(function(result) {
+						console.log('ok', result);
+						showModal();
+					}, function(err) {
+						console.log('err', err);
+					// Error
+					}, function (progress) {
+						$timeout(function () {
+							$scope.downloadProgress = (progress.loaded / progress.total) * 100;
+						});
+					}); // END: Down file
+				});	// END: check file
+			}); // END: $ionicPlatform
+
+
 	    } else {
 	    	//pdfDelegate.$getByHandle('my-pdf-container').zoomTo(1.5);
 	    	$scope.pdfUrl   = 'pdf/lesson2.pdf';
@@ -405,7 +414,7 @@ angular.module('starter.controllers', [])
 			};
 	    }
 
-
+    	
 
 
   //   	document.addEventListener("deviceready", onDeviceReady, false);
@@ -438,10 +447,10 @@ angular.module('starter.controllers', [])
 		// 	    }
 		// 	);
 		// }
+    	
 
 
-
-
+		
 
   //       if ($window.cordova) {
   //           var getCacheDir = function() {
@@ -469,7 +478,7 @@ angular.module('starter.controllers', [])
 		//     var trustHosts = true;
 		//     var options = {};
 
-
+		    
 
 		//     // DOWNLOAD FILE
   //      		$cordovaFileTransfer.download(afile.pdf_file.url, getCacheDir() + afile.pdf_info.name, {
@@ -488,9 +497,9 @@ angular.module('starter.controllers', [])
 		// 			$timeout(function () {
 		// 				$scope.downloadProgress = (progress.loaded / progress.total) * 100;
 		// 			});
-		// 		});
+		// 		}); 
 
-		// 	// ACTION PDF
+		// 	// ACTION PDF	
 		// 	$scope.pdfUrl  = afile.pdf_file.url;
 	 //        $scope.modal.show();
 	 //        $scope.tmodal  = {
@@ -499,12 +508,12 @@ angular.module('starter.controllers', [])
 	 //        };
 	 //    } else {
 	 //    	// Browser
-	 //    	//
+	 //    	// 
 	 //    }
-
+	    
 		//     return;
 		// //});
-    }; // END:
+    }; // END: 
 
 	// menu active
     $scope.isActive = function(path) {
@@ -696,7 +705,7 @@ angular.module('starter.controllers', [])
                                     angular.forEach(res.data._embedded.items, function(item, key) {
                                     //    console.log(key);
                                     // console.log(item._links.image_url.href);
-
+                                    
                                         HandbookService.get($scope.user.username
 											  , $scope.user.password
 											  , $scope.user.session_key
@@ -710,8 +719,8 @@ angular.module('starter.controllers', [])
 													data    : $scope.sections
 												});
                                             } else {
-                                            // GET PDF
 
+                                            	// GET PDF
                                             	HandbookService.get($scope.user.username
 												  , $scope.user.password
 												  , $scope.user.session_key

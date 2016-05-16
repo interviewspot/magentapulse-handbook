@@ -345,12 +345,15 @@ angular.module('starter.controllers', [])
 
     // Open Modal PDF
     $scope.openModalPDF = function(afile) {
-    	document.addEventListener("deviceready", onDeviceReady, false);
-
-		function onDeviceReady() {
-		   // as soon as this function is called FileTransfer "should" be defined
-		   console.log(FileTransfer);
-		}
+    	
+    	function showModal() {
+    		$scope.pdfUrl   = getCacheDir() + afile.pdf_info.name;
+			$scope.modal.show();
+			$scope.tmodal  = {
+				"type"  : "pdf",
+				"title" : "View PDF"
+			};
+    	}
 
 		var getCacheDir = function() {};
 		if ($window.cordova) {
@@ -374,27 +377,33 @@ angular.module('starter.controllers', [])
 
 	        $ionicPlatform
 	            .ready(function() {
-	            //console.log();
-	            
-	            //  DOWNLOAD FILE
-				$cordovaFileTransfer.download(afile.pdf_file.url, getCacheDir() + afile.pdf_info.name, {}, true)
-				.then(function(result) {
-					console.log('ok', result);
-					$scope.pdfUrl   = getCacheDir() + afile.pdf_info.name;
-					$scope.modal.show();
-					$scope.tmodal  = {
-						"type"  : "pdf",
-						"title" : "View PDF"
-					};
-				}, function(err) {
-					console.log('err', err);
-				// Error
-				}, function (progress) {
-					$timeout(function () {
-						$scope.downloadProgress = (progress.loaded / progress.total) * 100;
-					});
-				});
-			}); 
+
+	            $cordovaFile.checkFile(getCacheDir(), afile.pdf_info.name)
+				.then(function (success) {
+				// success
+					console.log('cache ok, load ' + getCacheDir());	
+					showModal();
+					return;
+				}, function (error) {
+				// error
+					console.log('cache Failed, load ' + getCacheDir());	
+					//  DOWNLOAD FILE
+					$cordovaFileTransfer.download(afile.pdf_file.url, getCacheDir() + afile.pdf_info.name, {}, true)
+					.then(function(result) {
+						console.log('ok', result);
+						showModal();
+					}, function(err) {
+						console.log('err', err);
+					// Error
+					}, function (progress) {
+						$timeout(function () {
+							$scope.downloadProgress = (progress.loaded / progress.total) * 100;
+						});
+					}); // END: Down file
+				});	// END: check file
+			}); // END: $ionicPlatform
+
+
 	    } else {
 	    	//pdfDelegate.$getByHandle('my-pdf-container').zoomTo(1.5);
 	    	$scope.pdfUrl   = 'pdf/lesson2.pdf';
@@ -405,105 +414,6 @@ angular.module('starter.controllers', [])
 			};
 	    }
 
-    	
-
-
-  //   	document.addEventListener("deviceready", onDeviceReady, false);
-		// function onDeviceReady() {
-		//     var fileTransfer = new FileTransfer();
-		// 	var uri = encodeURI(afile.pdf_file.url);
-		// 	//console.log("download complete: ", uri);
-		// 	fileTransfer.download(
-		// 	    uri,
-		// 	    fileURL,
-		// 	    function(entry) {
-		// 	        console.log("download complete: " + entry.toURL());
-		// 	        $scope.pdfUrl   = entry.toURL();
-		// 			$scope.modal.show();
-		// 			$scope.tmodal  = {
-		// 				"type"  : "pdf",
-		// 				"title" : "View PDF"
-		// 			};
-		// 	    },
-		// 	    function(error) {
-		// 	        console.log("download error source " + error.source);
-		// 	        console.log("download error target " + error.target);
-		// 	        console.log("upload error code" + error.code);
-		// 	    },
-		// 	    false,
-		// 	    {
-		// 	        headers: {
-		// 	            "Authorization": "Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=="
-		// 	        }
-		// 	    }
-		// 	);
-		// }
-    	
-
-
-		
-
-  //       if ($window.cordova) {
-  //           var getCacheDir = function() {
-  //               if (window.device)
-  //                   if (window.cordova.file) {
-  //                       switch (device.platform) {
-  //                           case 'iOS':
-  //                               return $window.cordova.file.documentsDirectory;
-  //                           case 'Android':
-  //                               return $window.cordova.file.dataDirectory;
-  //                           case 'windows':
-  //                               return $window.cordova.file.dataDirectory;
-  //                       }
-  //                   } else
-  //                       throw new Error("window.cordova.file is not defined! Maybe you should install cordova-plugin-file first!");
-  //               else
-  //                   throw new Error("window.device is not defined! Maybe you should install cordova-plugin-device first!");
-  //               return '';
-  //           };
-  //       	//var url = "http://cdn.wall-pix.net/albums/art-space/00030109.jpg";
-  //       	// console.log($cordovaFileTransfer);
-		//     //var targetPath = 'pdf/' + afile.pdf_info.name;
-		//     //var targetPath = 'pdf/a-pdf.jpg';
-		//     //console.log(targetPath);
-		//     var trustHosts = true;
-		//     var options = {};
-
-		    
-
-		//     // DOWNLOAD FILE
-  //      		$cordovaFileTransfer.download(afile.pdf_file.url, getCacheDir() + afile.pdf_info.name, {
-  //                                   encodeURI: false,
-  //                                   chunkedMode: false,
-  //                                   headers: {
-  //                                       Connection: "close"
-  //                                   }
-  //                               }, true)
-		// 		.then(function(result) {
-		// 			console.log(result);
-		// 		}, function(err) {
-		// 			console.log(err);
-		// 			// Error
-		// 		}, function (progress) {
-		// 			$timeout(function () {
-		// 				$scope.downloadProgress = (progress.loaded / progress.total) * 100;
-		// 			});
-		// 		}); 
-
-		// 	// ACTION PDF	
-		// 	$scope.pdfUrl  = afile.pdf_file.url;
-	 //        $scope.modal.show();
-	 //        $scope.tmodal  = {
-	 //        	"type"  : "pdf",
-	 //        	"title" : "View PDF"
-	 //        };
-	 //    } else {
-	 //    	// Browser
-	 //    	// 
-	 //    }
-	    
-		//     return;
-		// //});
     }; // END: 
 
 	// menu active
@@ -710,8 +620,8 @@ angular.module('starter.controllers', [])
 													data    : $scope.sections
 												});
                                             } else {
-                                            // GET PDF
-                                            	
+
+                                            	// GET PDF
                                             	HandbookService.get($scope.user.username
 												  , $scope.user.password
 												  , $scope.user.session_key

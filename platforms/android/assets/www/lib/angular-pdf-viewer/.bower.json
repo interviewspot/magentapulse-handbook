@@ -27,7 +27,6 @@
     "commit": "ef9f5e345a1b2b4e0cc20e16a0fca5a168d7899f"
   },
   "_source": "https://github.com/winkerVSbecks/angular-pdf-viewer.git",
-  "_target": "^0.2.9",
-  "_originalSource": "angular-pdf-viewer",
-  "_direct": true
+  "_target": "~0.2.9",
+  "_originalSource": "angular-pdf-viewer"
 }

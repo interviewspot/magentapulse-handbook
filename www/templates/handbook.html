@@ -75,7 +75,7 @@
                                         <span class="pdf-small">{{pdfitm.pdf_info.name}}</span>
                                     </span>
                                 </div>
-                                <div class="pdf-offline-option">
+                                <!-- <div class="pdf-offline-option">
                                     Download & View Offline
                                     <label style="float:right;" class="toggle toggle-dark">
                                        <input type="checkbox">
@@ -83,7 +83,7 @@
                                          <div class="handle"></div>
                                        </div>
                                     </label>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
@@ -108,8 +108,30 @@
                                          ng-click="openModalZImg(imgitm)"/>
                                 </div>
                             </div>
+                            <!-- PDF VIEWR -->
+                            <div class="pdf-blk" ng-if="child.blk_pdf" >
+                                <span class="load-img-bg">Loading PDF</span>
+                                <div class="s-pdf"  ng-repeat="pdfitm in child.blk_pdf">
+                                    <div class="pdf-f-ct">
+                                        <span ng-click="openModalPDF(pdfitm)">
+                                            <span class="ion-android-clipboard"></span>
+                                            Click to view
+                                            <span class="pdf-small">{{pdfitm.pdf_info.name}}</span>
+                                        </span>
+                                    </div>
+                                    <!-- <div class="pdf-offline-option">
+                                        Download & View Offline
+                                        <label style="float:right;" class="toggle toggle-dark">
+                                           <input type="checkbox">
+                                           <div class="track">
+                                             <div class="handle"></div>
+                                           </div>
+                                        </label>
+                                    </div> -->
+                                </div>
                             </div>
                         </div>
+                    </div>
 
                     </div><!-- SUB SECTIONS -->
                 </div>

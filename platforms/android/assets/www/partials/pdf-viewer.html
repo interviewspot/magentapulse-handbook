@@ -1,6 +1,11 @@
-<pdf-viewer
-    delegate-handle="my-pdf-container"
-    url="pdfUrl"
-    scale="1"
-    show-toolbar="true"
-    headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }"></pdf-viewer>
+<button ng-click="goPrevious()"><</span></button>
+<button ng-click="goNext()">></span></button>
+<button ng-click="zoomIn()">+</span></button>
+<button ng-click="fit()">100%</span></button>
+<button ng-click="zoomOut()">-</span></button>
+<!--<ion-scroll  zooming="true" direction="xy" 
+    delegate-handle="zoom-pane" class="zoom-pane" 
+    min-zoom="1" overflow-scroll="false" scrollbar-x="false" scrollbar-y="false">-->
+
+<canvas id="pdf-canvas"></canvas>
+<!-- </ion-scroll> -->
