@@ -833,6 +833,7 @@ angular.module('starter.controllers', [])
 			$tool_fn) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
+	console.log($scope.user);
 	$scope.org 		= $scope.user.company;
 	$_handbooks 	= $localstorage.getObject('handbooks');
 
@@ -857,7 +858,7 @@ angular.module('starter.controllers', [])
 		$location.path('/app/login');
 	} else {
 		$ionicLoading.show();
-		$scope.contacts = $localstorage.get('contacts');
+		$scope.contacts = $localstorage.getObject('contacts');
 		if ($scope.contacts) {
 			$scope.contacts = $scope.contacts.data;
 		}
@@ -905,7 +906,7 @@ angular.module('starter.controllers', [])
 
 				// CHECK UPDATE CACHE
 				var updateCache = $tool_fn._checkHandbookChange(return_data.data, $_handbooks);
-				console.log ($scope.contacts);
+				console.log ('Upcache', updateCache);
 				if (updateCache || $scope.contacts == undefined) {
 					_GetContactAPI();
 				}
