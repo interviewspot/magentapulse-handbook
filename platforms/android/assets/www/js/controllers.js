@@ -505,7 +505,7 @@ angular.module('starter.controllers', [])
 							, $scope.user.session_key
 							, $scope.org._links.handbooks.href + "/" +  $scope.handbook_id).then(function (return_data){
 			$scope.handbook = return_data.data;
-			$scope.ch_color = '#' + 'cfae79';
+			$scope.ch_color = '#' + '8ec734';
 			$ionicLoading.hide();
 			//console.log($_handbook);
 			if (($_handbook
@@ -926,7 +926,7 @@ angular.module('starter.controllers', [])
 		_GetContactAPI = function () {
 			// body...
 
-			$scope.ch_color = '#' + 'cfae79';
+			$scope.ch_color = '#' + '8ec734';
 			ContactService.get($scope.user.username
 							 , $scope.user.password
 							 , $scope.user.session_key

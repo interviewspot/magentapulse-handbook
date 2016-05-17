@@ -26,8 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -171,6 +174,29 @@ public class CordovaPlugin {
      */
     public void onDestroy() {
     }
+
+    /**
+     * Called when the Activity is being destroyed (e.g. if a plugin calls out to an external
+     * Activity and the OS kills the CordovaActivity in the background). The plugin should save its
+     * state in this method only if it is awaiting the result of an external Activity and needs
+     * to preserve some information so as to handle that result; onRestoreStateForActivityResult()
+     * will only be called if the plugin is the recipient of an Activity result
+     *
+     * @return  Bundle containing the state of the plugin or null if state does not need to be saved
+     */
+    public Bundle onSaveInstanceState() {
+        return null;
+    }
+
+    /**
+     * Called when a plugin is the recipient of an Activity result after the CordovaActivity has
+     * been destroyed. The Bundle will be the same as the one the plugin returned in
+     * onSaveInstanceState()
+     *
+     * @param state             Bundle containing the state of the plugin
+     * @param callbackContext   Replacement Context to return the plugin result to
+     */
+    public void onRestoreStateForActivityResult(Bundle state, CallbackContext callbackContext) {}
 
     /**
      * Called when a message is sent to plugin.
@@ -358,5 +384,39 @@ public class CordovaPlugin {
      * @param newConfig		The new device configuration
      */
     public void onConfigurationChanged(Configuration newConfig) {
+    }
+
+    /**
+     * Called by the Plugin Manager when we need to actually request permissions
+     *
+     * @param requestCode   Passed to the activity to track the request
+     *
+     * @return              Returns the permission that was stored in the plugin
+     */
+
+    public void requestPermissions(int requestCode) {
+    }
+
+    /*
+     * Called by the WebView implementation to check for geolocation permissions, can be used
+     * by other Java methods in the event that a plugin is using this as a dependency.
+     *
+     * @return          Returns true if the plugin has all the permissions it needs to operate.
+     */
+
+    public boolean hasPermisssion() {
+        return true;
+    }
+
+    /**
+     * Called by the system when the user grants permissions
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    public void onRequestPermissionResult(int requestCode, String[] permissions,
+                                          int[] grantResults) throws JSONException {
+
     }
 }

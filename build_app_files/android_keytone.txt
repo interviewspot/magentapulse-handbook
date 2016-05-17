@@ -1,5 +1,5 @@
-keytone: sghandbook
-pass alias: sghandbk
+keytone: pioneer
+pass alias: pionee
 
 CN=Sg Magenta, OU=ltd, O=Magenta, L=Singapore, ST=Singapore, C=SG
 
@@ -11,9 +11,14 @@ Alias = alias_name
 
 /Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.7.apk
 
+keytool -genkey -v -keystore my-release-key.keystore -alias pioneer -keyalg RSA -keysize 2048 -validity 10000
 
 BUILD release
 . ionic build --release android
 . copy file at root
-. jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore android-release-unsigned.apk alias_name
-. /Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk handbook_0.0.x.apk
+. jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore android-release-unsigned.apk pioneer
+. /Users/minh/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 android-release-unsigned.apk pioneer_0.0.1.apk
+
+TEST:
+pioneerinfo
+akadmin

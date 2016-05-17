@@ -135,7 +135,7 @@ public class SystemWebViewEngine implements CordovaWebViewEngine {
         return webView;
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"NewApi", "SetJavaScriptEnabled"})
     @SuppressWarnings("deprecation")
     private void initWebViewSettings() {
         webView.setInitialScale(0);
@@ -145,11 +145,11 @@ public class SystemWebViewEngine implements CordovaWebViewEngine {
         settings.setJavaScriptEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
-
+        
         // Set the nav dump for HTC 2.x devices (disabling for ICS, deprecated entirely for Jellybean 4.2)
         try {
             Method gingerbread_getMethod =  WebSettings.class.getMethod("setNavDump", new Class[] { boolean.class });
-
+            
             String manufacturer = android.os.Build.MANUFACTURER;
             Log.d(TAG, "CordovaWebView is running on device made by: " + manufacturer);
             if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB &&
@@ -170,7 +170,7 @@ public class SystemWebViewEngine implements CordovaWebViewEngine {
         //We don't save any form data in the application
         settings.setSaveFormData(false);
         settings.setSavePassword(false);
-
+        
         // Jellybean rightfully tried to lock this down. Too bad they didn't give us a whitelist
         // while we do this
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -184,15 +184,15 @@ public class SystemWebViewEngine implements CordovaWebViewEngine {
         String databasePath = webView.getContext().getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
         settings.setDatabaseEnabled(true);
         settings.setDatabasePath(databasePath);
-
-
+        
+        
         //Determine whether we're in debug or release mode, and turn on Debugging!
         ApplicationInfo appInfo = webView.getContext().getApplicationContext().getApplicationInfo();
         if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             enableRemoteDebugging();
         }
-
+        
         settings.setGeolocationDatabasePath(databasePath);
 
         // Enable DOM storage
@@ -200,13 +200,13 @@ public class SystemWebViewEngine implements CordovaWebViewEngine {
 
         // Enable built-in geolocation
         settings.setGeolocationEnabled(true);
-
+        
         // Enable AppCache
         // Fix for CB-2282
         settings.setAppCacheMaxSize(5 * 1048576);
         settings.setAppCachePath(databasePath);
         settings.setAppCacheEnabled(true);
-
+        
         // Fix for CB-1405
         // Google issue 4641
         String defaultUserAgent = settings.getUserAgentString();
@@ -222,7 +222,7 @@ public class SystemWebViewEngine implements CordovaWebViewEngine {
             }
         }
         // End CB-3360
-
+        
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
         if (this.receiver == null) {
@@ -253,7 +253,7 @@ public class SystemWebViewEngine implements CordovaWebViewEngine {
             // Bug being that Java Strings do not get converted to JS strings automatically.
             // This isn't hard to work-around on the JS side, but it's easier to just
             // use the prompt bridge instead.
-            return;
+            return;            
         }
         SystemExposedJsApi exposedJsApi = new SystemExposedJsApi(bridge);
         webView.addJavascriptInterface(exposedJsApi, "_cordovaNative");

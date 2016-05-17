@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.magentapulse.magentacloudbook"
-        version="0.0.14" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Handbook</name>
+<widget id="com.pioneer.pioneerbook" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Pioneer Handbook</name>
   <description>
-        Magenta ltd
-    </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Magenta ltd
-    </author>
+        Pioneer InfoTech (S) Pte Ltd . 25 Kaki Bukit Crescent, #03-00 Singapore 416256
+  </description>
+  <author email="hi@ionicframework" href="http://www.pioneer-infotech.com/contact-us/">
+      Pioneer InfoTech (S) Pte Ltd
+  </author>
   <content src="index.html"/>
-
   <access origin="*"/>
-  <allow-intent href="*" />
-  <allow-navigation href="*" />
   <access origin="tel:*" launch-external="yes"/>
   <access origin="mailto:*" launch-external="yes"/>
+  <allow-intent href="*"/>
+  <allow-navigation href="*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
@@ -22,7 +20,7 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
-  <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+  <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
