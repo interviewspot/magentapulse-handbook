@@ -1,7 +1,7 @@
 keytone: pioneer
 pass alias: pionee
 
-CN=Sg Magenta, OU=ltd, O=Magenta, L=Singapore, ST=Singapore, C=SG
+Is CN=pio, OU=neer, O=pioneer, L=sing, ST=sing, C=sg correct?
 
 Alias = alias_name
 

@@ -61,40 +61,30 @@ angular.module('starter.controllers', [])
 		// checkUrl = 'http://api-live.sg-benefits.com/users/19/positions';
 		rAPI.get($scope.user.user.session_key, checkUrl).then(function (res) {
 			console.log ('USER again', res.data);
-			
-
+			if (!res.data.enabled) {
+				$location.path('/app/logout');
+				location.reload();
+			}
 		}, function (err) {
 			console.log('ERROR 1 : Not connect API User, try later!');
+			if (err.status != 0) {
+				$location.path('/app/logout');
+				location.reload();
+			}
 		});
 	};
 })
 /**
  * LoginCtrl
  */
-.controller('LoginCtrl', function($scope, $stateParams, $location, $ionicPush, LoginService, $ionicLoading, $localstorage, OrgService) {
+.controller('LoginCtrl', function($scope, $stateParams, $location, $ionicPush, LoginService, 
+							$ionicLoading, $localstorage, OrgService,
+							eAPI) {
 	$scope.loginData = {};
 	$scope.user = $localstorage.getObject('user');
 	$scope.noCompayCode = false;
 	$scope.noUserCode   = false;
-	// //console.log($state.current.name);
-	// //console.log("sss : " + $scope.$$parent.isSigned);
-	// $ionicPlatform.onHardwareBackButton(function() {
-	// 	if ($state.current.name == 'app.login') {
-	// 		$ionicPopup.confirm({
-	// 	        title: 'System warning',
-	// 	        template: 'are you sure you want to exit?'
-	// 	    }).then(function(res) {
-	// 	        if (res) {
-	// 	          ionic.Platform.exitApp();
-	// 	        }
-	// 	    });
-	// 	    return;
-	// 	}
-		    
-		
-	// 	//console.log($state.current.name);
- 		
-	// });
+	
 
 	if ($scope.user &&  (typeof $scope.user == 'object' && $scope.user.username)) {
 		$location.path('/app/handbooks');
@@ -125,59 +115,73 @@ angular.module('starter.controllers', [])
 		$scope.noUserCode   = false;
 
 		$ionicLoading.show();
-		LoginService.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim()).then(function (res){
-			$ionicLoading.hide();
-            //console.log(res.data);
-            //return;
-
-//            if (typeof res == 'object' && res.status == 200) {
-//                OrgService.get($scope.loginData.company_code.trim()
-//							 , $scope.loginData.user_code.trim()
-//							 , config.path.baseURL + res.data._links.logged_in_user.href).then(function (res_user) {
-//                    console.log(res_user);
-//                }, function (err) {
-//					$ionicLoading.hide();
-//					console.log('ERROR : Not connect API User, try later!');
-//				});
-//            }
-//            return;
-			if (typeof res == 'object' && res.status == 200 && res.data._embedded.items.length == 1) {
-            //if (typeof res == 'object' && res.status == 200) {
-
-				company_data = res.data._embedded.items[0];
-				user_url = config.path.baseURL + config.path.users + '?search=user.code:' + $scope.loginData.user_code.trim();
-				OrgService.get($scope.loginData.company_code.trim()
-							 , $scope.loginData.user_code.trim()
-							 , user_url).then(function (res) {
-
-					// LOGIN OK
-					if (typeof res == 'object' && res.data._embedded.items.length == 1) {
-                    //if (typeof res == 'object') {
-						// STORE in LOCAL
-						$localstorage.setObject('user', {
-							username : $scope.loginData.company_code.trim(),
-							password : $scope.loginData.user_code.trim(),
-							company  : company_data,
-							user     : res.data._embedded.items[0]
-						});
-
-						// RESET CACHE
-
-
-						// GO TO HANDBOOK PAGE
-						$location.path('/app/handbooks');
-						location.reload();
-					}
-
-				}, function (err) {
+		// LOGIN SYS
+		var loginSysUrl = config.path.baseURL + '/system';
+		eAPI.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim(), loginSysUrl)
+		.then(function (res){
+			
+			console.log('sysLog', res.data);
+			var logState = res.data;
+			if (typeof res == 'object' && res.status == 200) {
+				
+				// GET USER  -------------
+				eAPI.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim(), config.path.baseURL + logState._links.logged_in_user.href)
+				.then(function (res){
 					$ionicLoading.hide();
-					console.log('ERROR 1 : Not connect API User, try later!');
-				});
+					if (typeof res == 'object' && res.status == 200) {
+						//console.log('sysLog2', res.data);
+						var userdata = res.data;
 
-			} else if (res && res.status == 401) {
-				alert('Wrong Company code or Employee code!');
-			} else {
-				alert('Wrong Company code or Employee code!');
+						// GET COMPANY  -------------
+						eAPI.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim(),  config.path.baseURL + logState._links.logged_in_position.href)
+						.then(function (res){
+							if (typeof res == 'object' && res.status == 200) {
+								//console.log('sysLog2', res.data);
+								var thisposition = res.data;
+
+								// GET COMPANY employer  -------------
+								eAPI.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim(),  thisposition._links.employer.href)
+								.then(function (res){
+									if (typeof res == 'object' && res.status == 200) {
+										console.log('sysLog2', res.data);
+										// LOGGED SUCESS
+										$localstorage.setObject('user', {
+											username : $scope.loginData.company_code.trim(),
+											password : $scope.loginData.user_code.trim(),
+											company  : res.data,
+											user     : userdata
+										});
+										$location.path('/app/handbooks');
+										location.reload();
+									}
+								}, function (err){
+									$ionicLoading.hide();
+									if (err.data) {
+										alert('ERROR ' + err.data.message);
+									} else {
+										alert('ERROR 2.3 : Not connect API Company, try later!');
+									}
+								});
+								
+							}
+						}, function (err){
+							$ionicLoading.hide();
+							if (err.data) {
+								alert('ERROR ' + err.data.message);
+							} else {
+								alert('ERROR 2.2 : Not connect API Company, try later!');
+							}
+						});
+						
+					} // END: GET USER
+				}, function (err){
+					$ionicLoading.hide();
+					if (err.data) {
+						alert('ERROR ' + err.data.message);
+					} else {
+						alert('ERROR 2.1 : Not connect API, try later!');
+					}
+				});
 			}
 		}, function (err){
 			$ionicLoading.hide();
@@ -186,8 +190,10 @@ angular.module('starter.controllers', [])
 			} else {
 				alert('ERROR 2 : Not connect API, try later!');
 			}
-		});
-	};
+		}); // END: LOGIN SYS
+
+	}; // END : dologin
+		
 })
 /**
  * LogoutCtrl
@@ -331,7 +337,10 @@ angular.module('starter.controllers', [])
 .controller('HandbookCtrl', function($scope, $rootScope, $location, $stateParams,
 									$ionicPush, HandbookService, SectionService,
 									$localstorage, $ionicLoading, OrgService, ImgService,
-									$tool_fn, $ionicModal, $cordovaFileTransfer, $cordovaFile, $ionicPlatform, $window) {
+									$tool_fn, $ionicModal, 
+									$cordovaFileTransfer, $cordovaFile, $ionicPlatform, $window,
+									rAPI
+									) {
 	$scope.cur_path = $location.path();
 	$scope.user     = $localstorage.getObject('user');
 	$scope.handbook_id = $stateParams.handbook_id
@@ -524,7 +533,7 @@ angular.module('starter.controllers', [])
 							, $scope.user.session_key
 							, $scope.org._links.handbooks.href + "/" +  $scope.handbook_id).then(function (return_data){
 			$scope.handbook = return_data.data;
-			$scope.ch_color = '#' + '8ec734';
+			$scope.ch_color = '#' + 'cfae79';
 			$ionicLoading.hide();
 			//console.log($_handbook);
 			if (($_handbook
@@ -815,6 +824,7 @@ angular.module('starter.controllers', [])
 
 	$scope.toggleGroup = function(group) {
 		//console.log(group);
+		_checkUserLogin();
 	    if ($scope.isGroupShown(group)) {
 	    	$scope.shownGroup = null;
 	    } else {
@@ -829,6 +839,7 @@ angular.module('starter.controllers', [])
   	};
 
   	$scope.toggleSubGroup = function(group) {
+  		_checkUserLogin();
 	    if ($scope.isSubGroupShown(group)) {
 	    	$scope.shownSubGroup = null;
 	    } else {
@@ -840,6 +851,28 @@ angular.module('starter.controllers', [])
   		return $scope.shownSubGroup === group;
   	};
   	
+  	var _checkUserLogin = function() {
+		console.log(typeof $scope.user);
+		if ( $tool_fn._isEmpty($scope.user) ) {return;} 
+		
+		var checkUrl = $scope.user.user._links.self.href;
+		// var checkUrl = config.path.baseURL + '/system';
+		// checkUrl = 'http://api-live.sg-benefits.com/users/19/positions';
+		rAPI.get($scope.user.user.session_key, checkUrl).then(function (res) {
+			console.log ('USER again', res.data);
+			if (!res.data.enabled) {
+				$location.path('/app/logout');
+				location.reload();
+			}
+		}, function (err) {
+			console.log('ERROR 1 : Not connect API User, try later!');
+			if (err.status != 0) {
+				$location.path('/app/logout');
+				location.reload();
+			}
+		});
+	};
+
 })
 
 /**
@@ -946,7 +979,7 @@ angular.module('starter.controllers', [])
 		_GetContactAPI = function () {
 			// body...
 
-			$scope.ch_color = '#' + '8ec734';
+			$scope.ch_color = '#' + 'cfae79';
 			ContactService.get($scope.user.username
 							 , $scope.user.password
 							 , $scope.user.session_key
