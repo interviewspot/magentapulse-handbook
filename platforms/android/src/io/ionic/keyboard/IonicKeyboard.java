@@ -67,7 +67,7 @@ public class IonicKeyboard extends CordovaPlugin {
                             Rect r = new Rect();
                             //r will be populated with the coordinates of your view that area still visible.
                             rootView.getWindowVisibleDisplayFrame(r);
-
+                            
                             PluginResult result;
 
                             int heightDiff = rootView.getRootView().getHeight() - r.bottom;
@@ -89,8 +89,8 @@ public class IonicKeyboard extends CordovaPlugin {
                     };
 
                     rootView.getViewTreeObserver().addOnGlobalLayoutListener(list);
-
-
+                	
+                	
                     PluginResult dataResult = new PluginResult(PluginResult.Status.OK);
                     dataResult.setKeepCallback(true);
                     callbackContext.sendPluginResult(dataResult);

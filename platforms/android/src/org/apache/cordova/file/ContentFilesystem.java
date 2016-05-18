@@ -182,7 +182,7 @@ public class ContentFilesystem extends Filesystem {
         }
         return null;
 	}
-
+	
 	protected Long lastModifiedDateForCursor(Cursor cursor) {
         int columnIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED);
         if (columnIndex == -1) {

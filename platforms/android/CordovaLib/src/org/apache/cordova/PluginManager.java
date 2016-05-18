@@ -26,6 +26,7 @@ import org.json.JSONException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
 
@@ -46,6 +47,8 @@ public class PluginManager {
     private final CordovaInterface ctx;
     private final CordovaWebView app;
     private boolean isInitialized;
+
+    private CordovaPlugin permissionRequester;
 
     public PluginManager(CordovaWebView cordovaWebView, CordovaInterface cordova, Collection<PluginEntry> pluginEntries) {
         this.ctx = cordova;
@@ -219,9 +222,9 @@ public class PluginManager {
      * @param handler           The HttpAuthHandler used to set the WebView's response
      * @param host              The host requiring authentication
      * @param realm             The realm for which authentication is required
-     *
+     * 
      * @return                  Returns True if there is a plugin which will resolve this auth challenge, otherwise False
-     *
+     * 
      */
     public boolean onReceivedHttpAuthRequest(CordovaWebView view, ICordovaHttpAuthHandler handler, String host, String realm) {
         for (CordovaPlugin plugin : this.pluginMap.values()) {
@@ -231,7 +234,7 @@ public class PluginManager {
         }
         return false;
     }
-
+    
     /**
      * Called when he system received an SSL client certificate request.  Plugin can use
      * the supplied ClientCertRequest to process this certificate challenge.
@@ -507,5 +510,18 @@ public class PluginManager {
                 plugin.onConfigurationChanged(newConfig);
             }
         }
+    }
+
+    public Bundle onSaveInstanceState() {
+        Bundle state = new Bundle();
+        for (CordovaPlugin plugin : this.pluginMap.values()) {
+            if (plugin != null) {
+                Bundle pluginState = plugin.onSaveInstanceState();
+                if(pluginState != null) {
+                    state.putBundle(plugin.getServiceName(), pluginState);
+                }
+            }
+        }
+        return state;
     }
 }
