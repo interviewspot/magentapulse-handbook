@@ -1,17 +1,17 @@
 <ion-view view-title="Handbook" >
     <div class="visual-header"></div>
-	<div class="content-page selectable"
+    <div class="content-page selectable"
         ng-class="settings.fontsize">
-		<div class="logo">
-	        <a ng-if="org.logo"><img alt="{{org.name}}" cache-src="{{org.logo}}"></a>
-	    </div>
+        <div class="logo">
+            <a ng-if="org.logo"><img alt="{{org.name}}" cache-src="{{org.logo}}"></a>
+        </div>
         <div ng-include="'templates/menu_tabs.html'"></div>
-	    <div class="list list-inset">
-		  <label class="item item-input">
-		    <i class="icon ion-search placeholder-icon"></i>
-		    <input type="text" placeholder="Search" ng-model="searchText">
-		  </label>
-		</div>
+        <div class="list list-inset">
+          <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" placeholder="Search" ng-model="searchText">
+          </label>
+        </div>
         <div class="load-nocache" ng-if="!handbook">
             <p>No data! please connect the internet and click refresh.</p>
             <p><a href="javascript:;" ng-click="refreshCached()">
@@ -19,30 +19,30 @@
                 REFRESH
             </a></p>
         </div>
-		<div class="row" ng-if="handbook" ng-hide="searchText">
-			<div class="col">
+        <div class="row" ng-if="handbook" ng-hide="searchText">
+            <div class="col">
                 <h2>{{handbook.lang['en-us'].title ? handbook.lang['en-us'].title : handbook.title}}</h2>
                 <p>Version {{handbook.version}},  {{handbook.year}}</p>
                 <p>Language: English</p>
             </div>
-		</div>
-		<div class="row" ng-hide="searchText">
-			<div class="col" ng-bind-html="handbook.lang['en_us'].description"></div>
-		</div>
+        </div>
+        <div class="row" ng-hide="searchText">
+            <div class="col" ng-bind-html="handbook.lang['en_us'].description"></div>
+        </div>
         <div class="list menu-tab-page">
-        	<div ng-repeat="(key, section) in sections | filter:searchText | orderBy:'ordering'">
-        		<div class="item item-divider item-icon-left"
+            <div ng-repeat="(key, section) in sections | filter:searchText | orderBy:'ordering'">
+                <div class="item item-divider item-icon-left"
                     ng-click="toggleGroup(section)"
                     ng-class="{active: isGroupShown(section)}">
-					<h4 class="sec-title">
+                    <h4 class="sec-title">
                         {{section.ordering}}. {{section.lang['en_us'].title ? section.lang['en_us'].title : section.title}}
-					    <i class="icon"
+                        <i class="icon"
                         ng-class="isGroupShown(section) ? 'ion-ios-minus-outline' : 'ion-ios-plus-outline'"
                         ></i>
                     </h4>
-				</div>
+                </div>
 
-				<div class="item"
+                <div class="item"
                     ng-show="isGroupShown(section)" >
                     <div class="section-ct"
                         ng-show="section.lang['en_us'].description || section.description"
@@ -55,7 +55,7 @@
                         </div>
                         
                         <div class="sub-section-img"
-                             ng-if="section.blk_img">
+                             ng-if="section.blk_img.length">
                             <span class="load-img-bg">Loading Image</span>
                             <div class="sec-img-itm"
                                  ng-repeat="imgitm in section.blk_img">
@@ -65,7 +65,7 @@
                         </div>
 
                         <!-- PDF VIEWR -->
-                        <div class="pdf-blk" ng-if="section.blk_pdf" >
+                        <div class="pdf-blk" ng-if="section.blk_pdf.length" >
                             <span class="load-img-bg">Loading PDF</span>
                             <div class="s-pdf"  ng-repeat="pdfitm in section.blk_pdf">
                                 <div class="pdf-f-ct">
@@ -75,15 +75,6 @@
                                         <span class="pdf-small">{{pdfitm.pdf_info.name}}</span>
                                     </span>
                                 </div>
-                                <!-- <div class="pdf-offline-option">
-                                    Download & View Offline
-                                    <label style="float:right;" class="toggle toggle-dark">
-                                       <input type="checkbox">
-                                       <div class="track">
-                                         <div class="handle"></div>
-                                       </div>
-                                    </label>
-                                </div> -->
                             </div>
                         </div>
 
@@ -109,7 +100,7 @@
                                 </div>
                             </div>
                             <!-- PDF VIEWR -->
-                            <div class="pdf-blk" ng-if="child.blk_pdf" >
+                            <div class="pdf-blk" ng-if="child.blk_pdf.length" >
                                 <span class="load-img-bg">Loading PDF</span>
                                 <div class="s-pdf"  ng-repeat="pdfitm in child.blk_pdf">
                                     <div class="pdf-f-ct">
@@ -119,15 +110,6 @@
                                             <span class="pdf-small">{{pdfitm.pdf_info.name}}</span>
                                         </span>
                                     </div>
-                                    <!-- <div class="pdf-offline-option">
-                                        Download & View Offline
-                                        <label style="float:right;" class="toggle toggle-dark">
-                                           <input type="checkbox">
-                                           <div class="track">
-                                             <div class="handle"></div>
-                                           </div>
-                                        </label>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -161,7 +143,7 @@
                         </ion-content>
                     </ion-modal-view>
                 </script>
-        	</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </ion-view>

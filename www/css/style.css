@@ -24,6 +24,16 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     text-overflow: ellipsis;
 }
 /* ------------------------------ */
+/* CHANGE ------------------------------ */
+.button.button-energized {
+  background-color: #a30005;
+  border-color: #a30005;
+}
+.button.button-energized.active, .button.button-energized.activated {
+      border-color: #921115;
+      background-color: #921115;
+}
+/* ------------------------------ */
 .bar.bar-energized {
     border-color: #cfae79;
     background-color: #cfae79;
@@ -359,9 +369,9 @@ hr.line {
   font-size: 11px;
 }
 .pdf-f-ct {
-  border-bottom: 1px solid #eee;
+  
   padding-bottom: 10px;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 .pdf-blk {
   margin-top: 15px;
@@ -749,13 +759,4 @@ hr.line {
   left: 0;
   top: 0;
   width: 100%;
-}
-
-.button.button-energized {
-  background-color: #a30005;
-  border-color: #a30005;
-}
-.button.button-energized.active, .button.button-energized.activated {
-      border-color: #921115;
-      background-color: #921115;
 }
