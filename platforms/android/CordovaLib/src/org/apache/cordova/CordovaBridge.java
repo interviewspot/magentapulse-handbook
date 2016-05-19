@@ -120,7 +120,7 @@ public class CordovaBridge {
 
     public void reset() {
         jsMessageQueue.reset();
-        clearBridgeSecret();
+        clearBridgeSecret();        
     }
 
     public String promptOnJsPrompt(String origin, String message, String defaultValue) {
@@ -141,7 +141,7 @@ public class CordovaBridge {
             }
             return "";
         }
-        // Sets the native->JS bridge mode.
+        // Sets the native->JS bridge mode. 
         else if (defaultValue != null && defaultValue.startsWith("gap_bridge_mode:")) {
             try {
                 int bridgeSecret = Integer.parseInt(defaultValue.substring(16));
@@ -153,7 +153,7 @@ public class CordovaBridge {
             }
             return "";
         }
-        // Polling for JavaScript messages
+        // Polling for JavaScript messages 
         else if (defaultValue != null && defaultValue.startsWith("gap_poll:")) {
             int bridgeSecret = Integer.parseInt(defaultValue.substring(9));
             try {

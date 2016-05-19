@@ -61,7 +61,7 @@ public class Config {
     public static List<PluginEntry> getPluginEntries() {
         return parser.getPluginEntries();
     }
-
+    
     public static CordovaPreferences getPreferences() {
         return parser.getPreferences();
     }

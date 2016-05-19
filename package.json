@@ -23,10 +23,10 @@
     "cordova-plugin-file",
     "cordova-plugin-file-transfer",
     {
-      "variables" : {
-        "SENDER_ID" : "XXXXXXX"
+      "variables": {
+        "SENDER_ID": "XXXXXXX"
       },
-      "locator" : "phonegap-plugin-push"
+      "locator": "phonegap-plugin-push"
     }
   ],
   "cordovaPlatforms": [

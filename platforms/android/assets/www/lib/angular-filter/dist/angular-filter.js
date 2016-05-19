@@ -28,8 +28,8 @@ var isDefined = angular.isDefined,
  * @returns {Array}
  */
 function toArray(object) {
-  return isArray(object)
-    ? object
+  return isArray(object) 
+    ? object 
     : Object.keys(object).map(function(key) {
       return object[key];
     });
@@ -1324,7 +1324,7 @@ angular.module('a8m.xor', [])
  * @kind function
  *
  * @description
- * Convert bytes into appropriate display
+ * Convert bytes into appropriate display 
  * 1024 bytes => 1 KB
  */
 angular.module('a8m.math.byteFmt', ['a8m.math'])
@@ -1370,15 +1370,15 @@ angular.module('a8m.math.degrees', ['a8m.math'])
     }
   }]);
 
-
-
+ 
+ 
 /**
  * @ngdoc filter
  * @name formatBytes
  * @kind function
  *
  * @description
- * Convert bytes into appropriate display
+ * Convert bytes into appropriate display 
  * 1024 kilobytes => 1 MB
  */
 angular.module('a8m.math.kbFmt', ['a8m.math'])
@@ -1523,8 +1523,8 @@ angular.module('a8m.math.radians', ['a8m.math'])
     }
   }]);
 
-
-
+ 
+ 
 /**
  * @ngdoc filter
  * @name Radix
@@ -2205,7 +2205,7 @@ angular.module('a8m.filter-watcher', [])
       }
     }];
   });
-
+  
 
 /**
  * @ngdoc module
@@ -2265,7 +2265,7 @@ angular.module('angular.filter', [
   'a8m.flatten',
   'a8m.join',
   'a8m.range',
-
+  
   'a8m.math',
   'a8m.math.max',
   'a8m.math.min',

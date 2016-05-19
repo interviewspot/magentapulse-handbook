@@ -31,22 +31,22 @@ public class CallbackContext {
 
     private String callbackId;
     private CordovaWebView webView;
-    private boolean finished;
+    protected boolean finished;
     private int changingThreads;
 
     public CallbackContext(String callbackId, CordovaWebView webView) {
         this.callbackId = callbackId;
         this.webView = webView;
     }
-
+    
     public boolean isFinished() {
         return finished;
     }
-
+    
     public boolean isChangingThreads() {
         return changingThreads > 0;
     }
-
+    
     public String getCallbackId() {
         return callbackId;
     }
@@ -98,7 +98,7 @@ public class CallbackContext {
     public void success(byte[] message) {
         sendPluginResult(new PluginResult(PluginResult.Status.OK, message));
     }
-
+    
     /**
      * Helper for success callbacks that just returns the Status.OK by default
      *
