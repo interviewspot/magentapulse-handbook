@@ -1,4 +1,4 @@
-<ion-view view-title="Handbooks" >
+<ion-view view-title="Cloud Books" >
     <div class="visual-header"></div>
 	<div class="content-page"
         ng-class="settings.fontsize"
@@ -17,7 +17,7 @@
             <div ng-repeat="(key, handbook) in handbooks._embedded.items | filter:searchText">
                 <a href="#/app/handbook/{{handbook.id}}" class="item">
                     <h4 class="hb-title">
-                        {{key + 1}} . {{handbook.lang['en-us'].title ? handbook.lang['en-us'].title : handbook.title}}
+                        {{key + 1}} . {{handbook.lang['en_us'].title ? handbook.lang['en_us'].title : handbook.title}}
                     </h4>
                     <p class="small-txt clearfix">
                         <span>Version: {{handbook.version}}</span>

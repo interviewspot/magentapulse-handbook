@@ -374,8 +374,10 @@ angular.module('starter.controllers', [])
     // Open Modal PDF
     $scope.openModalPDF = function(afile) {
         
-        function showModal() {
-            $scope.pdfUrl   = getCacheDir() + afile.pdf_info.name;
+        function showModal(bfile) {
+
+            $scope.pdfUrl   = getCacheDir() + bfile.pdf_info.name;
+            // alert($scope.pdfUrl);
             $scope.modal.show();
             $scope.tmodal  = {
                 "type"  : "pdf",
@@ -406,11 +408,13 @@ angular.module('starter.controllers', [])
             $ionicPlatform
                 .ready(function() {
 
+                // alert(getCacheDir() + afile.pdf_info.name);
+
                 $cordovaFile.checkFile(getCacheDir(), afile.pdf_info.name)
                 .then(function (success) {
                 // success
                     console.log('cache ok, load ' + getCacheDir()); 
-                    showModal();
+                    showModal(afile);
                     return;
                 }, function (error) {
                 // error
@@ -419,7 +423,7 @@ angular.module('starter.controllers', [])
                     $cordovaFileTransfer.download(afile.pdf_file.url, getCacheDir() + afile.pdf_info.name, {}, true)
                     .then(function(result) {
                         console.log('ok', result);
-                        showModal();
+                        showModal(afile);
                     }, function(err) {
                         console.log('err', err);
                     // Error
@@ -435,6 +439,8 @@ angular.module('starter.controllers', [])
         } else {
             //pdfDelegate.$getByHandle('my-pdf-container').zoomTo(1.5);
             $scope.pdfUrl   = 'pdf/lesson2.pdf';
+            $scope.pdfUrl   = afile.pdf_info.name;
+            //console.log('openM', afile.pdf_info.name);
             $scope.modal.show();
             $scope.tmodal  = {
                 "type"  : "pdf",
@@ -765,26 +771,66 @@ angular.module('starter.controllers', [])
                                               , itemInstance._links.contents.href ).then(function (res){
                                 if (typeof res == 'object' && res.status == 200 && res.data.total != 0) {
                                     $scope.sections[j].children._embedded.items[k]['blk_img'] = new Array();
+                                    $scope.sections[j].children._embedded.items[k]['blk_pdf'] = new Array();
+
                                     // GET IMAGE URL
                                     angular.forEach(res.data._embedded.items, function(item, key) {
-                                        console.log(key);
+                                    //    console.log(key);
                                     // console.log(item._links.image_url.href);
+                                        
                                         HandbookService.get($scope.user.username
                                               , $scope.user.password
                                               , $scope.user.session_key
                                               , item._links.image_url.href + '?locale=en_us' ).then(function (res){
                                             //console.log('IMG_URL', res.data.image_url);
                                             if (res.data.image_url) {
-                                                $scope.sections[j].children._embedded.items[k]['blk_img'][key] = res.data.image_url;
+                                                $scope.sections[j].children._embedded.items[k]['blk_img'].push(res.data.image_url);
                                                 $localstorage.setObject('hdsections_' + $scope.handbook_id, {
                                                     version : $scope.handbook.version,
                                                     data    : $scope.sections
                                                 });
+                                            } else {
+
+                                                // GET PDF
+                                                HandbookService.get($scope.user.username
+                                                  , $scope.user.password
+                                                  , $scope.user.session_key
+                                                  , item._links.pdf.href + '?locale=en_us&x-session='+ $scope.user.user.session_key ).then(function (res){
+                                                    //console.log("o1: ",res.data);
+                                                    if (!res.data) {return;}
+
+                                                    // GET PDF URL
+                                                    HandbookService.get($scope.user.username
+                                                      , $scope.user.password
+                                                      , $scope.user.session_key
+                                                      , config.path.baseURL + res.data._links.url.href  ).then(function (res2){
+                                                        var pdf_data = {
+                                                            pdf_info : res.data,
+                                                            pdf_file : res2.data
+                                                        };
+                                                        $scope.sections[j].children._embedded.items[k]['blk_pdf'].push(pdf_data);
+                                                        // STORE in LOCAL
+                                                        $localstorage.setObject('hdsections_' + $scope.handbook_id, {
+                                                            version : $scope.handbook.version,
+                                                            data    : $scope.sections
+                                                        });
+                                                    }, function(err) {
+                                                        console.log('Connect API PDF URL fail!');
+                                                        $ionicLoading.hide();
+                                                    });
+
+                                                }, function(err) {
+                                                    console.log('Connect API PDF URL fail!');
+                                                    $ionicLoading.hide();
+                                                });
                                             }
+
                                         }, function (err){
                                             console.log('Connect API IMAGE URL fail!');
                                             $ionicLoading.hide();
                                         });
+
+
 
                                     });
                                 }
@@ -852,14 +898,14 @@ angular.module('starter.controllers', [])
     };
     
     var _checkUserLogin = function() {
-        console.log(typeof $scope.user);
+        //console.log(typeof $scope.user);
         if ( $tool_fn._isEmpty($scope.user) ) {return;} 
         
         var checkUrl = $scope.user.user._links.self.href;
         // var checkUrl = config.path.baseURL + '/system';
         // checkUrl = 'http://api-live.sg-benefits.com/users/19/positions';
         rAPI.get($scope.user.user.session_key, checkUrl).then(function (res) {
-            console.log ('USER again', res.data);
+            //console.log ('USER again', res.data);
             if (!res.data.enabled) {
                 $location.path('/app/logout');
                 location.reload();
