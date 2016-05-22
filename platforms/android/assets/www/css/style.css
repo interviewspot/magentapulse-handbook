@@ -24,6 +24,16 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
     text-overflow: ellipsis;
 }
 /* ------------------------------ */
+/* CHANGE ------------------------------ */
+.button.button-energized {
+  background-color: #a30005;
+  border-color: #a30005;
+}
+.button.button-energized.active, .button.button-energized.activated {
+      border-color: #921115;
+      background-color: #921115;
+}
+/* ------------------------------ */
 .bar.bar-energized {
     border-color: #cfae79;
     background-color: #cfae79;
@@ -35,15 +45,15 @@ a, a:hover, a:focus{ color: #00a2ff; text-decoration: none; }
 }
 
 .logo {
-	text-align: center;
-	margin: 20px 0;
+  text-align: center;
+  margin: 20px 0;
     height: 60px;
     background: url(../img/lgo.png) no-repeat center center;
     background-size: 40% auto;
 }
 .contact-list h2.title {
-	font-size: 28px;
-	text-transform: uppercase;
+  font-size: 28px;
+  text-transform: uppercase;
 }
 .welcome-box { font-size: 11px; }
 .mmmenu .numb {
@@ -306,14 +316,17 @@ hr.line {
   -webkit-flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
+
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+
   -webkit-box-pack: center;
   -moz-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-align-content: stretch;
-  -ms-flex-line-pack: stretch;
-  align-content: stretch;
+  
   -webkit-box-align: center;
   -moz-box-align: center;
   -webkit-align-items: center;
@@ -359,9 +372,9 @@ hr.line {
   font-size: 11px;
 }
 .pdf-f-ct {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  /* border-bottom: 1px solid #eee; */
+  /* padding-bottom: 10px; */
+  /* margin-bottom: 10px; */
 }
 .pdf-blk {
   margin-top: 15px;
@@ -751,11 +764,20 @@ hr.line {
   width: 100%;
 }
 
-.button.button-energized {
-  background-color: #a30005;
-  border-color: #a30005;
-}
-.button.button-energized.active, .button.button-energized.activated {
-      border-color: #921115;
-      background-color: #921115;
+.platform-android .pdf-z.zoom-pane .scroll {
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  
+  -webkit-box-pack: initial;
+  -moz-box-pack: initial;
+  -webkit-justify-content: initial;
+  -ms-flex-pack: initial;
+  justify-content: initial;
+  
+  -webkit-box-align: initial;
+  -moz-box-align: initial;
+  -webkit-align-items: initial;
+  -ms-flex-align: initial;
+  align-items: initial;
 }

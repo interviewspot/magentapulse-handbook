@@ -200,6 +200,31 @@ angular.module('starter.services', [])
     }
     return services;
 })
+.factory('eAPI', function ($q, $http, $localstorage) {
+    var services = {};
+    services.get = function (username, password, url) {
+        var d = $q.defer();
+        $http({
+            method: 'GET',
+            url: url,
+            headers: {
+                "x-username": username.trim(),
+                "x-mode"    : "org_code",
+                "x-password": password.trim()
+            }
+        })
+        .then(function success(res){
+            d.resolve(res);
+            return;  
+        }, function error(error) {
+            d.reject(error);
+            return;
+        });
+        return d.promise;
+    }
+
+    return services;
+})
 .factory('rAPI', function ($q, $http, $localstorage) {
     var services = {};
     services.get = function (session, url) {
