@@ -72,35 +72,35 @@ angular.module('starter', [
     }
 
 
-    // NOTIFICATION
-    var io = Ionic.io();
-    var push = new Ionic.Push({
-      "onNotification": function(notification) {
-        alert('Received push notification!');
-      },
-      "pluginConfig": {
-        "android": {
-          "iconColor": "#0000FF"
-        }
-      }
-    });
-    var user = Ionic.User.current();
+    // // NOTIFICATION
+    // var io = Ionic.io();
+    // var push = new Ionic.Push({
+    //   "onNotification": function(notification) {
+    //     alert('Received push notification!');
+    //   },
+    //   "pluginConfig": {
+    //     "android": {
+    //       "iconColor": "#0000FF"
+    //     }
+    //   }
+    // });
+    // var user = Ionic.User.current();
 
-    if (!user.id) {
-      user.id = Ionic.User.anonymousId();
-    }
+    // if (!user.id) {
+    //   user.id = Ionic.User.anonymousId();
+    // }
 
-    // Just add some dummy data..
-    user.set('name', 'sgbenefit');
-    user.set('bio', 'bio_1');
-    user.save();
+    // // Just add some dummy data..
+    // user.set('name', 'sgbenefit');
+    // user.set('bio', 'bio_1');
+    // user.save();
 
-    var callback = function(data) {
-      push.addTokenToUser(user);
-      user.save();
-      console.log(data);
-    };
-    push.register(callback);
+    // var callback = function(data) {
+    //   push.addTokenToUser(user);
+    //   user.save();
+    //   console.log(data);
+    // };
+    // push.register(callback);
   });
 
 })
@@ -198,7 +198,7 @@ angular.module('starter', [
 ;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/handbooks');
-  $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://api.sg-benefits.com/**']);
+  $sceDelegateProvider.resourceUrlWhitelist(['self', 'https://api.sg-benefits.com/**', 'https://api-live.sg-benefits.com/**']);
   $httpProvider.defaults.headers.common = {
     "Content-Type": "application/json",
     "Accept": "application/hal+json, application/json, */*; q=0.01"
