@@ -1,33 +1,27 @@
 <ion-view view-title="Contacts">
-	<div class="visual-header"></div>
-	<div class="content-page selectable"
-		ng-class="settings.fontsize">
-		<div class="logo">
-	        <a ng-if="org.logo"><img alt="{{org.name}}" ng-src="{{org.logo}}"></a>
-	    </div>
-	    <div ng-include="'templates/menu_tabs.html'"></div>
-		<div class="list list-inset">
-		  <label class="item item-input">
-		    <i class="icon ion-search placeholder-icon"></i>
-		    <input type="text" placeholder="Search" ng-model="searchText">
-		  </label>
-		</div>
-		<div class="list list-inset contact-list menu-tab-page">
-			<div class="load-nocache" ng-if="!contacts">
-				<p>No data! please connect the internet and click refresh.</p>
-				<p><a href="javascript:;" ng-click="refreshCached()">
-					<span class="ion-refresh" data-pack="default" data-tags="reload, renew"></span>
-					REFRESH
-				</a></p>
-			</div>
-			<div ng-repeat="(i, item) in contacts | filter:searchText | orderBy: 'alphabet' | groupBy : 'alphabet'">
-	            <div class="item item-divider">
-	            	<h2 class="title">{{i}}</h2>
-				</div>
-				<!-- {{contact.position.title}} -->
-	            <div class="item" ng-repeat="contact in item" >
-	                <h3 ng-if="contact.user.first_name">{{contact.user.first_name}}  {{contact.user.last_name}}</h3>
-	                <p class="ctc-add l-tags">Singapore,
+    <div class="visual-header"></div>
+    <div class="content-page selectable"
+        ng-class="settings.fontsize">
+        <div class="logo">
+            <a ng-if="org.logo"><img alt="{{org.name}}" ng-src="{{org.logo}}"></a>
+        </div>
+        <div ng-include="'templates/menu_tabs.html'"></div>
+        <div class="list list-inset">
+          <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" placeholder="Search" ng-model="searchText">
+          </label>
+        </div>
+        <div class="list list-inset contact-list menu-tab-page">
+
+            <div ng-repeat="(i, item) in contacts | filter:searchText | orderBy: 'alphabet' | groupBy : 'alphabet'">
+                <div class="item item-divider">
+                    <h2 class="title">{{i}}</h2>
+                </div>
+                <!-- {{contact.position.title}} -->
+                <div class="item" ng-repeat="contact in item" >
+                    <h3 ng-if="contact.user.first_name">{{contact.user.first_name}}  {{contact.user.last_name}}</h3>
+                    <p class="ctc-add l-tags">Singapore,
                         <span class="tag"
                             ng-repeat="tag in contact.position.employee_classes._embedded.items | filter:{enabled:true}">
                             {{tag.name}}
@@ -37,24 +31,30 @@
                             {{tag.name}}
                         </span>
                     </p>
-	                <div class="ctc-info">
-		                <p>
-		                    <b>M:</b>
-		                    <a ng-href="tel:{{contact.user.mobile_no}}" ng-if="contact.user.mobile_no">{{contact.user.mobile_no}}</a>
+                    <div class="ctc-info">
+                        <p>
+                            <b>M:</b>
+                            <a ng-href="tel:{{contact.user.mobile_no}}" ng-if="contact.user.mobile_no">{{contact.user.mobile_no}}</a>
                             <span ng-if="!contact.user.mobile_no">No number</span>
-		                </p>
-		                <p>
-		                    <b>0:</b>
+                        </p>
+                        <p>
+                            <b>0:</b>
                             <a ng-href="tel:{{contact.user.office_no}}" ng-if="contact.user.office_no">{{contact.user.office_no}}</a>
                             <span ng-if="!contact.user.office_no">No number</span>
-		                </p>
-		                <p ng-if="contact.user.email">
-		                    <b>E:</b>
-		                    <a ng-href="mailto:{{contact.user.email}}">{{contact.user.email}}</a>
-		                </p>
-		            </div>
-	            </div>
-        	</div>
+                        </p>
+                        <p ng-if="contact.user.email">
+                            <b>E:</b>
+                            <a ng-href="mailto:{{contact.user.email}}">{{contact.user.email}}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="load-nocache" ng-click="refreshCached()">
+                <a href="javascript:;" >
+                    <span class="ion-refresh" data-pack="default" data-tags="reload, renew"></span>
+                    REFRESH FOR NEW
+                </a>
+            </div>
         </div>
         <!-- END: ITEM -->
     </div><!-- END : PAGE -->
