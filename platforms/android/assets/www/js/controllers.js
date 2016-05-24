@@ -53,7 +53,7 @@ angular.module('starter.controllers', [])
     };
 
     var _checkUserLogin = function() {
-        //console.log(typeof $scope.user);
+        //console.log($scope.user);
         if ( $tool_fn._isEmpty($scope.user) ) {return;} 
         
         var checkUrl = $scope.user.user._links.self.href;
@@ -120,7 +120,7 @@ angular.module('starter.controllers', [])
         eAPI.get($scope.loginData.company_code.trim(), $scope.loginData.user_code.trim(), loginSysUrl)
         .then(function (res){
             
-            console.log('sysLog', res.data);
+            // console.log('sysLog', res.data);
             var logState = res.data;
             if (typeof res == 'object' && res.status == 200) {
                 
@@ -215,7 +215,7 @@ angular.module('starter.controllers', [])
  */
 .controller('HandbooksCtrl',
     function($scope, $rootScope, $location, $stateParams, $ionicPush, HandbookService, SectionService,
-            $localstorage, $ionicLoading, OrgService, ImgService, $tool_fn) {
+            $localstorage, $ionicLoading, OrgService, ImgService, $tool_fn, rAPI) {
     $scope.cur_path = $location.path();
     $scope.user     = $localstorage.getObject('user');
 
@@ -238,16 +238,12 @@ angular.module('starter.controllers', [])
 
         // GET IMG
         if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-            ImgService.get($scope.user.username
-                         , $scope.user.password
-                         , $scope.user.session_key
+            rAPI.get( $scope.user.user.session_key
                          , $scope.org._links.logo.href).then(function (res) {
 
                 if (typeof res == 'object' && res.status == 200) {
                     //console.log(res.data._links);
-                    ImgService.get($scope.user.username
-                         , $scope.user.password
-                         , $scope.user.session_key
+                    rAPI.get( $scope.user.user.session_key
                          , config.path.baseURL + res.data._links.url.href).then(function (res) {
 
                         //console.log(res.data);
@@ -268,9 +264,8 @@ angular.module('starter.controllers', [])
         // GET HANDBOOKs
         if ($scope.org._links.handbooks) {
             var ony_active = "?search=handbook.enabled:1";
-            HandbookService.get($scope.user.username
-                              , $scope.user.password
-                              , $scope.user.session_key
+            console.log($scope.user);
+            rAPI.get($scope.user.user.session_key
                               , $scope.org._links.handbooks.href + ony_active).then(function (return_data){
 
                 $scope.handbooks = [];
@@ -279,17 +274,15 @@ angular.module('starter.controllers', [])
                 console.log (return_data.data);
                 // CHECK UPDATE CACHE
                 var updateCache = $tool_fn._checkHandbookChange(return_data.data, $_handbooks);
-                console.log (updateCache);
+                // console.log (updateCache);
                 $localstorage.setObject('updateCache', updateCache);
 
                 if (updateCache) {
-                    console.log('_____translation');
+                    // console.log('_____translation');
                     $scope.handbooks = return_data.data;
                     // GET LANG
                     angular.forEach($scope.handbooks._embedded.items, function(item, i) {
-                        HandbookService.get($scope.user.username
-                                          , $scope.user.password
-                                          , $scope.user.session_key
+                        rAPI.get( $scope.user.user.session_key
                                           , item._links.translations.href ).then(function (res){
                             if (typeof res == 'object' && res.status == 200) {
                                 $scope.handbooks._embedded.items[i]['lang'] = res.data;
@@ -439,7 +432,7 @@ angular.module('starter.controllers', [])
         } else {
             //pdfDelegate.$getByHandle('my-pdf-container').zoomTo(1.5);
             $scope.pdfUrl   = 'pdf/lesson2.pdf';
-            $scope.pdfUrl   = afile.pdf_info.name;
+            // $scope.pdfUrl   = afile.pdf_info.name;
             //console.log('openM', afile.pdf_info.name);
             $scope.modal.show();
             $scope.tmodal  = {
@@ -500,16 +493,12 @@ angular.module('starter.controllers', [])
 
         // GET IMG
         if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-            ImgService.get($scope.user.username
-                         , $scope.user.password
-                         , $scope.user.session_key
+            rAPI.get( $scope.user.user.session_key
                          , $scope.org._links.logo.href).then(function (res) {
 
                 if (typeof res == 'object' && res.status == 200) {
                     //console.log(res.data._links);
-                    ImgService.get($scope.user.username
-                         , $scope.user.password
-                         , $scope.user.session_key
+                    rAPI.get( $scope.user.user.session_key
                          , config.path.baseURL + res.data._links.url.href).then(function (res) {
 
                         //console.log(res.data);
@@ -534,9 +523,7 @@ angular.module('starter.controllers', [])
         console.log('local_handbook', $local_handbook);
         
         // GET HANDBOOK
-        HandbookService.get($scope.user.username
-                            , $scope.user.password
-                            , $scope.user.session_key
+        rAPI.get( $scope.user.user.session_key
                             , $scope.org._links.handbooks.href + "/" +  $scope.handbook_id).then(function (return_data){
             $scope.handbook = return_data.data;
             $scope.ch_color = '#' + 'cfae79';
@@ -555,9 +542,7 @@ angular.module('starter.controllers', [])
             }
 
             // GET HANDBOOK LANG
-            HandbookService.get($scope.user.username
-                              , $scope.user.password
-                              , $scope.user.session_key
+            rAPI.get( $scope.user.user.session_key
                               , $scope.handbook._links.translations.href ).then(function (res){
                 if (typeof res == 'object' && res.status == 200) {
                     $scope.handbook['lang'] = res.data;
@@ -590,9 +575,7 @@ angular.module('starter.controllers', [])
 
                 // GET SECTIONS of A HANDBOOK
                 // ?search=section.parent{null}1
-                SectionService.get($scope.user.username
-                                 , $scope.user.password
-                                 , $scope.user.session_key
+                rAPI.get( $scope.user.user.session_key
                                  , $scope.handbook._links.sections.href + "?search=section.parent{null}1&limit=500").then(function (return_data){
                     $ionicLoading.hide();
                     $scope.sections = return_data.data._embedded.items;
@@ -609,9 +592,7 @@ angular.module('starter.controllers', [])
                             // console.log(item);
 
                             // LOAD LANG
-                            HandbookService.get($scope.user.username
-                                              , $scope.user.password
-                                              , $scope.user.session_key
+                            rAPI.get( $scope.user.user.session_key
                                               , itemInstance._links.translations.href ).then(function (res){
                                 if (typeof res == 'object' && res.status == 200) {
 
@@ -628,9 +609,7 @@ angular.module('starter.controllers', [])
                             });
 
                             // LOAD CONTENT (IMG)
-                            HandbookService.get($scope.user.username
-                                              , $scope.user.password
-                                              , $scope.user.session_key
+                            rAPI.get( $scope.user.user.session_key
                                               , itemInstance._links.contents.href ).then(function (res){
                                 if (typeof res == 'object' && res.status == 200 && res.data.total != 0) {
                                     $scope.sections[i]['blk_img'] = new Array();
@@ -641,9 +620,7 @@ angular.module('starter.controllers', [])
                                     //    console.log(key);
                                     // console.log(item._links.image_url.href);
                                     
-                                        HandbookService.get($scope.user.username
-                                              , $scope.user.password
-                                              , $scope.user.session_key
+                                        rAPI.get( $scope.user.user.session_key
                                               , item._links.image_url.href + '?locale=en_us' ).then(function (res){
                                             //console.log('IMG_URL', res.data.image_url);
                                             if (res.data.image_url) {
@@ -656,17 +633,13 @@ angular.module('starter.controllers', [])
                                             } else {
 
                                                 // GET PDF
-                                                HandbookService.get($scope.user.username
-                                                  , $scope.user.password
-                                                  , $scope.user.session_key
-                                                  , item._links.pdf.href + '?locale=en_us&x-session='+ $scope.user.user.session_key ).then(function (res){
+                                                rAPI.get( $scope.user.user.session_key
+                                                  , item._links.pdf.href + '?locale=en_us' ).then(function (res){
                                                     console.log("o1: ",res.data);
                                                     if (!res.data) {return;}
 
                                                     // GET PDF URL
-                                                    HandbookService.get($scope.user.username
-                                                      , $scope.user.password
-                                                      , $scope.user.session_key
+                                                    rAPI.get( $scope.user.user.session_key
                                                       , config.path.baseURL + res.data._links.url.href  ).then(function (res2){
                                                         var pdf_data = {
                                                             pdf_info : res.data,
@@ -754,9 +727,7 @@ angular.module('starter.controllers', [])
             //console.log(j);
 
             $ionicLoading.show();
-            HandbookService.get($scope.user.username
-                  , $scope.user.password
-                  , $scope.user.session_key
+            rAPI.get( $scope.user.user.session_key
                   , $section._links.children.href ).then(function (res){
                 $ionicLoading.hide();
                 $scope.sections[j].children = res.data;
@@ -765,9 +736,7 @@ angular.module('starter.controllers', [])
                 angular.forEach(res.data._embedded.items, function(item, k) {
                         (function(itemInstance) {
                             // GET CONTENTS
-                            HandbookService.get($scope.user.username
-                                              , $scope.user.password
-                                              , $scope.user.session_key
+                            rAPI.get( $scope.user.user.session_key
                                               , itemInstance._links.contents.href ).then(function (res){
                                 if (typeof res == 'object' && res.status == 200 && res.data.total != 0) {
                                     $scope.sections[j].children._embedded.items[k]['blk_img'] = new Array();
@@ -778,9 +747,7 @@ angular.module('starter.controllers', [])
                                     //    console.log(key);
                                     // console.log(item._links.image_url.href);
                                         
-                                        HandbookService.get($scope.user.username
-                                              , $scope.user.password
-                                              , $scope.user.session_key
+                                        rAPI.get( $scope.user.user.session_key
                                               , item._links.image_url.href + '?locale=en_us' ).then(function (res){
                                             //console.log('IMG_URL', res.data.image_url);
                                             if (res.data.image_url) {
@@ -792,17 +759,13 @@ angular.module('starter.controllers', [])
                                             } else {
 
                                                 // GET PDF
-                                                HandbookService.get($scope.user.username
-                                                  , $scope.user.password
-                                                  , $scope.user.session_key
-                                                  , item._links.pdf.href + '?locale=en_us&x-session='+ $scope.user.user.session_key ).then(function (res){
+                                                rAPI.get( $scope.user.user.session_key
+                                                  , item._links.pdf.href + '?locale=en_us' ).then(function (res){
                                                     //console.log("o1: ",res.data);
                                                     if (!res.data) {return;}
 
                                                     // GET PDF URL
-                                                    HandbookService.get($scope.user.username
-                                                      , $scope.user.password
-                                                      , $scope.user.session_key
+                                                    rAPI.get( $scope.user.user.session_key
                                                       , config.path.baseURL + res.data._links.url.href  ).then(function (res2){
                                                         var pdf_data = {
                                                             pdf_info : res.data,
@@ -840,9 +803,7 @@ angular.module('starter.controllers', [])
                             });
 
                             // Translate child section
-                            HandbookService.get($scope.user.username
-                                              , $scope.user.password
-                                              , $scope.user.session_key
+                            rAPI.get($scope.user.user.session_key
                                               , itemInstance._links.translations.href ).then(function (res){
                                 if (typeof res == 'object' && res.status == 200) {
 
@@ -898,14 +859,14 @@ angular.module('starter.controllers', [])
     };
     
     var _checkUserLogin = function() {
-        //console.log(typeof $scope.user);
+        //console.log('zo');
         if ( $tool_fn._isEmpty($scope.user) ) {return;} 
         
         var checkUrl = $scope.user.user._links.self.href;
         // var checkUrl = config.path.baseURL + '/system';
         // checkUrl = 'http://api-live.sg-benefits.com/users/19/positions';
         rAPI.get($scope.user.user.session_key, checkUrl).then(function (res) {
-            //console.log ('USER again', res.data);
+            console.log ('USER again 2', res.data);
             if (!res.data.enabled) {
                 $location.path('/app/logout');
                 location.reload();
@@ -926,14 +887,15 @@ angular.module('starter.controllers', [])
  */
 .controller('ContactCtrl',
     function($scope, $rootScope, $location, $stateParams,
-            ContactService, $ionicPush, HandbookService,
+            rAPI, $ionicPush, HandbookService,
             $localstorage, $ionicLoading, OrgService, ImgService,
             $tool_fn) {
     $scope.cur_path = $location.path();
     $scope.user     = $localstorage.getObject('user');
-    console.log($scope.user);
+    // console.log($scope.user);
     $scope.org      = $scope.user.company;
     $_handbooks     = $localstorage.getObject('handbooks');
+
 
     $scope.refreshCached = function () {
         $localstorage.setObject('contacts', {});
@@ -963,16 +925,12 @@ angular.module('starter.controllers', [])
 
         // GET IMG
         if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-            ImgService.get($scope.user.username
-                         , $scope.user.password
-                         , $scope.user.session_key
+            rAPI.get($scope.user.user.session_key
                          , $scope.org._links.logo.href).then(function (res) {
 
                 if (typeof res == 'object' && res.status == 200) {
                     //console.log(res.data._links);
-                    ImgService.get($scope.user.username
-                         , $scope.user.password
-                         , $scope.user.session_key
+                    rAPI.get($scope.user.user.session_key
                          , config.path.baseURL + res.data._links.url.href).then(function (res) {
 
                         //console.log(res.data);
@@ -993,53 +951,21 @@ angular.module('starter.controllers', [])
         //  return;
         // }
 
-
-        // GET HANDBOOKs & THEN UPDATE CONTACT FROM API
-        if ($scope.org._links.handbooks) {
-            var ony_active = "?search=handbook.enabled:1";
-            HandbookService.get($scope.user.username
-                              , $scope.user.password
-                              , $scope.user.session_key
-                              , $scope.org._links.handbooks.href + ony_active).then(function (return_data){
-
-                // CHECK UPDATE CACHE
-                var updateCache = $tool_fn._checkHandbookChange(return_data.data, $_handbooks);
-                console.log ('Upcache', updateCache);
-                if (updateCache || $scope.contacts == undefined) {
-                    _GetContactAPI();
-                }
-                $ionicLoading.hide();
-            }, function (err){
-                $ionicLoading.hide();
-                console.log(err.status + ' : Connect API fail!');
-
-                if (!$scope.contacts) {
-                    alert("Connect the internet to get data!");
-                }
-
-            });
-        }
-
         // ------------------------------
         // GET CONTACT
         _GetContactAPI = function () {
             // body...
-
             $scope.ch_color = '#' + 'cfae79';
-            ContactService.get($scope.user.username
-                             , $scope.user.password
-                             , $scope.user.session_key
-                             , $scope.org._links.positions.href + "?search=position.handbookContact:1,position.enabled:1").then(function (contact_res){
+            rAPI.get($scope.user.user.session_key
+                    , $scope.org._links.positions.href + "?search=position.handbookContact:1,position.enabled:1").then(function (contact_res){
 
                 var data = contact_res.data
-
+                console.log("_____contacts", data);
                 if (data._embedded.items.length > 0) {
                     $scope.contacts = [];
                     angular.forEach(data._embedded.items, function(item, i) {
                         $scope.contacts[i] = {};
-                        ContactService.fetch($scope.user.username
-                                           , $scope.user.password
-                                           , $scope.user.session_key
+                        rAPI.get($scope.user.user.session_key
                                            , item._links.employee.href).then(function (res){
                             $scope.contacts[i]['position'] = item;
                             $scope.contacts[i]['user']     = res.data;
@@ -1053,9 +979,7 @@ angular.module('starter.controllers', [])
 
                             // GET employee_classes
                             if (item._links.employee_classes) {
-                                ContactService.fetch($scope.user.username
-                                               , $scope.user.password
-                                               , $scope.user.session_key
+                                rAPI.get($scope.user.user.session_key
                                                , item._links.employee_classes.href).then(function (res){
                                     $scope.contacts[i]['position']['employee_classes'] = res.data
                                     // STORE in LOCAL
@@ -1067,9 +991,7 @@ angular.module('starter.controllers', [])
 
                             // GET employee_functions
                             if (item._links.employee_classes) {
-                                ContactService.fetch($scope.user.username
-                                               , $scope.user.password
-                                               , $scope.user.session_key
+                                rAPI.get($scope.user.user.session_key
                                                , item._links.employee_functions.href).then(function (res){
                                     $scope.contacts[i]['position']['employee_functions'] = res.data
                                     // STORE in LOCAL
@@ -1100,6 +1022,30 @@ angular.module('starter.controllers', [])
                 }
             });
         }
+
+        // GET HANDBOOKs & THEN UPDATE CONTACT FROM API
+        _GetContactAPI();
+        if ($scope.org._links.handbooks) {
+            var ony_active = "?search=handbook.enabled:1";
+            rAPI.get($scope.user.user.session_key
+                    , $scope.org._links.handbooks.href + ony_active).then(function (return_data){
+
+                // CHECK UPDATE CACHE
+                var updateCache = $tool_fn._checkHandbookChange(return_data.data, $_handbooks);
+                console.log ('Upcache', updateCache);
+                $ionicLoading.hide();
+            }, function (err){
+                $ionicLoading.hide();
+                console.log(err.status + ' : Connect API fail!');
+
+                if (!$scope.contacts) {
+                    alert("Connect the internet to get new data!");
+                }
+
+            });
+        }
+
+
     }
 })
 
@@ -1108,7 +1054,7 @@ angular.module('starter.controllers', [])
  * NotificationCtrl : Notification PAGE
  */
 .controller('NotificationCtrl',
-    function($scope, $rootScope, $location, $stateParams, ContactService, $localstorage, $ionicLoading, $ionicPush, OrgService, ImgService) {
+    function($scope, $rootScope, $location, $stateParams, rAPI, $localstorage, $ionicLoading, $ionicPush, OrgService, ImgService) {
     $scope.cur_path = $location.path();
     $scope.user     = $localstorage.getObject('user');
     $scope.org      = $scope.user.company;
@@ -1122,16 +1068,12 @@ angular.module('starter.controllers', [])
 
         // GET IMG
         if (typeof $scope.org._links.logo == 'object' && $scope.org._links.logo.href) {
-            ImgService.get($scope.user.username
-                         , $scope.user.password
-                         , $scope.user.session_key
+            rAPI.get( $scope.user.user.session_key
                          , $scope.org._links.logo.href).then(function (res) {
 
                 if (typeof res == 'object' && res.status == 200) {
                     //console.log(res.data._links);
-                    ImgService.get($scope.user.username
-                         , $scope.user.password
-                         , $scope.user.session_key
+                    rAPI.get( $scope.user.user.session_key
                          , config.path.baseURL + res.data._links.url.href).then(function (res) {
 
                         //console.log(res.data);
@@ -1149,8 +1091,7 @@ angular.module('starter.controllers', [])
 
         // GET Notifis
         var_filter = "?sort=message.createdAt:desc"
-        OrgService.get($scope.user.username
-                     , $scope.user.password
+        rAPI.get($scope.user.user.session_key
                      , $scope.user.user._links.messages.href + var_filter).then(function (res) {
             $ionicLoading.hide();
             if (typeof res == 'object' && res.status == 200) {
@@ -1163,33 +1104,33 @@ angular.module('starter.controllers', [])
         });
 
         // READ IT
-        $scope.readIt = function (notifi) {
+        // $scope.readIt = function (notifi) {
 
-            if (notifi.read == true) {return;}
-            notifi.read = true;
-            console.log(notifi);
-            return;
-            var link        = notifi._links.self.href;
-            var send_data = {
-                message : {
-                    "read" : true,
-                    "sender": $scope.org.id,
-                    "recipient": $scope.org.id
-                }
-            };
-            console.log(send_data);
+        //     if (notifi.read == true) {return;}
+        //     notifi.read = true;
+        //     console.log(notifi);
+        //     return;
+        //     var link        = notifi._links.self.href;
+        //     var send_data = {
+        //         message : {
+        //             "read" : true,
+        //             "sender": $scope.org.id,
+        //             "recipient": $scope.org.id
+        //         }
+        //     };
+        //     console.log(send_data);
 
-            OrgService.update($scope.user.username
-                     , $scope.user.password
-                     , link
-                     , send_data ).then(function (res) {
-                if (typeof res == 'object' && res.status == 204) {
-                    console.log('Ok');
-                }
-            }, function (err){
-                console.log('Error');
-            });
-        }
+        //     OrgService.update($scope.user.username
+        //              , $scope.user.password
+        //              , link
+        //              , send_data ).then(function (res) {
+        //         if (typeof res == 'object' && res.status == 204) {
+        //             console.log('Ok');
+        //         }
+        //     }, function (err){
+        //         console.log('Error');
+        //     });
+        // }
     }
 })
 
