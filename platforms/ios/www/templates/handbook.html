@@ -1,17 +1,17 @@
-<ion-view view-title="Handbook" >
+<ion-view view-title="Cloud Book" >
     <div class="visual-header"></div>
-	<div class="content-page selectable"
+    <div class="content-page selectable"
         ng-class="settings.fontsize">
-		<div class="logo">
-	        <a ng-if="org.logo"><img alt="{{org.name}}" ng-src="{{org.logo}}"></a>
-	    </div>
+        <div class="logo">
+            <a ng-if="org.logo"><img alt="{{org.name}}" cache-src="{{org.logo}}"></a>
+        </div>
         <div ng-include="'templates/menu_tabs.html'"></div>
-	    <div class="list list-inset">
-		  <label class="item item-input">
-		    <i class="icon ion-search placeholder-icon"></i>
-		    <input type="text" placeholder="Search" ng-model="searchText">
-		  </label>
-		</div>
+        <div class="list list-inset">
+          <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" placeholder="Search" ng-model="searchText">
+          </label>
+        </div>
         <div class="load-nocache" ng-if="!handbook">
             <p>No data! please connect the internet and click refresh.</p>
             <p><a href="javascript:;" ng-click="refreshCached()">
@@ -19,30 +19,31 @@
                 REFRESH
             </a></p>
         </div>
-		<div class="row" ng-if="handbook" ng-hide="searchText">
-			<div class="col">
-                <h2>{{handbook.lang['en-us'].title ? handbook.lang['en-us'].title : handbook.title}}</h2>
+        <div class="row" ng-if="handbook" ng-hide="searchText">
+            <!-- {{handbook | json}} -->
+            <div class="col">
+                <h2>{{handbook.lang['en_us'].title ? handbook.lang['en_us'].title : handbook.title}}</h2>
                 <p>Version {{handbook.version}},  {{handbook.year}}</p>
                 <p>Language: English</p>
             </div>
-		</div>
-		<div class="row" ng-hide="searchText">
-			<div class="col" ng-bind-html="handbook.lang['en_us'].description"></div>
-		</div>
+        </div>
+        <div class="row" ng-hide="searchText">
+            <div class="col" ng-bind-html="handbook.lang['en_us'].description"></div>
+        </div>
         <div class="list menu-tab-page">
-        	<div ng-repeat="(key, section) in sections | filter:searchText | orderBy:'ordering'">
-        		<div class="item item-divider item-icon-left"
+            <div ng-repeat="(key, section) in sections | filter:searchText | orderBy:'ordering'">
+                <div class="item item-divider item-icon-left"
                     ng-click="toggleGroup(section)"
                     ng-class="{active: isGroupShown(section)}">
-					<h4 class="sec-title">
+                    <h4 class="sec-title">
                         {{section.ordering}}. {{section.lang['en_us'].title ? section.lang['en_us'].title : section.title}}
-					    <i class="icon"
+                        <i class="icon"
                         ng-class="isGroupShown(section) ? 'ion-ios-minus-outline' : 'ion-ios-plus-outline'"
                         ></i>
                     </h4>
-				</div>
+                </div>
 
-				<div class="item"
+                <div class="item"
                     ng-show="isGroupShown(section)" >
                     <div class="section-ct"
                         ng-show="section.lang['en_us'].description || section.description"
@@ -55,7 +56,7 @@
                         </div>
                         
                         <div class="sub-section-img"
-                             ng-if="section.blk_img">
+                             ng-if="section.blk_img.length">
                             <span class="load-img-bg">Loading Image</span>
                             <div class="sec-img-itm"
                                  ng-repeat="imgitm in section.blk_img">
@@ -65,7 +66,7 @@
                         </div>
 
                         <!-- PDF VIEWR -->
-                        <div class="pdf-blk" ng-if="section.blk_pdf" >
+                        <div class="pdf-blk" ng-if="section.blk_pdf.length" >
                             <span class="load-img-bg">Loading PDF</span>
                             <div class="s-pdf"  ng-repeat="pdfitm in section.blk_pdf">
                                 <div class="pdf-f-ct">
@@ -75,15 +76,6 @@
                                         <span class="pdf-small">{{pdfitm.pdf_info.name}}</span>
                                     </span>
                                 </div>
-                                <div class="pdf-offline-option">
-                                    Download & View Offline
-                                    <label style="float:right;" class="toggle toggle-dark">
-                                       <input type="checkbox">
-                                       <div class="track">
-                                         <div class="handle"></div>
-                                       </div>
-                                    </label>
-                                </div>
                             </div>
                         </div>
 
@@ -92,6 +84,7 @@
                         ng-if="section.children._embedded.items.length > 0"
                         ng-repeat="(k, child) in section.children._embedded.items | orderBy:'ordering'"
                         >
+
                         <h4 ng-click="toggleSubGroup(child)">{{section.ordering}}.{{child.ordering}} - {{child.lang['en_us'].title ? child.lang['en_us'].title : child.title }}</h4>
                         <div class="sub-section-ct"
                             zooming="true"
@@ -108,8 +101,21 @@
                                          ng-click="openModalZImg(imgitm)"/>
                                 </div>
                             </div>
+                            <!-- PDF VIEWR -->
+                            <div class="pdf-blk" ng-if="child.blk_pdf.length" >
+                                <span class="load-img-bg">Loading PDF</span>
+                                <div class="s-pdf"  ng-repeat="apdfitm in child.blk_pdf">
+                                    <div class="pdf-f-ct">
+                                        <span ng-click="openModalPDF(apdfitm)">
+                                            <span class="ion-android-clipboard"></span>
+                                            Click to view
+                                            <span class="pdf-small">{{apdfitm.pdf_info.name}}</span>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
                     </div><!-- SUB SECTIONS -->
                 </div>
@@ -120,26 +126,26 @@
                             <h1 class="title">{{tmodal.title}}</h1>
                             <button class="button button-clear button-primary" ng-click="modal.hide()">Close</button>
                         </ion-header-bar>
-                        <ion-content class="padding" scroll="false">
+                        <ion-content class="padding platform-android" scroll="false">
                             <ion-scroll ng-if="tmodal.type == 'zimg'" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1"
                                 overflow-scroll="false"
                                 scrollbar-x="false"
                                 scrollbar-y="false">
                                 <img cache-src="{{fileUrl}}" />
                             </ion-scroll>
-                            <ion-scroll ng-if="tmodal.type == 'pdf'" zooming="true" direction="xy" delegate-handle="zoom-pane" class="zoom-pane" min-zoom="1" overflow-scroll="false" scrollbar-x="false" scrollbar-y="false">
+                            <ion-scroll ng-if="tmodal.type == 'pdf'" zooming="true" direction="xy" delegate-handle="zoom-pane" class="pdf-z zoom-pane" min-zoom="1" overflow-scroll="false" scrollbar-x="false" scrollbar-y="false" >
                                 <pdf-viewer
                                     delegate-handle="my-pdf-container"
                                     class="pdf-viewer-b"
                                     url="pdfUrl"
                                     scale="1"
                                     show-toolbar="true"
-                                    headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }"></pdf-viewer>
+                                    headers="pdfUrl.pdf_info.name"></pdf-viewer>
                             </ion-scroll> 
                         </ion-content>
                     </ion-modal-view>
                 </script>
-        	</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </ion-view>

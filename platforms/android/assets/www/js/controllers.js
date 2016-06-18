@@ -950,7 +950,7 @@ angular.module('starter.controllers', [])
         //  $ionicLoading.hide();
         //  return;
         // }
-        
+
         // ------------------------------
         // GET CONTACT
         _GetContactAPI = function () {
@@ -1045,7 +1045,7 @@ angular.module('starter.controllers', [])
             });
         }
 
-        
+
     }
 })
 
