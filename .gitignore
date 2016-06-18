@@ -5,3 +5,4 @@ node_modules/
 plugins/
 platforms/
 platforms/*
+*platforms*
