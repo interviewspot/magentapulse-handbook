@@ -218,6 +218,7 @@ angular.module('starter.controllers', [])
             $localstorage, $ionicLoading, OrgService, ImgService, $tool_fn, rAPI) {
     $scope.cur_path = $location.path();
     $scope.user     = $localstorage.getObject('user');
+        $rootScope.listHandbookId = [];
 
     // menu active
     $scope.isActive = function(path) {
@@ -282,6 +283,7 @@ angular.module('starter.controllers', [])
                     $scope.handbooks = return_data.data;
                     // GET LANG
                     angular.forEach($scope.handbooks._embedded.items, function(item, i) {
+                        $rootScope.listHandbookId[i] = item.id;
                         rAPI.get( $scope.user.user.session_key
                                           , item._links.translations.href ).then(function (res){
                             if (typeof res == 'object' && res.status == 200) {
@@ -298,7 +300,11 @@ angular.module('starter.controllers', [])
                     });
                 } else {
                     $scope.handbooks = $_handbooks;
+                    angular.forEach($scope.handbooks._embedded.items, function(item, i) {
+                        $rootScope.listHandbookId[i] = item.id;
+                    });
                 }
+                $localstorage.setObject('listHandbookId',$rootScope.listHandbookId);
 
 
             }, function (err){
@@ -332,8 +338,9 @@ angular.module('starter.controllers', [])
                                     $localstorage, $ionicLoading, OrgService, ImgService,
                                     $tool_fn, $ionicModal, 
                                     $cordovaFileTransfer, $cordovaFile, $ionicPlatform, $window,
-                                    rAPI
+                                    rAPI,$ionicSideMenuDelegate
                                     ) {
+    $ionicSideMenuDelegate.canDragContent(false);
     $scope.cur_path = $location.path();
     $scope.user     = $localstorage.getObject('user');
     $scope.handbook_id = $stateParams.handbook_id
@@ -879,6 +886,34 @@ angular.module('starter.controllers', [])
             }
         });
     };
+
+    $scope.onSwipeLeft = function(){
+        var listHandbookId = $localstorage.getObject('listHandbookId');
+        var handbookId = parseInt($scope.handbook_id);
+
+        var indexCurrent = listHandbookId.indexOf(handbookId);
+        var indexCurrentNext = indexCurrent+1;
+        if(listHandbookId[indexCurrentNext] != undefined){
+            var handbookIdNext = listHandbookId[indexCurrentNext];
+            $location.path('/app/handbook/'+handbookIdNext);
+            location.reload();
+        }
+        console.log('left');
+    };
+    $scope.onSwipeRight = function(){
+        var listHandbookId = $localstorage.getObject('listHandbookId');
+        var handbookId = parseInt($scope.handbook_id);
+
+        var indexCurrent = listHandbookId.indexOf(handbookId);
+        var indexCurrentPrev = indexCurrent-1;
+        if(listHandbookId[indexCurrentPrev] != undefined){
+            var handbookIdPrev = listHandbookId[indexCurrentPrev];
+            $location.path('/app/handbook/'+handbookIdPrev);
+            location.reload();
+        }
+        console.log('right');
+    };
+
 
 })
 

@@ -1,7 +1,10 @@
 <ion-view view-title="Cloud Book" >
     <div class="visual-header"></div>
     <div class="content-page selectable"
-        ng-class="settings.fontsize">
+        ng-class="settings.fontsize"
+         on-swipe-left="onSwipeLeft()"
+         on-swipe-right="onSwipeRight()"
+    >
         <div class="logo">
             <a ng-if="org.logo"><img alt="{{org.name}}" cache-src="{{org.logo}}"></a>
         </div>
