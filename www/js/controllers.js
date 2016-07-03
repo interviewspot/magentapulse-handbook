@@ -896,7 +896,7 @@ angular.module('starter.controllers', [])
         if(listHandbookId[indexCurrentNext] != undefined){
             var handbookIdNext = listHandbookId[indexCurrentNext];
             $location.path('/app/handbook/'+handbookIdNext);
-            location.reload();
+            // location.reload();
         }
         console.log('left');
     };
@@ -909,7 +909,7 @@ angular.module('starter.controllers', [])
         if(listHandbookId[indexCurrentPrev] != undefined){
             var handbookIdPrev = listHandbookId[indexCurrentPrev];
             $location.path('/app/handbook/'+handbookIdPrev);
-            location.reload();
+            // location.reload();
         }
         console.log('right');
     };
