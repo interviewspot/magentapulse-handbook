@@ -6,3 +6,5 @@ plugins/
 platforms/
 platforms/*
 *platforms*
+/.DS_Store
+.idea

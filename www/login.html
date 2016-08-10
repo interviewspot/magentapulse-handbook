@@ -18,7 +18,7 @@
             var company_code= $('#company_code').val();
             var employee_code= $('#employee_code').val();
             $.ajax({
-                url: 'https://api.vn/app_dev.php/handbook/getTitleHandbook/'+company_code,
+                url: config.path.baseURL + company_code,
                 headers: { 'x-username': company_code, 'x-password': employee_code },
                 type: 'GET',
                 data: formData,
