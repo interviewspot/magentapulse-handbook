@@ -6,8 +6,12 @@
          on-swipe-right="onSwipeRight()"
     >
         <div class="logo">
-            <a ng-if="org.logo"><img alt="{{org.name}}" cache-src="{{org.logo}}"></a>
+            <!--<a ng-if="org.logo"><img alt="{{org.name}}" cache-src="{{org.logo}}"></a>-->
+            <a href="#/">
+                <img width="278px" height="81px" alt="" src="img/logo_fiduca.png">
+            </a>
         </div>
+
         <div ng-include="'templates/menu_tabs.html'"></div>
         <div class="list list-inset">
           <label class="item item-input">
