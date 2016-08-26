@@ -25,3 +25,11 @@ ACCOUNT
 - 
 - acmecoy
 - test04
+
+* fiducia
+keytool -genkey -v -keystore my-release-key.keystore -alias fiducia -keyalg RSA -keysize 2048 -validity 10000
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore android-release-unsigned.apk fiducia
+
+- fiducia
+- 123456
