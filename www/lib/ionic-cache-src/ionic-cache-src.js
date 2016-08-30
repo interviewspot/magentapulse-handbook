@@ -245,6 +245,7 @@
                         scope.onFinish(result);
                     };
                     if ($window.cordova) {
+                        addSrc(getCacheDir() + fileName);
                         var getCacheDir = function() {
                             if (window.device)
                                 if (window.cordova.file) {
