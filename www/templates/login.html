@@ -1,25 +1,23 @@
 <ion-view hide-nav-bar="true" hide-side-menu="true">
-  <ion-content>
-    <div class="logo">
-        <a href="#/">
-          <img width="278px" height="81px" alt="" src="img/logo3.png">
-        </a>
-    </div>
-    <div class="welcome-box t-c in-page">
-      Welcome to Cloud Book By Magenta Pulse. To access your company’s cloud books, please enter your company and employee verification code below.
-    </div>
-    <form ng-submit="doLogin()">
-      <div class="list list-inset frm">
-        <label class="item item-input"
-          ng-class="{invalid: noCompayCode}">
+    <ion-content>
+        <div class="logo">
+            <a href="#/">
+                <img width="278px" height="81px" alt="" src="images/logo.png">
+            </a>
+        </div>
+        <div class="welcome-box t-c in-page">
+            Welcome to Cloud Book By Magenta Pulse. To access your company’s cloud books, please enter your company and employee verification code below.
+        </div>
+        <form ng-submit="doLogin()">
+            <div class="list list-inset frm">
+                <label class="item item-input" ng-class="{invalid: noCompayCode}">
           <input type="text" ng-model="loginData.company_code" placeholder="Enter Company Code">
         </label>
-        <label class="item item-input"
-          ng-class="{invalid: noUserCode}">
+                <label class="item item-input" ng-class="{invalid: noUserCode}">
           <input type="password" ng-model="loginData.user_code" placeholder="Enter Employee Verification Code">
         </label>
-        <button class="button button-block button-energized login-btn" type="submit">LOGIN</button>
-      </div>
-    </form>
-  </ion-content>
+                <button class="button button-block button-energized login-btn" type="submit">LOGIN</button>
+            </div>
+        </form>
+    </ion-content>
 </ion-view>
