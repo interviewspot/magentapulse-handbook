@@ -70,6 +70,12 @@
                             <div class="row" ng-if="content.type === 'html'">
                                 <div class="col" ng-bind-html="content.content_html"></div>
                             </div>
+
+                            <div class="row" ng-if="content.type === 'link'">
+                                <a class="item" href="#" ng-click="openLink(content.content_html)">
+                                    {{content.content_html}}
+                                </a>
+                            </div>
                         </div>
 
                     </div>
@@ -103,6 +109,12 @@
 
                                 <div class="row" ng-if="content.type === 'html'">
                                     <div class="col" ng-bind-html="content.content_html"></div>
+                                </div>
+
+                                <div class="row" ng-if="content.type === 'link'">
+                                    <a class="item" href="#" ng-click="openLink(content.content_html)">
+                                        {{content.content_html}}
+                                    </a>
                                 </div>
                             </div>
 
