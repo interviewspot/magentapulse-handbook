@@ -812,7 +812,7 @@ angular.module('starter.controllers', [])
                                                 ordering: item.ordering,
                                                 content_html: item.html_text
                                             };
-                                            $scope.sections[i]['contents'].push(content_data);
+                                            $scope.sections[j].children._embedded.items[k]['contents'].push(content_data);
                                             $localstorage.setObject('hdsections_' + $scope.handbook_id, {
                                                 version: $scope.handbook.version,
                                                 data: $scope.sections
