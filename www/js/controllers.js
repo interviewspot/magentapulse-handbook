@@ -490,10 +490,10 @@ angular.module('starter.controllers', [])
                     });
                 }
             });
-            angular.forEach(newList, function (item, j) {
-                newList[j].children = newList[j].children.sort(sectionCompare);
-            });
-            newList.sort(sectionCompare);
+            // angular.forEach(newList, function (item, j) {
+            //     newList[j].children = newList[j].children.sort(sectionCompare);
+            // });
+            // newList.sort(sectionCompare);
             return newList;
         }
 
